@@ -1,4 +1,12 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import PostCard from '@/components/features/blog/PostCard';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectValue,
+	SelectTrigger,
+} from '@/components/ui/select';
+
 import {
 	BookOpen,
 	Github,
@@ -8,18 +16,12 @@ import {
 	Mail,
 	Megaphone,
 } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
 
-const mockTags = [
-	{ name: '전체', count: 60 },
-	{ name: '프론트엔드', count: 20 },
-	{ name: '백엔드', count: 20 },
-	{ name: '디자인', count: 10 },
-	{ name: 'nextjs', count: 13 },
-	{ name: 'typescript', count: 15 },
-	{ name: 'tailwindcss', count: 19 },
-];
+import TagSection from './_components/TagSection';
+import ProfileSection from './_components/ProfileSection';
+import ContactSection from './_components/ContactSection';
+import { getPublishedPosts, getTags } from '@/lib/notion';
+import Link from 'next/link';
 
 const socialLinks = [
 	{ icon: Github, url: 'https://github.com/yunhoJ' },
@@ -27,6 +29,9 @@ const socialLinks = [
 	{ icon: Instagram, url: 'https://www.instagram.com/seungmin-dev' },
 	{ icon: Mail, url: 'mailto:seungmin@seungmin.dev' },
 ];
+interface HomeProps {
+	searchParams: Promise<{ tag?: string }>;
+}
 
 const contactItems = [
 	{
@@ -60,111 +65,46 @@ const contactItems = [
 		},
 	},
 ];
-export default function Home() {
+export default async function Home({ searchParams }: HomeProps) {
+	const { tag } = await searchParams;
+	const selectedTag = tag || '전체';
+	const [posts, tags] = await Promise.all([getPublishedPosts(selectedTag), getTags()]);
+
 	return (
 		<div className="container py-8">
 			{/* 왼쪽 사이드바  */}
 			<div className="grid grid-cols-[200px_1fr_220px] gap-6">
 				<aside>
-					<Card className="gap-3">
-						<CardHeader>
-							<CardTitle>태그 목록</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<div className="flex flex-col gap-2 text-sm">
-								{mockTags.map((tag) => (
-									<Link href={`/tag/${tag.name}`} key={tag.name}>
-										<div className="hover:bg-muted/50 text-muted-foreground flex flex-row items-center justify-between gap-2 transition-colors">
-											<span>{tag.name}</span>
-											<span className="text-muted-foreground/50 text-sm">{tag.count}</span>
-										</div>
-									</Link>
-								))}
-							</div>
-						</CardContent>
-					</Card>
+					<TagSection tags={tags} selectedTag={selectedTag} />
 				</aside>
 				<div className="space-y-8">
-					<h2 className="text-3xl font-bold tracking-tight">홈</h2>
+					<div className="flex items-center justify-between">
+						<h2 className="text-3xl font-bold tracking-tight">
+							{selectedTag === '전체' ? '블로그 목록' : `${selectedTag} 관련 글`}
+						</h2>
+						<Select defaultValue="latest">
+							<SelectTrigger className="w-[180px]">
+								<SelectValue placeholder="정렬방식선택" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="latest">최신순</SelectItem>
+								<SelectItem value="oldest">오래된순</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
 
 					<div className="flex flex-col gap-4">
-						{[1, 2, 3, 4, 5].map((item) => (
-							<Link href={`/blog/${item}`} key={item}>
-								<Card key={item}>
-									<CardHeader>
-										<CardTitle>블로그 제목 {item}</CardTitle>
-										<CardDescription>
-											블로그 설명 샘플 파일 입니다 간단한 설명 적힐 예정 {item}
-										</CardDescription>
-									</CardHeader>
-								</Card>
+						{posts.map((post) => (
+							<Link href={`/blog/${post.slug}`} key={post.id}>
+								<PostCard post={post} />
 							</Link>
 						))}
 					</div>
 				</div>
 				{/* 오른쪽 사이드바  */}
 				<aside className="flex flex-col gap-4">
-					<Card className="gap-4">
-						<CardHeader>
-							<CardTitle className="flex flex-col items-center">
-								<Image
-									src="/images/profile.jpeg"
-									alt="profile"
-									width={200}
-									height={200}
-									className="mb-6 rounded-4xl"
-								/>
-								<div className="text-lg font-bold">전윤호</div>
-								<div className="text-primary text-sm">backend developer</div>
-							</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<div className="flex flex-col gap-2">
-								<div className="flex flex-row items-center justify-between">
-									{socialLinks.map((link, index) => (
-										<a
-											key={index}
-											href={link.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="bg-primary/10 rounded-sm p-2 hover:bg-green-100"
-										>
-											<link.icon className="h-4 w-4" />
-										</a>
-									))}
-								</div>
-								<div className="bg-primary/10 rounded-sm p-2 text-center hover:bg-green-100">
-									교육 크리에이터
-								</div>
-							</div>
-						</CardContent>
-					</Card>
-					<Card className="gap-3">
-						<CardHeader>
-							<CardTitle>문의하기</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<div className="space-y-2">
-								{contactItems.map((item, index) => (
-									<a
-										key={index}
-										href={`mailto:${item.mailto.email}?subject=${encodeURIComponent(
-											item.mailto.subject
-										)}&body=${encodeURIComponent(item.mailto.body)}`}
-										className="group bg-primary/5 hover:bg-muted flex items-start gap-4 rounded-lg p-3 transition-colors"
-									>
-										<div className="bg-primary/20 text-primary shrink-0 items-center justify-center rounded-md p-1.5">
-											<item.icon className="h-4 w-4" />
-										</div>
-										<div className="flex-1">
-											<h3 className="font-medium">{item.title}</h3>
-											<p className="text-muted-foreground text-xs">{item.description}</p>
-										</div>
-									</a>
-								))}
-							</div>
-						</CardContent>
-					</Card>
+					<ProfileSection socialLinks={socialLinks} />
+					<ContactSection contactItems={contactItems} />
 				</aside>
 			</div>
 		</div>
