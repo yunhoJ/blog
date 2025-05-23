@@ -1,10 +1,10 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Post } from '@/types/blog';
-import { ko } from 'date-fns/locale';
 import { User, Calendar } from 'lucide-react';
 import Image from 'next/image';
-import { format } from 'date-fns';
+import { formatDate } from '@/lib/date';
+
 interface PostCardProps {
 	post: Post;
 }
@@ -55,7 +55,7 @@ export default function PostCard({ post }: PostCardProps) {
 					{post.date && (
 						<div className="flex items-center gap-1.5">
 							<Calendar className="h-4 w-4" />
-							<time>{format(new Date(post.date), 'PPP', { locale: ko })}</time>
+							<time>{formatDate(post.date)}</time>
 						</div>
 					)}
 				</div>

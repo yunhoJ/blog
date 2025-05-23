@@ -1,107 +1,44 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { getPostBySlug } from '@/lib/notion';
+import { formatDate } from '@/lib/date';
 import { CalendarIcon, UserIcon, ClockIcon, ChevronRight, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import remarkGfm from 'remark-gfm';
+import rehypeSanitize from 'rehype-sanitize';
+import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeSlug from 'rehype-slug';
+import { compile } from '@mdx-js/mdx';
+import withSlugs from 'rehype-slug';
+import withToc from '@stefanprobst/rehype-extract-toc';
+import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 
 interface BlogPostProps {
-	params: Promise<{ slug: string[] }>;
+	params: Promise<{ slug: string }>;
 }
-interface TableofContentsItem {
-	id: string;
-	title: string;
-	items?: TableofContentsItem[];
+interface TocEntry {
+	value: string;
+	depth: number;
+	id?: string;
+	children?: Array<TocEntry>;
 }
 
-const mockTableOfContents: TableofContentsItem[] = [
-	{
-		id: 'intro',
-		title: '소개',
-		items: [],
-	},
-	{
-		id: 'getting-started',
-		title: '시작하기',
-		items: [
-			{
-				id: 'prerequisites',
-				title: '사전 준비사항',
-				items: [
-					{
-						id: 'node-installation',
-						title: 'Node.js 설치',
-					},
-					{
-						id: 'npm-setup',
-						title: 'NPM 설정',
-					},
-				],
-			},
-			{
-				id: 'project-setup',
-				title: '프로젝트 설정',
-				items: [
-					{
-						id: 'create-project',
-						title: '프로젝트 생성',
-					},
-					{
-						id: 'folder-structure',
-						title: '폴더 구조',
-					},
-				],
-			},
-		],
-	},
-	{
-		id: 'shadcn-ui-setup',
-		title: 'Shadcn UI 설정하기',
-		items: [
-			{
-				id: 'installation',
-				title: '설치 방법',
-				items: [
-					{
-						id: 'cli-installation',
-						title: 'CLI 도구 설치',
-					},
-					{
-						id: 'component-setup',
-						title: '컴포넌트 설정',
-					},
-				],
-			},
-			{
-				id: 'configuration',
-				title: '환경 설정',
-				items: [
-					{
-						id: 'theme-setup',
-						title: '테마 설정',
-					},
-					{
-						id: 'typography',
-						title: '타이포그래피',
-					},
-				],
-			},
-		],
-	},
-];
-function TableOfContentsLink({ item }: { item: TableofContentsItem }) {
-	console.log(item);
+function TableOfContentsLink({ item }: { item: TocEntry }) {
 	return (
 		<div className="space-y-2">
 			<Link
+				key={item.id}
 				href={`#${item.id}`}
 				className={`hover:text-foreground text-muted-foreground block font-medium transition-colors`}
 			>
-				{item.title}
+				{item.value}
 			</Link>
-			{item.items && (
+			{item.children && item.children.length > 0 && (
 				<div className="space-y-2 pl-4">
-					{item.items.map((item) => (
-						<TableOfContentsLink key={item.id} item={item} />
+					{item.children.map((subItem) => (
+						<TableOfContentsLink key={subItem.id} item={subItem} />
 					))}
 				</div>
 			)}
@@ -111,6 +48,19 @@ function TableOfContentsLink({ item }: { item: TableofContentsItem }) {
 
 export default async function BlogPost({ params }: BlogPostProps) {
 	const slug = (await params).slug;
+	const { markdown, post } = await getPostBySlug(slug);
+
+	const { data } = await compile(markdown, {
+		rehypePlugins: [
+			withSlugs,
+			rehypeSanitize,
+			withToc,
+			withTocExport,
+			/** Optionally, provide a custom name for the export. */
+			// [withTocExport, { name: 'toc' }],
+		],
+	});
+
 	return (
 		<div className="container py-8">
 			<div className="grid grid-cols-[200px_1fr_220px] gap-6">
@@ -118,19 +68,23 @@ export default async function BlogPost({ params }: BlogPostProps) {
 				<div className="flex h-full flex-col gap-2 space-y-4 px-4">
 					{/* 헤더 */}
 					<div className="flex flex-col gap-2">
-						<Badge>프론트엔드</Badge>
-						<h1 className="text-3xl font-bold">
-							Next.js와 Shadcn UI를 활용한 블로그 만들기 {slug}
-						</h1>
+						<div className="flex flex-row gap-1">
+							{post.tags?.map((tag) => (
+								<Badge className="flex-col" key={tag}>
+									{tag}
+								</Badge>
+							))}
+						</div>
+						<h1 className="text-3xl font-bold">{post.title}</h1>
 						<div className="flex flex-row gap-3">
 							<div className="text-muted-foreground flex items-center gap-3 text-sm">
 								<div className="flex items-center gap-1">
 									<CalendarIcon className="h-4 w-4" />
-									<span>2025-05-21</span>
+									<span>{formatDate(post.date!)}</span>
 								</div>
 								<div className="flex items-center gap-1">
 									<UserIcon className="h-4 w-4" />
-									<span>전윤호</span>
+									<span>{post.author}</span>
 								</div>
 								<div className="flex items-center gap-1">
 									<ClockIcon className="h-4 w-4" />
@@ -143,94 +97,22 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
 					{/* 본문 */}
 					<div className="flex-1">
-						<main>
-							프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나,
-							실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요! 프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를
-							사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필
-							이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를
-							사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필
-							이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를
-							사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필
-							이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를
-							사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필
-							이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를
-							사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필
-							이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를
-							사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필
-							이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를
-							사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필
-							이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를
-							사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필
-							이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해
-							주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에 profile-placeholder.jpg를
-							추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다. 추가로 수정하고 싶은 부분이
-							있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는 /public 폴더에
-							profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로 수정하시면 됩니다.
-							추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!프로필 이미지를 사용하기 위해서는
-							/public 폴더에 profile-placeholder.jpg를 추가하거나, 실제 프로필 이미지 경로로
-							수정하시면 됩니다. 추가로 수정하고 싶은 부분이 있다면 말씀해 주세요!
+						<main className="prose prose-headings:scroll-mt-[var(--header-height)]">
+							<MDXRemote
+								source={markdown}
+								options={{
+									mdxOptions: {
+										remarkPlugins: [remarkGfm],
+										rehypePlugins: [rehypeSlug, rehypeSanitize, rehypePrettyCode],
+									},
+								}}
+							/>
 						</main>
 					</div>
 					<Separator className="" />
 
 					{/* 다음화면 */}
-					<div className="flex h-30 gap-5">
+					<div className="flex h-30 gap-5" id="bottom">
 						<Link href="/blog/3" className="w-1/2">
 							<Button className="hover:bg-muted/50 flex h-full flex-col items-start gap-4 overflow-hidden border-2 bg-transparent text-black">
 								<div className="flex flex-row items-center gap-2 font-bold">
@@ -269,9 +151,11 @@ export default async function BlogPost({ params }: BlogPostProps) {
 					<div className="bg-muted/20 sticky top-[var(--sticky-top)] space-y-4 p-6 backdrop-blur-sm">
 						<h3 className="text-lg font-semibold">목차</h3>
 						<nav className="space-y-2 text-sm">
-							{mockTableOfContents.map((item) => (
-								<TableOfContentsLink key={item.id} item={item} />
-							))}
+							{data?.toc?.map((item) => <TableOfContentsLink key={item.id} item={item} />)}
+							<div className="space-y-2 border-t pt-5">
+								<TableOfContentsLink item={{ id: 'top', value: '맨위로', depth: 2 }} />
+								<TableOfContentsLink item={{ id: 'bottom', value: '맨아래로', depth: 2 }} />
+							</div>
 						</nav>
 					</div>
 				</aside>
