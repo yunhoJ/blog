@@ -7,9 +7,10 @@ import { formatDate } from '@/lib/date';
 
 interface PostCardProps {
 	post: Post;
+	isFirst?: boolean;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, isFirst = false }: PostCardProps) {
 	return (
 		<Card className="group bg-card/50 border-border/40 hover:border-primary/20 overflow-hidden border backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
 			{post.coverImage && (
@@ -20,7 +21,7 @@ export default function PostCard({ post }: PostCardProps) {
 						alt={post.title}
 						fill
 						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-						priority={false}
+						priority={isFirst}
 						className="object-cover transition-transform duration-300 group-hover:scale-105"
 					/>
 				</div>
