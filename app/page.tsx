@@ -1,12 +1,3 @@
-import PostCard from '@/components/features/blog/PostCard';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectValue,
-	SelectTrigger,
-} from '@/components/ui/select';
-
 import {
 	BookOpen,
 	Github,
@@ -21,8 +12,10 @@ import TagSection from './_components/TagSection';
 import ProfileSection from './_components/ProfileSection';
 import ContactSection from './_components/ContactSection';
 import { getPublishedPosts, getTags } from '@/lib/notion';
-import Link from 'next/link';
 
+import HeaderSection from './_components/HeaderSection';
+import PoasList from '@/components/features/blog/PoasList';
+// import PostListClient from '@/components/features/blog/PoasList.client';
 const socialLinks = [
 	{ icon: Github, url: 'https://github.com/yunhoJ' },
 	{ icon: Linkedin, url: 'https://www.linkedin.com/in/seungmin-dev' },
@@ -30,7 +23,7 @@ const socialLinks = [
 	{ icon: Mail, url: 'mailto:seungmin@seungmin.dev' },
 ];
 interface HomeProps {
-	searchParams: Promise<{ tag?: string }>;
+	searchParams: Promise<{ tag?: string; sort?: string }>;
 }
 
 const contactItems = [
@@ -66,9 +59,10 @@ const contactItems = [
 	},
 ];
 export default async function Home({ searchParams }: HomeProps) {
-	const { tag } = await searchParams;
+	const { tag, sort } = await searchParams;
 	const selectedTag = tag || '전체';
-	const [posts, tags] = await Promise.all([getPublishedPosts(selectedTag), getTags()]);
+	// const [tags] = await Promise.all([getTags()]);
+	const [posts, tags] = await Promise.all([getPublishedPosts(selectedTag, sort), getTags()]);
 
 	return (
 		<div className="container py-8">
@@ -78,28 +72,9 @@ export default async function Home({ searchParams }: HomeProps) {
 					<TagSection tags={tags} selectedTag={selectedTag} />
 				</aside>
 				<div className="space-y-8">
-					<div className="flex items-center justify-between">
-						<h2 className="text-3xl font-bold tracking-tight">
-							{selectedTag === '전체' ? '블로그 목록' : `${selectedTag} 관련 글`}
-						</h2>
-						<Select defaultValue="latest">
-							<SelectTrigger className="w-[180px]">
-								<SelectValue placeholder="정렬방식선택" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="latest">최신순</SelectItem>
-								<SelectItem value="oldest">오래된순</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-
-					<div className="flex flex-col gap-4">
-						{posts.map((post) => (
-							<Link href={`/blog/${post.slug}`} key={post.id}>
-								<PostCard post={post} />
-							</Link>
-						))}
-					</div>
+					<HeaderSection selectedTag={selectedTag} />
+					<PoasList posts={posts} />
+					{/* <PostListClient /> */}
 				</div>
 				{/* 오른쪽 사이드바  */}
 				<aside className="flex flex-col gap-4">
