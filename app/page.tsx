@@ -8,13 +8,17 @@ import {
 	Megaphone,
 } from 'lucide-react';
 
-import TagSection from './_components/TagSection';
+// import TagSection from './_components/TagSection';
 import ProfileSection from './_components/ProfileSection';
 import ContactSection from './_components/ContactSection';
-import { getPublishedPosts, getTags } from '@/lib/notion';
-
+import { getTags } from '@/lib/notion';
 import HeaderSection from './_components/HeaderSection';
-import PoasList from '@/components/features/blog/PoasList';
+import PostListSuspense from '@/components/features/blog/PoasListSuspense';
+import { Suspense } from 'react';
+import TagSectionClient from './_components/TagSection.client';
+import TagSectionSkeleton from './_components/TagSectionSkeleton';
+import PostListSkeletion from '@/components/features/blog/PostListSkeletion';
+import { getPublishedPosts } from '@/lib/notion';
 // import PostListClient from '@/components/features/blog/PoasList.client';
 const socialLinks = [
 	{ icon: Github, url: 'https://github.com/yunhoJ' },
@@ -23,7 +27,7 @@ const socialLinks = [
 	{ icon: Mail, url: 'mailto:seungmin@seungmin.dev' },
 ];
 interface HomeProps {
-	searchParams: Promise<{ tag?: string; sort?: string }>;
+	searchParams: Promise<{ tag?: string; sort?: string; page_size?: number; start_cursor?: string }>;
 }
 
 const contactItems = [
@@ -61,20 +65,30 @@ const contactItems = [
 export default async function Home({ searchParams }: HomeProps) {
 	const { tag, sort } = await searchParams;
 	const selectedTag = tag || '전체';
+	const selectedSort = sort || 'latest';
 	// const [tags] = await Promise.all([getTags()]);
-	const [posts, tags] = await Promise.all([getPublishedPosts(selectedTag, sort), getTags()]);
+	// const [posts, tags] = await Promise.all([
+	// 	getPublishedPosts({ tag: selectedTag, sort, page_size, start_cursor }),
+	// 	// getTags(),
+	// ]);
+	const postsPromise = getPublishedPosts({ tag: selectedTag, sort: selectedSort });
+	const tags = getTags();
 
 	return (
 		<div className="container py-8">
 			{/* 왼쪽 사이드바  */}
 			<div className="grid grid-cols-[200px_1fr_220px] gap-6">
 				<aside>
-					<TagSection tags={tags} selectedTag={selectedTag} />
+					<Suspense fallback={<TagSectionSkeleton />}>
+						<TagSectionClient tags={tags} selectedTag={selectedTag} />
+					</Suspense>
 				</aside>
 				<div className="space-y-8">
 					<HeaderSection selectedTag={selectedTag} />
-					<PoasList posts={posts} />
-					{/* <PostListClient /> */}
+					{/* <PoasList posts={posts.posts} /> */}
+					<Suspense fallback={<PostListSkeletion />}>
+						<PostListSuspense postsPromise={postsPromise} />
+					</Suspense>
 				</div>
 				{/* 오른쪽 사이드바  */}
 				<aside className="flex flex-col gap-4">
