@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layouts/Header';
 import Footer from '@/components/layouts/Footer';
-
+import Providers from './providers';
 const geistSans = Geist({
 	variable: '--font-geist-sans',
 	subsets: ['latin'],
@@ -27,14 +27,16 @@ export default function RootLayout({
 	return (
 		<html lang="en" className="scroll-smooth">
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<div className="flex min-h-screen flex-col">
-					{/* 1. 헤더 */}
-					<Header />
-					{/* 2. 메인 */}
-					<main className="flex-1">{children}</main>
-					{/* 3. 푸터 */}
-					<Footer />
-				</div>
+				<Providers>
+					<div className="flex min-h-screen flex-col">
+						{/* 1. 헤더 */}
+						<Header />
+						{/* 2. 메인 */}
+						<main className="flex-1">{children}</main>
+						{/* 3. 푸터 */}
+						<Footer />
+					</div>
+				</Providers>
 			</body>
 		</html>
 	);
