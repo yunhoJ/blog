@@ -65,7 +65,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 	return (
 		<div className="container py-8">
 			<div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr_220px] md:gap-8">
-				<aside className="hidden md:block">{/* 왼쪽 사이드바  작은 화면일떄 숨김 */}</aside>
+				<aside className="hidden xl:block">{/* 왼쪽 사이드바  작은 화면일떄 숨김 */}</aside>
 				<div className="flex h-full flex-col gap-2 space-y-4 px-4">
 					{/* 헤더 */}
 					<div className="flex flex-col gap-2">
