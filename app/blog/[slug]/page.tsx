@@ -15,6 +15,7 @@ import withSlugs from 'rehype-slug';
 import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import GiscusComments from '@/components/GiscusComments';
+import NotFound from './notfound';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
@@ -50,7 +51,9 @@ function TableOfContentsLink({ item }: { item: TocEntry }) {
 export default async function BlogPost({ params }: BlogPostProps) {
 	const slug = (await params).slug;
 	const { markdown, post } = await getPostBySlug(slug);
-
+	if (!post) {
+		return <NotFound />;
+	}
 	const { data } = await compile(markdown, {
 		rehypePlugins: [
 			withSlugs,
