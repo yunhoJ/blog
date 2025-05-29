@@ -87,10 +87,16 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 					</Button>
 				</div>
 			)} */}
-			{hasNextPage && !isFetchingNextPage && <div ref={ref} className="h-10 bg-red-500" />}
+			{hasNextPage && !isFetchingNextPage && <div ref={ref} className="h-10" />}
 			<div className="flex items-center justify-center gap-2 py-4">
-				<Loader2 className="text-muted-foreground h-4 w-4 animate-spin" />
-				<span className="text-muted-foreground text-sm">로딩중...</span>
+				{hasNextPage ? (
+					<>
+						<Loader2 className="text-muted-foreground h-4 w-4 animate-spin" />
+						<span className="text-muted-foreground text-sm">로딩중...</span>
+					</>
+				) : (
+					<span className="text-muted-foreground text-sm">더이상 포스트가 없습니다.</span>
+				)}
 			</div>
 		</div>
 	);

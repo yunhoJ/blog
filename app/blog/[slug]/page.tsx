@@ -1,9 +1,9 @@
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+// import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { getPostBySlug } from '@/lib/notion';
 import { formatDate } from '@/lib/date';
-import { CalendarIcon, UserIcon, ClockIcon, ChevronRight, ChevronLeft } from 'lucide-react';
+import { CalendarIcon, UserIcon, ClockIcon } from 'lucide-react'; //, ChevronRight, ChevronLeft
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
@@ -14,6 +14,7 @@ import { compile } from '@mdx-js/mdx';
 import withSlugs from 'rehype-slug';
 import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
+import GiscusComments from '@/components/GiscusComments';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
@@ -63,8 +64,8 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
 	return (
 		<div className="container py-8">
-			<div className="grid grid-cols-[200px_1fr_220px] gap-6">
-				<aside></aside>
+			<div className="grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr_220px] md:gap-8">
+				<aside className="hidden md:block">{/* 왼쪽 사이드바  작은 화면일떄 숨김 */}</aside>
 				<div className="flex h-full flex-col gap-2 space-y-4 px-4">
 					{/* 헤더 */}
 					<div className="flex flex-col gap-2">
@@ -94,10 +95,24 @@ export default async function BlogPost({ params }: BlogPostProps) {
 						</div>
 					</div>
 					<Separator className="" />
+					{/* 모바일 전용 테마 토글 */}
+					{/* 모바일 전용 목차 */}
+					<div className="sticky top-[var(--header-height)] mb-6 md:hidden">
+						<details className="bg-muted/60 rounded-lg p-4 backdrop-blur-sm">
+							<summary className="cursor-pointer text-lg font-semibold">목차</summary>
+							<nav className="mt-3 space-y-3 text-sm">
+								{data?.toc?.map((item) => <TableOfContentsLink key={item.id} item={item} />)}
+								<div className="space-y-2 border-t pt-5">
+									<TableOfContentsLink item={{ id: 'top', value: '맨위로', depth: 2 }} />
+									<TableOfContentsLink item={{ id: 'bottom', value: '맨아래로', depth: 2 }} />
+								</div>
+							</nav>
+						</details>
+					</div>
 
 					{/* 본문 */}
 					<div className="flex-1">
-						<main className="prose prose-headings:scroll-mt-[var(--header-height)]">
+						<main className="prose dark:prose-invert prose-headings:scroll-mt-[var(--header-height)]">
 							<MDXRemote
 								source={markdown}
 								options={{
@@ -112,7 +127,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 					<Separator className="" />
 
 					{/* 다음화면 */}
-					<div className="flex h-30 gap-5" id="bottom">
+					{/* <div className="flex h-30 gap-5" id="bottom">
 						<Link href="/blog/3" className="w-1/2">
 							<Button className="hover:bg-muted/50 flex h-full flex-col items-start gap-4 overflow-hidden border-2 bg-transparent text-black">
 								<div className="flex flex-row items-center gap-2 font-bold">
@@ -145,9 +160,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
 								</div>
 							</Button>
 						</Link>
-					</div>
+					</div> */}
+					<GiscusComments />
 				</div>
-				<aside className="relative">
+				<aside className="relative hidden md:block">
 					<div className="bg-muted/20 sticky top-[var(--sticky-top)] space-y-4 p-6 backdrop-blur-sm">
 						<h3 className="text-lg font-semibold">목차</h3>
 						<nav className="space-y-2 text-sm">
