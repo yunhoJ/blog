@@ -9,19 +9,29 @@ import { Loader2 } from 'lucide-react';
 import { useActionState } from 'react';
 import { createPostAction } from '../serverAction/blog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-
-const initialState = {
-	message: '',
-	errors: {},
-	formData: {
-		title: '',
-		tag: '',
-		content: '',
-	},
-};
-
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 export default function PostForm() {
-	const [state, formAction, isPending] = useActionState(createPostAction, initialState);
+	const queryClient = useQueryClient();
+	const router = useRouter();
+	const [state, formAction, isPending] = useActionState(createPostAction, {
+		message: '',
+		errors: {},
+		formData: {
+			title: '',
+			tag: '',
+			content: '',
+		},
+	});
+
+	useEffect(() => {
+		if (state.success) {
+			console.log('state.success');
+			queryClient.invalidateQueries({ queryKey: ['posts'] });
+			router.push('/');
+		}
+	}, [state, queryClient, router]);
 
 	return (
 		<form action={formAction}>

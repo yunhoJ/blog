@@ -1,6 +1,8 @@
 'use server';
 
 import { createPost } from '@/lib/notion';
+import { revalidateTag } from 'next/cache';
+// import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 const postSchema = z.object({
@@ -16,6 +18,7 @@ export interface PostFormState {
 		content?: string[];
 	};
 	formData?: PostFormData;
+	success?: boolean;
 }
 export interface PostFormData {
 	title: string;
@@ -46,8 +49,10 @@ export async function createPostAction(prevState: PostFormState, formData: FormD
 			tag: tag,
 			content: content,
 		});
-
+		// revalidatePath('/'); // 등록 후 캐시 무효화
+		revalidateTag('posts'); //태그를 통한 캐시 무효화
 		return {
+			success: true,
 			message: '블로그 포스트가 성공적으로 생성되었습니다.',
 		};
 	} catch (err) {
@@ -57,4 +62,5 @@ export async function createPostAction(prevState: PostFormState, formData: FormD
 			formData: rawFormData,
 		};
 	}
+	// redirect('/');
 }
