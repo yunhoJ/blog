@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 // import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { getPostBySlug } from '@/lib/notion';
+import { getPostBySlug, getPublishedPosts } from '@/lib/notion';
 import { formatDate } from '@/lib/date';
 import { CalendarIcon, UserIcon, ClockIcon } from 'lucide-react'; //, ChevronRight, ChevronLeft
 import Link from 'next/link';
@@ -26,6 +26,14 @@ interface TocEntry {
 	id?: string;
 	children?: Array<TocEntry>;
 }
+export const generateStaticParams = async () => {
+	const { posts } = await getPublishedPosts({ pageSize: 10, sort: 'latest' });
+	return posts.map((post) => ({
+		slug: post.slug,
+	}));
+};
+
+export const revalidate = 60;
 
 function TableOfContentsLink({ item }: { item: TocEntry }) {
 	return (

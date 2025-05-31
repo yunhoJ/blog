@@ -107,14 +107,10 @@ export const getPublishedPosts = unstable_cache(
 		sort = 'latest',
 		pageSize = 2,
 		startCursor,
-	}: GetPublishedPostsProps): Promise<GetPublishedPostsResponse> => {
+	}: GetPublishedPostsProps = {}): Promise<GetPublishedPostsResponse> => {
 		const response = await notion.databases.query({
 			database_id: process.env.NOTION_DATABASE_ID!,
 			filter: {
-				property: 'Status',
-				select: {
-					equals: 'Published',
-				},
 				and: [
 					{
 						property: 'Status',
@@ -154,7 +150,7 @@ export const getPublishedPosts = unstable_cache(
 			nextCursor: response.next_cursor,
 		};
 	},
-	['posts'],
+	undefined,
 	{
 		tags: ['posts'],
 	}
