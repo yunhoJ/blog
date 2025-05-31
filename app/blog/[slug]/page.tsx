@@ -16,7 +16,45 @@ import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import GiscusComments from '@/components/GiscusComments';
 import NotFound from './notfound';
+import { Metadata } from 'next';
 
+// 동적 메타데이터 생성
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+	const { slug } = await params;
+	const { post } = await getPostBySlug(slug);
+
+	if (!post) {
+		return {
+			title: '포스트를 찾을 수 없습니다',
+			description: '요청하신 블로그 포스트를 찾을 수 없습니다.',
+		};
+	}
+
+	return {
+		title: post.title,
+		description: post.description || `${post.title} - yunho blog`,
+		keywords: post.tags,
+		authors: [{ name: post.author || 'yunho' }],
+		publisher: 'yunho',
+		alternates: {
+			canonical: `/blog/${post.slug}`,
+		},
+		openGraph: {
+			title: post.title,
+			description: post.description,
+			url: `/blog/${post.slug}`,
+			type: 'article',
+			publishedTime: post.date,
+			modifiedTime: post.modifiedDate,
+			authors: post.author || 'yunho',
+			tags: post.tags,
+		},
+	};
+}
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
