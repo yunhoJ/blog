@@ -3,6 +3,17 @@ import { Home, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: '페이지를 찾을 수 없습니다',
+	description: '요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다.',
+	robots: {
+		index: false,
+		follow: false,
+	},
+};
+
 export default function NotFound() {
 	return (
 		<div className="container py-16">
