@@ -1,16 +1,17 @@
 'use client';
+
+import MarkdownEditor from '@/components/features/MArkdownEditor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Editor } from '@toast-ui/react-editor';
+import { useCallback, useRef } from 'react';
+// import { Editor } from '@toast-ui/react-editor';
 // import { Separator } from '@/components/ui/separator';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
-
-const MarkdownPreview = dynamic(() => import('@/components/features/MarkdownPreview'), {
-	ssr: false,
-});
+// import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+// import { Textarea } from '@/components/ui/textarea';
+// import dynamic from 'next/dynamic';
+// import { useRef } from 'react';
 
 // const createPostAction = async (formData: FormData) => {
 // 	'use server';
@@ -22,8 +23,14 @@ const MarkdownPreview = dynamic(() => import('@/components/features/MarkdownPrev
 // };
 
 export default function Write() {
-	const [content, setContent] = useState('test');
-
+	const editorRef = useRef<Editor | null>(null);
+	const onClickEnrollBtn = useCallback(() => {
+		if (!editorRef.current) return;
+		const markdown = editorRef.current.getInstance().getMarkdown();
+		const html = editorRef.current.getInstance().getHTML();
+		console.log('markdown', markdown);
+		console.log('html', html);
+	}, []);
 	return (
 		<div className="container flex h-[90vh] flex-col gap-4 py-8">
 			{/* 제목 영역 */}
@@ -38,19 +45,7 @@ export default function Write() {
 
 			{/* 본문 영역 - 남은 공간 모두 차지 */}
 			<div className="flex-1 overflow-hidden rounded-lg">
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel>
-						<Textarea
-							className="h-full"
-							defaultValue={content}
-							onChange={(e) => setContent(e.target.value)}
-						></Textarea>
-					</ResizablePanel>
-					<ResizableHandle withHandle />
-					<ResizablePanel>
-						<MarkdownPreview content={content} />
-					</ResizablePanel>
-				</ResizablePanelGroup>
+				<MarkdownEditor editorRef={editorRef} />
 			</div>
 
 			{/* <Separator /> */}
@@ -65,7 +60,7 @@ export default function Write() {
 				{/* 발행하기 버튼 */}
 				<div className="flex justify-end gap-2">
 					<Button variant="outline">임시저장</Button>
-					<Button>발행하기</Button>
+					<Button onClick={onClickEnrollBtn}>발행하기</Button>
 				</div>
 			</div>
 		</div>
