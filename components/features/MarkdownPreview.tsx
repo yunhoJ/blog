@@ -1,7 +1,8 @@
 'use client';
 
 import { MDXRemote } from 'next-mdx-remote/rsc';
-
+// mdx remote 라이브러리 사용
+// 재렌더링 되는 현상 있음 -> react-markdown 으로 대체
 interface MarkdownPreviewProps {
 	content: string;
 }
