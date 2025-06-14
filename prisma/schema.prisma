@@ -94,10 +94,12 @@ model BlogPost{
   postUpdatedAt DateTime @updatedAt @db.Timestamptz(6)
   postPublished DateTime? @db.Timestamptz(6)
   postReadTimeSeconds Int @default(0) @db.SmallInt
+  
   user User @relation(fields: [userId], references: [userId])
   blogPostMeta BlogPostMeta @relation(fields: [postHash], references: [postHash])
   blogPostPublish BlogPostPublish?
   @@unique([revisionHash, postHash, userId])
+  @@unique([postHash, postDraft])
 }
 
 
