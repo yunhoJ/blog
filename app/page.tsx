@@ -11,14 +11,17 @@ import {
 // import TagSection from './_components/TagSection';
 import ProfileSection from './_components/ProfileSection';
 import ContactSection from './_components/ContactSection';
-import { getTags } from '@/lib/notion';
-import HeaderSection from './_components/HeaderSection';
+// import { getTags } from '@/lib/notion';
+// import HeaderSection from './_components/HeaderSection';
 import PostListSuspense from '@/components/features/blog/PoasListSuspense';
 import { Suspense } from 'react';
 import TagSectionClient from './_components/TagSection.client';
 import TagSectionSkeleton from './_components/TagSectionSkeleton';
 import PostListSkeletion from '@/components/features/blog/PostListSkeletion';
-import { getPublishedPosts } from '@/lib/notion';
+// import { getPublishedPosts } from '@/lib/notion';
+import { userId } from './api/constant/const';
+import { getCategories } from './api/services/getCategory';
+import { getPostPublish } from './api/services/getPost';
 // import PostListClient from '@/components/features/blog/PoasList.client';
 const socialLinks = [
 	{ icon: Github, url: 'https://github.com/yunhoJ' },
@@ -26,9 +29,9 @@ const socialLinks = [
 	{ icon: Instagram, url: 'https://www.instagram.com/seungmin-dev' },
 	{ icon: Mail, url: 'mailto:seungmin@seungmin.dev' },
 ];
-interface HomeProps {
-	searchParams: Promise<{ tag?: string; sort?: string; page_size?: number; start_cursor?: string }>;
-}
+// interface HomeProps {
+// 	searchParams: Promise<{ tag?: string; sort?: string; page_size?: number; start_cursor?: string }>;
+// }
 
 const contactItems = [
 	{
@@ -62,17 +65,15 @@ const contactItems = [
 		},
 	},
 ];
-export default async function Home({ searchParams }: HomeProps) {
-	const { tag, sort } = await searchParams;
-	const selectedTag = tag || '전체';
-	const selectedSort = sort || 'latest';
-	// const [tags] = await Promise.all([getTags()]);
-	// const [posts, tags] = await Promise.all([
-	// 	getPublishedPosts({ tag: selectedTag, sort, page_size, start_cursor }),
-	// 	// getTags(),
-	// ]);
-	const postsPromise = getPublishedPosts({ tag: selectedTag, sort: selectedSort });
-	const tags = getTags();
+export default async function Home() {
+	// 카테고리 목록 조회
+	const categories = getCategories(userId);
+	// const { sort } = await searchParams;
+	// const selectedSort = sort || 'latest';
+	// const postsPromise = getPublishedPosts({ sort: selectedSort });
+	const postPublish = getPostPublish(userId, '');
+
+	// const tags = getTags();
 
 	return (
 		<div className="container py-8">
@@ -80,14 +81,14 @@ export default async function Home({ searchParams }: HomeProps) {
 			<div className="grid grid-cols-1 gap-6 md:grid-cols-[200px_1fr_220px]">
 				<aside className="order-2 md:order-none">
 					<Suspense fallback={<TagSectionSkeleton />}>
-						<TagSectionClient tags={tags} selectedTag={selectedTag} />
+						<TagSectionClient tags={categories} />
 					</Suspense>
 				</aside>
 				<div className="order-3 space-y-8 md:order-none">
-					<HeaderSection selectedTag={selectedTag} />
+					{/* <HeaderSection selectedTag={selectedTag} /> */}
 					{/* <PoasList posts={posts.posts} /> */}
 					<Suspense fallback={<PostListSkeletion />}>
-						<PostListSuspense postsPromise={postsPromise} />
+						<PostListSuspense postsPromise={postPublish} />
 					</Suspense>
 				</div>
 				{/* 오른쪽 사이드바  */}
