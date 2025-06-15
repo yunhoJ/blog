@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  userId        String          @id
+  userName      String
+  userPassword  String
+  createdAt     DateTime        @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime        @updatedAt @db.Timestamptz(6)
+  tag           Tag[]
+  blogCategory  BlogCategory[]
+  blogPostMeta  BlogPostMeta[]
+  blogPostTag   BlogPostTag[]
+  blogExtraFile BlogExtraFile[]
+  blogPost      BlogPost[]
+}
+
+model Tag {
+  tagId       BigInt        @id @default(autoincrement())
+  tagName     String
+  userId      String
+  user        User          @relation(fields: [userId], references: [userId])
+  blogPostTag BlogPostTag[]
+
+  @@unique([tagName, userId])
+}
+
+model BlogCategory {
+  categoryName      String            @id
+  userId            String
+  privateCount      BigInt            @default(0)
+  publicCount       BigInt            @default(0)
+  categoryDepth     Int               @default(0)
+  upperCategoryName String?
+  user              User              @relation(fields: [userId], references: [userId])
+  upperCategory     BlogCategory?     @relation("ParentCategory", fields: [upperCategoryName], references: [categoryName])
+  lowerCategories   BlogCategory[]    @relation("ParentCategory")
+  blogPostPublish   BlogPostPublish[]
+}
+
+model BlogPostMeta {
+  postHash         String
+  userId           String
+  postDelete       Boolean         @default(false)
+  postViewCount    Int             @default(0)
+  postLikeCount    Int             @default(0)
+  postMainImageUrl String?
+  user             User            @relation(fields: [userId], references: [userId])
+  extraFile        BlogExtraFile[]
+  blogPostTag      BlogPostTag[]
+  blogPost         BlogPost[]
+
+  @@id([postHash])
+}
+
+model BlogExtraFile {
+  extraFileId  Int    @id @default(autoincrement())
+  postHash     String
+  userId       String
+  extraFileUrl String
+  extraFileAlt String
+
+  blogPostMeta BlogPostMeta @relation(fields: [postHash], references: [postHash])
+  user         User         @relation(fields: [userId], references: [userId])
+}
+
+model BlogPostTag {
+  tagId        BigInt
+  postHash     String
+  userId       String
+  tag          Tag          @relation(fields: [tagId], references: [tagId])
+  blogPostMeta BlogPostMeta @relation(fields: [postHash], references: [postHash])
+  user         User         @relation(fields: [userId], references: [userId])
+
+  @@id([tagId, postHash])
+}
+
+model BlogPost {
+  revisionHash        String           @id
+  postHash            String
+  userId              String
+  postTitle           String
+  postContent         String
+  postDraft           Boolean          @default(true)
+  postCreatedAt       DateTime         @default(now()) @db.Timestamptz(6)
+  postUpdatedAt       DateTime         @updatedAt @db.Timestamptz(6)
+  postPublished       DateTime?        @db.Timestamptz(6)
+  postReadTimeSeconds Int              @default(0) @db.SmallInt
+  user                User             @relation(fields: [userId], references: [userId])
+  blogPostMeta        BlogPostMeta     @relation(fields: [postHash], references: [postHash])
+  blogPostPublish     BlogPostPublish?
+
+  @@unique([revisionHash, postHash, userId])
+  @@unique([postHash, postDraft])
+}
+
+model BlogPostPublish {
+  revisionHash   String       @id
+  categoryName   String
+  userId         String
+  postHash       String
+  postVisibility Boolean      @default(false)
+  blogPost       BlogPost     @relation(fields: [revisionHash, postHash, userId], references: [revisionHash, postHash, userId])
+  blogCategory   BlogCategory @relation(fields: [categoryName], references: [categoryName])
+
+  @@unique([revisionHash, postHash, userId])
+}
