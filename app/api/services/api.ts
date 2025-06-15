@@ -1,10 +1,18 @@
 import { axiosInstance } from '@/lib/axios';
+if (process.env.NODE_ENV === 'development') {
+	axiosInstance.defaults.baseURL = 'http://localhost:3000';
+} else {
+	axiosInstance.defaults.baseURL = 'https://www.yunho.com';
+}
 
 // 포스트 관련 API
 export const postApi = {
 	// 포스트 메타 데이터 생성 api
 	createPostMeta: async (data: { userId: string }) => {
-		const response = await axiosInstance.post('/api/createPostHash', data);
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/createPostHash`,
+			data
+		);
 		console.log('data: ', response.data.postHash);
 		return response.data.postHash;
 	},
@@ -16,7 +24,10 @@ export const postApi = {
 		content: string;
 		userId: string;
 	}) => {
-		const response = await axiosInstance.post('/api/createPostDraft', data);
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/createPostDraft`,
+			data
+		);
 		return response.data;
 	},
 
@@ -27,25 +38,33 @@ export const postApi = {
 		visibility: boolean;
 		userId: string;
 	}) => {
-		const response = await axiosInstance.post('/api/createPostPublish', data);
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/createPostPublish`,
+			data
+		);
 		return response.data;
 	},
 
 	// 카테고리 조회
 	getCategories: async (userId: string) => {
-		const response = await axiosInstance.get(`/api/category?userId=${userId}`);
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/category?userId=${userId}`
+		);
 		return response.data.data;
 	},
 
 	// 카테고리 생성
 	createCategory: async (userId: string, categoryName: string) => {
-		const response = await axiosInstance.post(`/api/category`, { userId, categoryName });
+		const response = await axiosInstance.post(`${axiosInstance.defaults.baseURL}/api/category`, {
+			userId,
+			categoryName,
+		});
 		return response.data;
 	},
 
 	// 포스트 조회
 	getPost: async (id: string) => {
-		const response = await axiosInstance.get(`/api/posts/${id}`);
+		const response = await axiosInstance.get(`${axiosInstance.defaults.baseURL}/api/posts/${id}`);
 		return response.data;
 	},
 
@@ -54,13 +73,18 @@ export const postApi = {
 		id: string,
 		data: { title?: string; content?: string; markdown?: string; html?: string }
 	) => {
-		const response = await axiosInstance.patch(`/api/posts/${id}`, data);
+		const response = await axiosInstance.patch(
+			`${axiosInstance.defaults.baseURL}/api/posts/${id}`,
+			data
+		);
 		return response.data;
 	},
 
 	// 포스트 삭제
 	deletePost: async (id: string) => {
-		const response = await axiosInstance.delete(`/api/posts/${id}`);
+		const response = await axiosInstance.delete(
+			`${axiosInstance.defaults.baseURL}/api/posts/${id}`
+		);
 		return response.data;
 	},
 };
