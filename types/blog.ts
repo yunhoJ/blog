@@ -1,3 +1,11 @@
+export interface Category {
+	categoryDepth: number;
+	categoryName: string;
+	privateCount: number;
+	publicCount: number;
+	upperCategoryName: string | null;
+}
+
 export interface TagFilterItem {
 	id: string;
 	name: string;
@@ -14,4 +22,24 @@ export interface Post {
 	date?: string;
 	modifiedDate?: string;
 	slug?: string;
+}
+
+export interface BlogPostUser {
+	userName: string;
+}
+
+export interface BlogPostData {
+	postTitle: string;
+	postPublished: Date | null;
+	postReadTimeSeconds: number;
+	user: BlogPostUser;
+}
+
+export interface BlogPostPublish {
+	revisionHash: string;
+	categoryName: string;
+	userId: string;
+	postHash: string;
+	postVisibility: boolean;
+	blogPost: BlogPostData;
 }

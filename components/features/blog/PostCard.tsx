@@ -1,62 +1,71 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Post } from '@/types/blog';
-import { User, Calendar } from 'lucide-react';
-import Image from 'next/image';
+import { BlogPostData } from '@/types/blog';
+import { User, Calendar, Folder, ChevronRight } from 'lucide-react';
 import { formatDate } from '@/lib/date';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
-interface PostCardProps {
-	post: Post;
-	isFirst?: boolean;
-}
+const getCategoryColor = (category: string) => {
+	const colors = [
+		'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+		'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+		'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+		'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200',
+		'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+		'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
+	];
+	const index = category.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+	return colors[index % colors.length];
+};
 
-export default function PostCard({ post, isFirst = false }: PostCardProps) {
+export default function PostCard({ params, category }: { params: BlogPostData; category: string }) {
 	return (
 		<Card className="group bg-card/50 border-border/40 hover:border-primary/20 overflow-hidden border backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-			{post.coverImage && (
+			{/* {params.postCoverImage && (
 				<div className="relative aspect-[2/1] overflow-hidden">
 					<div className="from-background/20 absolute inset-0 z-10 bg-gradient-to-t to-transparent" />
 					<Image
-						src={post.coverImage}
-						alt={post.title}
+						src={params.postCoverImage}
+						alt={params.postTitle}
 						fill
 						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-						priority={isFirst}
+						// priority={isFirst}
 						className="object-cover transition-transform duration-300 group-hover:scale-105"
 					/>
 				</div>
-			)}
+			)} */}
 			<CardContent className="p-6">
-				<div className="mb-4 flex flex-wrap gap-2">
-					{post.tags?.map((tag) => (
-						<Badge
-							key={tag}
-							variant="secondary"
-							className="bg-primary/10 text-primary hover:bg-primary/20 font-medium transition-colors"
-						>
-							{tag}
-						</Badge>
-					))}
+				<div className="mb-2 flex items-center gap-1">
+					<Badge
+						key={category}
+						variant="secondary"
+						className={cn('text-sm transition-colors', getCategoryColor(category))}
+					>
+						<Folder className="mr-1" />
+
+						{category}
+					</Badge>
+					<ChevronRight className="text-muted-foreground h-4 w-4" />
+					<h2 className="group-hover:text-primary text-xl font-bold tracking-tight transition-colors">
+						{params.postTitle}
+					</h2>
 				</div>
-				<h2 className="group-hover:text-primary mb-2 text-xl font-bold tracking-tight transition-colors">
-					{post.title}
-				</h2>
-				{post.description && (
+				{/* {post.description && (
 					<p className="text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
 						{post.description}
 					</p>
-				)}
+				)} */}
 				<div className="text-muted-foreground mt-6 flex items-center gap-x-4 text-sm">
-					{post.author && (
+					{params.user.userName && (
 						<div className="flex items-center gap-1.5">
 							<User className="h-4 w-4" />
-							<span>{post.author}</span>
+							<span>{params.user.userName}</span>
 						</div>
 					)}
-					{post.date && (
+					{params.postPublished && (
 						<div className="flex items-center gap-1.5">
 							<Calendar className="h-4 w-4" />
-							<time>{formatDate(post.date)}</time>
+							<time>{formatDate(params.postPublished)}</time>
 						</div>
 					)}
 				</div>

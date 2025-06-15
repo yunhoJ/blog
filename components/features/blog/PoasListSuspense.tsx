@@ -3,19 +3,21 @@
 import Link from 'next/link';
 import PostCard from './PostCard';
 // import { Button } from '@/components/ui/button';
-import { GetPublishedPostsResponse } from '@/lib/notion';
+// import { GetPublishedPostsResponse } from '@/lib/notion';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { use, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Loader2 } from 'lucide-react';
+import { BlogPostPublish } from '@/types/blog';
 
 interface PostListProps {
-	postsPromise: Promise<GetPublishedPostsResponse>;
+	postsPromise: Promise<BlogPostPublish[]>;
 }
 
 export default function PostListSuspense({ postsPromise }: PostListProps) {
 	const initialData = use(postsPromise);
+	console.log('initialData : ', initialData);
 	const searchParams = useSearchParams();
 	const tag = searchParams.get('tag');
 	const sort = searchParams.get('sort');
@@ -32,7 +34,7 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 		}
 		return response.json();
 	};
-	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+	const { fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
 		queryKey: ['posts', tag, sort],
 		queryFn: fetchPosts,
 		initialPageParam: undefined,
@@ -47,11 +49,6 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 		},
 	});
 
-	// const handleLoadMore = () => {
-	// 	if (hasNextPage && !isFetchingNextPage) {
-	// 		fetchNextPage();
-	// 	}
-	// };
 	const { ref, inView } = useInView({
 		// ref : 감지할 객체
 		// inView : true/false
@@ -63,14 +60,12 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 		}
 	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-	const allPosts = data?.pages.flatMap((page) => page.posts) ?? [];
-
 	return (
 		<div className="space-y-6">
 			<div className="grid gap-4">
-				{allPosts.map((post, index) => (
-					<Link href={`/blog/${post.slug}`} key={post.id}>
-						<PostCard post={post} isFirst={index === 0} />
+				{initialData.map((post) => (
+					<Link href={`/blog/${post.revisionHash}`} key={post.revisionHash}>
+						<PostCard params={post.blogPost} category={post.categoryName} />
 					</Link>
 				))}
 			</div>

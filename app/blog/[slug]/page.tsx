@@ -1,7 +1,7 @@
-import { Badge } from '@/components/ui/badge';
+// import { Badge } from '@/components/ui/badge';
 // import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { getPostBySlug, getPublishedPosts } from '@/lib/notion';
+// import { getPostBySlug, getPublishedPosts } from '@/lib/notion';
 import { formatDate } from '@/lib/date';
 import { CalendarIcon, UserIcon, ClockIcon } from 'lucide-react'; //, ChevronRight, ChevronLeft
 import Link from 'next/link';
@@ -16,45 +16,46 @@ import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import GiscusComments from '@/components/GiscusComments';
 import NotFound from './notfound';
-import { Metadata } from 'next';
+// import { Metadata } from 'next';
+import { getPost } from '@/app/api/services/getPost';
 
-// 동적 메타데이터 생성
-export async function generateMetadata({
-	params,
-}: {
-	params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-	const { slug } = await params;
-	const { post } = await getPostBySlug(slug);
+// // 동적 메타데이터 생성
+// export async function generateMetadata({
+// 	params,
+// }: {
+// 	params: Promise<{ slug: string }>;
+// }): Promise<Metadata> {
+// 	const { slug } = await params;
+// 	const { post } = await getPostBySlug(slug);
 
-	if (!post) {
-		return {
-			title: '포스트를 찾을 수 없습니다',
-			description: '요청하신 블로그 포스트를 찾을 수 없습니다.',
-		};
-	}
+// 	if (!post) {
+// 		return {
+// 			title: '포스트를 찾을 수 없습니다',
+// 			description: '요청하신 블로그 포스트를 찾을 수 없습니다.',
+// 		};
+// 	}
 
-	return {
-		title: post.title,
-		description: post.description || `${post.title} - yunho blog`,
-		keywords: post.tags,
-		authors: [{ name: post.author || 'yunho' }],
-		publisher: 'yunho',
-		alternates: {
-			canonical: `/blog/${post.slug}`,
-		},
-		openGraph: {
-			title: post.title,
-			description: post.description,
-			url: `/blog/${post.slug}`,
-			type: 'article',
-			publishedTime: post.date,
-			modifiedTime: post.modifiedDate,
-			authors: post.author || 'yunho',
-			tags: post.tags,
-		},
-	};
-}
+// 	return {
+// 		title: post.title,
+// 		description: post.description || `${post.title} - yunho blog`,
+// 		keywords: post.tags,
+// 		authors: [{ name: post.author || 'yunho' }],
+// 		publisher: 'yunho',
+// 		alternates: {
+// 			canonical: `/blog/${post.slug}`,
+// 		},
+// 		openGraph: {
+// 			title: post.title,
+// 			description: post.description,
+// 			url: `/blog/${post.slug}`,
+// 			type: 'article',
+// 			publishedTime: post.date,
+// 			modifiedTime: post.modifiedDate,
+// 			authors: post.author || 'yunho',
+// 			tags: post.tags,
+// 		},
+// 	};
+// }
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
@@ -64,12 +65,12 @@ interface TocEntry {
 	id?: string;
 	children?: Array<TocEntry>;
 }
-export const generateStaticParams = async () => {
-	const { posts } = await getPublishedPosts({ pageSize: 10, sort: 'latest' });
-	return posts.map((post) => ({
-		slug: post.slug,
-	}));
-};
+// export const generateStaticParams = async () => {
+// 	const { posts } = await getPublishedPosts({ pageSize: 10, sort: 'latest' });
+// 	return posts.map((post) => ({
+// 		slug: post.slug,
+// 	}));
+// };
 
 export const revalidate = 60;
 
@@ -95,12 +96,15 @@ function TableOfContentsLink({ item }: { item: TocEntry }) {
 }
 
 export default async function BlogPost({ params }: BlogPostProps) {
+	console.log('params : ', params);
 	const slug = (await params).slug;
-	const { markdown, post } = await getPostBySlug(slug);
+	console.log('slug : ', slug);
+	const post = await getPost(slug);
+	console.log('post : ', post);
 	if (!post) {
 		return <NotFound />;
 	}
-	const { data } = await compile(markdown, {
+	const { data } = await compile(post.postContent, {
 		rehypePlugins: [
 			withSlugs,
 			rehypeSanitize,
@@ -118,23 +122,23 @@ export default async function BlogPost({ params }: BlogPostProps) {
 				<div className="flex h-full flex-col gap-2 space-y-4 overflow-hidden px-4">
 					{/* 헤더 */}
 					<div className="flex flex-col gap-2">
-						<div className="flex flex-row gap-1">
+						{/* <div className="flex flex-row gap-1">
 							{post.tags?.map((tag) => (
 								<Badge className="flex-col" key={tag}>
 									{tag}
 								</Badge>
 							))}
-						</div>
-						<h1 className="text-3xl font-bold">{post.title}</h1>
+						</div> */}
+						<h1 className="text-3xl font-bold">{post.postTitle}</h1>
 						<div className="flex flex-row gap-3">
 							<div className="text-muted-foreground flex items-center gap-3 text-sm">
 								<div className="flex items-center gap-1">
 									<CalendarIcon className="h-4 w-4" />
-									<span>{formatDate(post.date!)}</span>
+									<span>{formatDate(post.postCreatedAt!)}</span>
 								</div>
 								<div className="flex items-center gap-1">
 									<UserIcon className="h-4 w-4" />
-									<span>{post.author}</span>
+									<span>{post.user.userName}</span>
 								</div>
 								<div className="flex items-center gap-1">
 									<ClockIcon className="h-4 w-4" />
@@ -163,7 +167,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 					<div className="flex-1">
 						<main className="prose dark:prose-invert prose-headings:scroll-mt-[var(--header-height)]">
 							<MDXRemote
-								source={markdown}
+								source={post.postContent}
 								options={{
 									mdxOptions: {
 										remarkPlugins: [remarkGfm],
