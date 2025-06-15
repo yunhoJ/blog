@@ -24,6 +24,7 @@ import { useCallback, useRef, useState } from 'react';
 // 	const content = formData.get('content') as string;
 
 // 	await createPost({ title, tag, content });
+
 // };
 
 export default function Write() {
