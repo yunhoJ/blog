@@ -34,7 +34,7 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 		}
 		return response.json();
 	};
-	const { fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
 		queryKey: ['posts', tag, sort],
 		queryFn: fetchPosts,
 		initialPageParam: undefined,
@@ -48,6 +48,10 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 			pageParams: [undefined],
 		},
 	});
+	console.log('data : ', data);
+	console.log('hasNextPage : ', hasNextPage);
+	console.log('isFetchingNextPage : ', isFetchingNextPage);
+	console.log('fetchNextPage : ', fetchNextPage);
 
 	const { ref, inView } = useInView({
 		// ref : 감지할 객체
@@ -82,7 +86,7 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 					</Button>
 				</div>
 			)} */}
-			{hasNextPage && !isFetchingNextPage && <div ref={ref} className="h-10" />}
+			{hasNextPage && !isFetchingNextPage && <div ref={ref} className="h-10 bg-red-500" />}
 			<div className="flex items-center justify-center gap-2 py-4">
 				{hasNextPage ? (
 					<>
