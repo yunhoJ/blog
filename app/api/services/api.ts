@@ -2,7 +2,7 @@ import { axiosInstance } from '@/lib/axios';
 if (process.env.NODE_ENV === 'development') {
 	axiosInstance.defaults.baseURL = 'http://localhost:3000';
 } else {
-	axiosInstance.defaults.baseURL = 'https://www.yunho.com';
+	axiosInstance.defaults.baseURL = 'https://www.yunhoj.com';
 }
 
 // 포스트 관련 API
