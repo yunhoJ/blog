@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../lib/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../lib/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -90,19 +91,20 @@ model BlogPostTag {
 }
 
 model BlogPost {
-  revisionHash        String           @id
+  revisionHash        String    @id
   postHash            String
   userId              String
   postTitle           String
   postContent         String
-  postDraft           Boolean          @default(true)
-  postCreatedAt       DateTime         @default(now()) @db.Timestamptz(6)
-  postUpdatedAt       DateTime         @updatedAt @db.Timestamptz(6)
-  postPublished       DateTime?        @db.Timestamptz(6)
-  postReadTimeSeconds Int              @default(0) @db.SmallInt
-  user                User             @relation(fields: [userId], references: [userId])
-  blogPostMeta        BlogPostMeta     @relation(fields: [postHash], references: [postHash])
-  blogPostPublish     BlogPostPublish?
+  postDraft           Boolean   @default(true)
+  postCreatedAt       DateTime  @default(now()) @db.Timestamptz(6)
+  postUpdatedAt       DateTime  @updatedAt @db.Timestamptz(6)
+  postPublished       DateTime? @db.Timestamptz(6)
+  postReadTimeSeconds Int       @default(0) @db.SmallInt
+
+  user            User             @relation(fields: [userId], references: [userId])
+  blogPostMeta    BlogPostMeta     @relation(fields: [postHash], references: [postHash])
+  blogPostPublish BlogPostPublish?
 
   @@unique([revisionHash, postHash, userId])
   @@unique([postHash, postDraft])
