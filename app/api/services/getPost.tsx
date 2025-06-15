@@ -22,14 +22,11 @@ export async function getPost(revisionHash: string) {
 	return post;
 }
 
-export const getPostPublish = async (userId: string, category: string) => {
-	if (category === '전체') {
-		category = '';
-	}
+export const getPostPublish = async (userId: string, category: string, sort: string) => {
 	const whereClause = {
 		userId,
 		postVisibility: true,
-		...(category && { categoryName: category }),
+		...(category !== '전체' && { categoryName: category }),
 	};
 
 	const posts = await prisma.blogPostPublish.findMany({
@@ -48,11 +45,18 @@ export const getPostPublish = async (userId: string, category: string) => {
 				},
 			},
 		},
-		orderBy: {
-			blogPost: {
-				postPublished: 'desc',
-			},
-		},
+		orderBy:
+			sort === 'latest'
+				? {
+						blogPost: {
+							postPublished: 'desc',
+						},
+					}
+				: {
+						blogPost: {
+							postPublished: 'asc',
+						},
+					},
 	});
 
 	return posts;
