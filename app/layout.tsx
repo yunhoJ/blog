@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layouts/Header';
 import Footer from '@/components/layouts/Footer';
 import Providers from './providers';
+import { Toaster } from '@/components/ui/sonner';
 const geistSans = Geist({
 	variable: '--font-geist-sans',
 	subsets: ['latin'],
@@ -35,6 +36,7 @@ export default function RootLayout({
 						<Header />
 						{/* 2. 메인 */}
 						<main className="flex-1">{children}</main>
+						<Toaster position="top-center" richColors />
 						{/* 3. 푸터 */}
 						<Footer />
 					</div>

@@ -9,49 +9,47 @@ import { useSearchParams } from 'next/navigation';
 import { use, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Loader2 } from 'lucide-react';
-import { BlogPostPublish } from '@/types/blog';
+import { BlogPostPublish, PaginationType } from '@/types/blog';
 
 interface PostListProps {
-	postsPromise: Promise<BlogPostPublish[]>;
+	postsPromise: Promise<{ posts: BlogPostPublish[]; paginationData: PaginationType }>;
 }
 
 export default function PostListSuspense({ postsPromise }: PostListProps) {
 	const initialData = use(postsPromise);
-	console.log('initialData : ', initialData);
+	// console.log('initialData : ', initialData);
 	const searchParams = useSearchParams();
-	const tag = searchParams.get('tag');
+
+	const category = searchParams.get('category');
 	const sort = searchParams.get('sort');
-
-	const fetchPosts = async ({ pageParam }: { pageParam: string | undefined }) => {
+	const fetchPosts = async ({ pageParam }: { pageParam: number }) => {
 		const params = new URLSearchParams();
-		if (tag) params.set('tag', tag);
+		if (category) params.set('category', category);
 		if (sort) params.set('sort', sort);
-		if (pageParam) params.set('startCursor', pageParam);
+		params.set('page', pageParam.toString());
 
-		const response = await fetch(`/api/posts?${params.toString()}`);
+		const response = await fetch(`/api/createPostPublish?${params.toString()}`);
 		if (!response.ok) {
 			throw new Error('Failed to fetch posts');
 		}
+
 		return response.json();
 	};
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-		queryKey: ['posts', tag, sort],
+		queryKey: ['posts', category, sort],
 		queryFn: fetchPosts,
-		initialPageParam: undefined,
+		initialPageParam: 1,
 		getNextPageParam: (lastPage) => {
-			// console.log('lastPage nextCursor:', lastPage.nextCursor);
-			return lastPage.nextCursor;
+			if (!lastPage.paginationData.hasNextPage) {
+				return undefined;
+			}
+			return lastPage.paginationData.page + 1;
 		},
-
 		initialData: {
 			pages: [initialData],
-			pageParams: [undefined],
+			pageParams: [1],
 		},
 	});
-	console.log('data : ', data);
-	console.log('hasNextPage : ', hasNextPage);
-	console.log('isFetchingNextPage : ', isFetchingNextPage);
-	console.log('fetchNextPage : ', fetchNextPage);
 
 	const { ref, inView } = useInView({
 		// ref : 감지할 객체
@@ -67,26 +65,20 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 	return (
 		<div className="space-y-6">
 			<div className="grid gap-4">
-				{initialData.map((post) => (
-					<Link href={`/blog/${post.revisionHash}`} key={post.revisionHash}>
-						<PostCard params={post.blogPost} category={post.categoryName} />
-					</Link>
-				))}
+				{data.pages
+					.flatMap((page) => page.posts)
+					.map((post) => (
+						<Link href={`/blog/${post.revisionHash}`} key={post.revisionHash}>
+							<PostCard
+								params={post.blogPost}
+								category={post.categoryName}
+								postMeta={post.blogPost.blogPostMeta}
+							/>
+						</Link>
+					))}
 			</div>
-			{/* {hasNextPage && (
-				<div>
-					<Button
-						variant="outline"
-						size="lg"
-						className="w-full"
-						onClick={handleLoadMore}
-						disabled={isFetchingNextPage}
-					>
-						{isFetchingNextPage ? '로딩중...' : '더보기'}
-					</Button>
-				</div>
-			)} */}
-			{hasNextPage && !isFetchingNextPage && <div ref={ref} className="h-10 bg-red-500" />}
+
+			{hasNextPage && !isFetchingNextPage && <div ref={ref} className="h-10" />}
 			<div className="flex items-center justify-center gap-2 py-4">
 				{hasNextPage ? (
 					<>

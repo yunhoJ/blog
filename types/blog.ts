@@ -43,3 +43,15 @@ export interface BlogPostPublish {
 	postVisibility: boolean;
 	blogPost: BlogPostData;
 }
+
+export interface PaginationType {
+	pageSize: number;
+	page: number;
+	totalPage: number;
+	hasNextPage: boolean;
+}
+
+export interface BlogPostMeta {
+	postViewCount: number;
+	postLikeCount: number;
+}
