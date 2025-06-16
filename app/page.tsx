@@ -18,11 +18,15 @@ import { Suspense } from 'react';
 import TagSectionSkeleton from './_components/TagSectionSkeleton';
 import PostListSkeletion from '@/components/features/blog/PostListSkeletion';
 // import { getPublishedPosts } from '@/lib/notion';
-import { userId } from './api/constant/const';
+import { defaultPageSize, userId } from './api/constant/const';
 import { getCategories } from './api/services/getCategory';
-import { getPostPublish } from './api/services/getPost';
+
 import CategorySection from './_components/TagSection.client';
 import HeaderSection from './_components/HeaderSection';
+import ToastBoundary from '@/components/features/ToastBoundary';
+
+import { getPostPublishData } from './api/services/getPost';
+
 // import PostListClient from '@/components/features/blog/PoasList.client';
 const socialLinks = [
 	{ icon: Github, url: 'https://github.com/yunhoJ' },
@@ -34,8 +38,8 @@ interface HomeProps {
 	searchParams: Promise<{
 		category?: string;
 		sort?: string;
-		page_size?: number;
-		start_cursor?: string;
+		pageSize?: number;
+		page?: number;
 	}>;
 }
 
@@ -74,37 +78,72 @@ const contactItems = [
 export default async function Home({ searchParams }: HomeProps) {
 	// 카테고리 목록 조회
 	const categories = getCategories(userId);
-	const { category, sort } = await searchParams;
+	const { category, sort, pageSize, page } = await searchParams;
 	//카테고리 선택
 	const selectedCategory = category || '전체';
 	// 정렬 선택
 	const selectedSort = sort || 'latest';
+	const selectedPageSize = Number(pageSize) || defaultPageSize;
+	const selectedPage = Number(page) || 1;
 	// const postsPromise = getPublishedPosts({ sort: selectedSort });
-	const postPublish = getPostPublish(userId, selectedCategory, selectedSort);
+	const postPublish = getPostPublishData(
+		userId,
+		selectedCategory,
+		selectedSort,
+		selectedPageSize,
+		selectedPage
+	);
 
-	// const tags = getTags();
+	// 카테고리
+	const CategorySectionComponent = () => (
+		<aside>
+			<Suspense fallback={<TagSectionSkeleton />}>
+				<CategorySection categories={categories} selectedCategory={selectedCategory} />
+			</Suspense>
+		</aside>
+	);
+	// 메인 컨텐츠
+	const MainContentComponent = () => (
+		<div className="space-y-8">
+			<HeaderSection selectedTag={selectedCategory} />
+			<ToastBoundary>
+				<Suspense fallback={<PostListSkeletion />}>
+					<PostListSuspense postsPromise={postPublish} />
+				</Suspense>
+			</ToastBoundary>
+		</div>
+	);
+	// 오른쪽 사이드바
+	const SidebarComponent = () => (
+		<aside className="flex flex-col gap-4">
+			<ProfileSection socialLinks={socialLinks} />
+			<ContactSection contactItems={contactItems} />
+		</aside>
+	);
 
 	return (
 		<div className="container py-8">
-			{/* 왼쪽 사이드바  */}
-			<div className="grid grid-cols-1 gap-6 md:grid-cols-[200px_1fr_220px]">
-				<aside className="order-2 md:order-none">
-					<Suspense fallback={<TagSectionSkeleton />}>
-						<CategorySection categories={categories} selectedCategory={selectedCategory} />
-					</Suspense>
-				</aside>
-				<div className="order-3 space-y-8 md:order-none">
-					<HeaderSection selectedTag={selectedCategory} />
-					{/* <PoasList posts={posts.posts} /> */}
-					<Suspense fallback={<PostListSkeletion />}>
-						<PostListSuspense postsPromise={postPublish} />
-					</Suspense>
+			{/* 데스크톱: 3컬럼 레이아웃 */}
+			<div className="hidden gap-6 lg:grid lg:grid-cols-[200px_1fr_220px]">
+				<CategorySectionComponent />
+				<MainContentComponent />
+				<SidebarComponent />
+			</div>
+
+			{/* 태블릿: 2컬럼 레이아웃 */}
+			<div className="hidden grid-cols-[1fr_220px] gap-6 md:grid lg:hidden">
+				<div className="flex flex-col gap-6">
+					<CategorySectionComponent />
+					<MainContentComponent />
 				</div>
-				{/* 오른쪽 사이드바  */}
-				<aside className="order-1 flex flex-col gap-4 md:order-none">
-					<ProfileSection socialLinks={socialLinks} />
-					<ContactSection contactItems={contactItems} />
-				</aside>
+				<SidebarComponent />
+			</div>
+
+			{/* 모바일: 단일 컬럼 레이아웃 */}
+			<div className="flex flex-col gap-6 md:hidden">
+				<SidebarComponent />
+				<CategorySectionComponent />
+				<MainContentComponent />
 			</div>
 		</div>
 	);

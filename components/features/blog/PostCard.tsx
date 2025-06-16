@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { BlogPostData } from '@/types/blog';
-import { User, Calendar, Folder, ChevronRight } from 'lucide-react';
+import { BlogPostData, BlogPostMeta } from '@/types/blog';
+import { User, Calendar, Folder, ChevronRight, Eye, Heart } from 'lucide-react';
 import { formatDate } from '@/lib/date';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -18,7 +18,16 @@ const getCategoryColor = (category: string) => {
 	return colors[index % colors.length];
 };
 
-export default function PostCard({ params, category }: { params: BlogPostData; category: string }) {
+export default function PostCard({
+	params,
+	category,
+	postMeta,
+}: {
+	params: BlogPostData;
+	category: string;
+	postMeta: BlogPostMeta;
+}) {
+	console.log('postMeta : ', postMeta);
 	return (
 		<Card className="group bg-card/50 border-border/40 hover:border-primary/20 overflow-hidden border backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
 			{/* {params.postCoverImage && (
@@ -55,19 +64,31 @@ export default function PostCard({ params, category }: { params: BlogPostData; c
 						{post.description}
 					</p>
 				)} */}
-				<div className="text-muted-foreground mt-6 flex items-center gap-x-4 text-sm">
-					{params.user.userName && (
-						<div className="flex items-center gap-1.5">
-							<User className="h-4 w-4" />
-							<span>{params.user.userName}</span>
-						</div>
-					)}
-					{params.postPublished && (
-						<div className="flex items-center gap-1.5">
-							<Calendar className="h-4 w-4" />
-							<time>{formatDate(params.postPublished)}</time>
-						</div>
-					)}
+				<div className="text-muted-foreground items-centert mt-6 flex items-center justify-between gap-x-5 text-sm">
+					<div className="flex justify-start gap-x-5">
+						{params.user.userName && (
+							<span className="flex items-center gap-1.5">
+								<User className="h-4 w-4" />
+								<span>{params.user.userName}</span>
+							</span>
+						)}
+						{params.postPublished && (
+							<span className="flex items-center gap-1.5">
+								<Calendar className="h-4 w-4" />
+								<time>{formatDate(params.postPublished)}</time>
+							</span>
+						)}
+					</div>
+					<div className="flex justify-end gap-x-5">
+						<span className="flex items-center gap-1.5">
+							<Eye className="h-4 w-4" />
+							<span>{postMeta.postViewCount}</span>
+						</span>
+						<span className="flex items-center gap-1.5">
+							<Heart className="h-4 w-4" />
+							<span>{postMeta.postLikeCount}</span>
+						</span>
+					</div>
 				</div>
 			</CardContent>
 		</Card>
