@@ -45,6 +45,20 @@ export const postApi = {
 		return response.data;
 	},
 
+	// 포스트 발행 데이터 조회
+	getPostPublish: async (
+		userId: string,
+		category: string,
+		sort: string,
+		pageSize: number,
+		page: number
+	) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/createPostPublish?userId=${userId}&category=${category}&sort=${sort}&pageSize=${pageSize}&page=${page}`
+		);
+		return response.data;
+	},
+
 	// 카테고리 조회
 	getCategories: async (userId: string) => {
 		const response = await axiosInstance.get(
@@ -59,12 +73,6 @@ export const postApi = {
 			userId,
 			categoryName,
 		});
-		return response.data;
-	},
-
-	// 포스트 조회
-	getPost: async (id: string) => {
-		const response = await axiosInstance.get(`${axiosInstance.defaults.baseURL}/api/posts/${id}`);
 		return response.data;
 	},
 

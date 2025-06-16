@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prismaSession';
 import { NextRequest, NextResponse } from 'next/server';
+import { getPostPublishData } from '../../services/getPost';
+import { userId, defaultPageSize } from '../../constant/const';
 // import { getPostPublish } from '../../services/getPost';
 
 export async function POST(request: NextRequest) {
@@ -16,6 +18,17 @@ export async function POST(request: NextRequest) {
 // 	return NextResponse.json({ data: post });
 // }
 
+export async function GET(request: NextRequest) {
+	// 포스트 발행 데이터 조회
+	const { searchParams } = new URL(request.url);
+	const category = searchParams.get('category') || '전체';
+	const sort = searchParams.get('sort') || 'latest';
+	const pageSize = Number(searchParams.get('pageSize')) || defaultPageSize;
+	const page = Number(searchParams.get('page')) || 1;
+
+	const post = await getPostPublishData(userId, category, sort, pageSize, page);
+	return NextResponse.json(post);
+}
 const getPublishedPosts = async (postHash: string) => {
 	// 포스트 발행 상태로 업데이트
 	const post = await prisma.blogPost.update({
