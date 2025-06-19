@@ -26,7 +26,13 @@ import HeaderSection from './_components/HeaderSection';
 import ToastBoundary from '@/components/features/ToastBoundary';
 
 import { getPostPublishData } from './api/services/getPost';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+	verification: {
+		google: 'cvAjl-tYQTijFZyAnUYEWjgGYwFDRsAkmd0cpct_T80', // 이 부분이 핵심
+	},
+};
 // import PostListClient from '@/components/features/blog/PoasList.client';
 const socialLinks = [
 	{ icon: Github, url: 'https://github.com/yunhoJ' },
