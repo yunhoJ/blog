@@ -16,63 +16,51 @@ import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import GiscusComments from '@/components/GiscusComments';
 import NotFound from './notfound';
-// import { Metadata } from 'next';
+import { Metadata } from 'next';
 import { getPost } from '@/app/api/services/getPost';
-
-// // 동적 메타데이터 생성
-// export async function generateMetadata({
-// 	params,
-// }: {
-// 	params: Promise<{ slug: string }>;
-// }): Promise<Metadata> {
-// 	const { slug } = await params;
-// 	const { post } = await getPostBySlug(slug);
-
-// 	if (!post) {
-// 		return {
-// 			title: '포스트를 찾을 수 없습니다',
-// 			description: '요청하신 블로그 포스트를 찾을 수 없습니다.',
-// 		};
-// 	}
-
-// 	return {
-// 		title: post.title,
-// 		description: post.description || `${post.title} - yunho blog`,
-// 		keywords: post.tags,
-// 		authors: [{ name: post.author || 'yunho' }],
-// 		publisher: 'yunho',
-// 		alternates: {
-// 			canonical: `/blog/${post.slug}`,
-// 		},
-// 		openGraph: {
-// 			title: post.title,
-// 			description: post.description,
-// 			url: `/blog/${post.slug}`,
-// 			type: 'article',
-// 			publishedTime: post.date,
-// 			modifiedTime: post.modifiedDate,
-// 			authors: post.author || 'yunho',
-// 			tags: post.tags,
-// 		},
-// 	};
-// }
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
+// 동적 메타데이터 생성
+export async function generateMetadata({ params }: BlogPostProps): Promise<Metadata> {
+	const slug = (await params).slug;
+	const post = await getPost(slug);
+
+	if (!post) {
+		return {
+			title: '포스트를 찾을 수 없습니다',
+			description: '요청하신 블로그 포스트를 찾을 수 없습니다.',
+		};
+	}
+
+	return {
+		title: post.postTitle,
+		description: post.postContent.slice(0, 100) || `${post.postTitle} - yunho blog`,
+		// keywords: post.postTags,
+		authors: [{ name: post.user.userName || 'yunho' }],
+		publisher: post.user.userName || 'yunho',
+		alternates: {
+			canonical: `/blog/${post.revisionHash}`,
+		},
+		openGraph: {
+			title: post.postTitle,
+			description: post.postContent.slice(0, 100),
+			url: `/blog/${post.revisionHash}`,
+			type: 'article',
+			publishedTime: post.postPublished?.toISOString() || '',
+			modifiedTime: post.postUpdatedAt.toISOString() || '',
+			authors: post.user.userName || 'yunho',
+			// tags: post.tags,
+		},
+	};
+}
+
 interface TocEntry {
 	value: string;
 	depth: number;
 	id?: string;
 	children?: Array<TocEntry>;
 }
-// export const generateStaticParams = async () => {
-// 	const { posts } = await getPublishedPosts({ pageSize: 10, sort: 'latest' });
-// 	return posts.map((post) => ({
-// 		slug: post.slug,
-// 	}));
-// };
-
-export const revalidate = 60;
 
 function TableOfContentsLink({ item }: { item: TocEntry }) {
 	return (
@@ -96,11 +84,8 @@ function TableOfContentsLink({ item }: { item: TocEntry }) {
 }
 
 export default async function BlogPost({ params }: BlogPostProps) {
-	console.log('params : ', params);
 	const slug = (await params).slug;
-	console.log('slug : ', slug);
 	const post = await getPost(slug);
-	console.log('post : ', post);
 	if (!post) {
 		return <NotFound />;
 	}
