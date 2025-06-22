@@ -52,6 +52,15 @@ export const getPostPublishData = async (
 	};
 	const totalCount = await prisma.blogPostPublish.count({ where: whereClause });
 
+	let orderBy = {};
+	if (sort === 'viewCount') {
+		orderBy = { blogPost: { blogPostMeta: { postViewCount: 'desc' } } };
+	} else if (sort === 'latest') {
+		orderBy = { blogPost: { postPublished: 'desc' } };
+	} else if (sort === 'oldest') {
+		orderBy = { blogPost: { postPublished: 'asc' } };
+	}
+
 	const paginationData = pagination(totalCount, pageSize, page);
 	const posts = await prisma.blogPostPublish.findMany({
 		where: whereClause,
@@ -75,10 +84,7 @@ export const getPostPublishData = async (
 				},
 			},
 		},
-		orderBy:
-			sort === 'latest'
-				? { blogPost: { postPublished: 'desc' } }
-				: { blogPost: { postPublished: 'asc' } },
+		orderBy: orderBy,
 		...(pageSize > 0 &&
 			page > 0 && {
 				take: paginationData.pageSize,

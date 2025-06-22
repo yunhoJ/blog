@@ -73,7 +73,7 @@ export default function ViewCountIncrementer({
 				() => {
 					incrementViewCount();
 				},
-				readTime === 0 ? 3 * 1000 : readTime * 1000 // 읽는 시간이 0이면 1분 후 실행
+				readTime === 0 ? 60 * 1000 : readTime * 1000 // 읽는 시간이 0이면 1분 후 실행
 			);
 
 			// 클린업 함수로 타이머 정리
