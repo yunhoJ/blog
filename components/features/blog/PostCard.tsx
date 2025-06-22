@@ -27,7 +27,6 @@ export default function PostCard({
 	category: string;
 	postMeta: BlogPostMeta;
 }) {
-	console.log('postMeta : ', postMeta);
 	return (
 		<Card className="group bg-card/50 border-border/40 hover:border-primary/20 overflow-hidden border backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
 			{/* {params.postCoverImage && (

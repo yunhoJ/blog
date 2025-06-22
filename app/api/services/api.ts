@@ -2,7 +2,8 @@ import { axiosInstance } from '@/lib/axios';
 if (process.env.NODE_ENV === 'development') {
 	axiosInstance.defaults.baseURL = 'http://localhost:3000';
 } else {
-	axiosInstance.defaults.baseURL = 'https://www.yunhoj.com';
+	axiosInstance.defaults.baseURL = 'http://localhost:3000';
+	// axiosInstance.defaults.baseURL = 'https://www.yunhoj.com';
 }
 
 // 포스트 관련 API
@@ -75,7 +76,14 @@ export const postApi = {
 		});
 		return response.data;
 	},
-
+	// 조회수 증가
+	incrementViewCount: async (postHash: string, userId: string) => {
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/postViewCount`,
+			{ postHash, userId }
+		);
+		return response.data;
+	},
 	// 포스트 수정
 	updatePost: async (
 		id: string,
