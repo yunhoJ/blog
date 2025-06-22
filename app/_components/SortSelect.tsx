@@ -26,6 +26,7 @@ export default function SortSelect() {
 			</SelectTrigger>
 			<SelectContent>
 				<SelectItem value="latest">최신순</SelectItem>
+				<SelectItem value="viewCount">조회수순</SelectItem>
 				<SelectItem value="oldest">오래된순</SelectItem>
 			</SelectContent>
 		</Select>
