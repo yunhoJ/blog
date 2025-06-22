@@ -18,6 +18,7 @@ import GiscusComments from '@/components/GiscusComments';
 import NotFound from './notfound';
 import { Metadata } from 'next';
 import { getPost } from '@/app/api/services/getPost';
+import ViewCountIncrementer from '@/components/features/blog/ViewCountIncrementer';
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
@@ -102,6 +103,12 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
 	return (
 		<div className="container py-8">
+			{/* 조회수 증가 컴포넌트 - 한 번만 호출 */}
+			<ViewCountIncrementer
+				postHash={post.postHash}
+				userId={post.userId}
+				readTime={post.postReadTimeSeconds}
+			/>
 			<div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_220px] md:gap-8 lg:grid-cols-[200px_1fr_220px]">
 				<aside className="hidden lg:block">{/* 왼쪽 사이드바  작은 화면일떄 숨김 */}</aside>
 				<div className="flex h-full flex-col gap-2 space-y-4 overflow-hidden px-4">
