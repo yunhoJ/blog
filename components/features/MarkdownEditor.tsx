@@ -9,13 +9,15 @@ const Editor = dynamic(() => import('@toast-ui/react-editor').then((mod) => mod.
 
 interface MarkdownEditorProps {
 	editorRef: React.RefObject<EditorType | null>;
+	initialContent?: string;
 }
 
-export default function MarkdownEditor({ editorRef }: MarkdownEditorProps) {
+export default function MarkdownEditor({ editorRef, initialContent }: MarkdownEditorProps) {
 	return (
 		<Editor
+			key={initialContent}
 			ref={editorRef}
-			initialValue="hello react editor world!"
+			initialValue={initialContent}
 			previewStyle="vertical"
 			initialEditType="markdown"
 			height="100%"
