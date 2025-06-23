@@ -83,6 +83,21 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 임시저장 목록 조회
+	getDrafts: async (userId: string) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/createPostDraft?userId=${userId}`
+		);
+		return response.data;
+	},
+	//임시저장 데이터 조회
+	getDraftData: async (postHash: string, userId: string) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/getPostDraftData?postHash=${postHash}&userId=${userId}`
+		);
+		return response.data;
+	},
+
 	// 포스트 수정
 	updatePost: async (
 		id: string,

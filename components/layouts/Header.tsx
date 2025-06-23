@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { Button } from '../ui/button';
 import { ThemeToggle } from '../theme/ThemeToggle';
-export default function Header() {
+import WriteButton from './WriteButton';
+
+export default async function Header() {
 	return (
 		<header className="bg-background sticky top-0 z-50 border-b">
 			<div className="container flex h-[var(--header-height)] items-center justify-between px-4">
@@ -26,9 +27,7 @@ export default function Header() {
 
 					<div className="flex justify-end gap-2">
 						<ThemeToggle />
-						<Button asChild size="sm">
-							<Link href="/blog/write">글쓰기</Link>
-						</Button>
+						<WriteButton />
 					</div>
 				</div>
 			</div>

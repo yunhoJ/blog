@@ -7,6 +7,12 @@ export async function POST(request: NextRequest) {
 	await createPostDraft(postHash, title, content, userId);
 	return NextResponse.json({ message: 'Post created successfully' });
 }
+export async function GET(request: NextRequest) {
+	const { searchParams } = new URL(request.url);
+	const userId = searchParams.get('userId') as string;
+	const drafts = await getDrafts(userId);
+	return NextResponse.json({ data: drafts });
+}
 
 async function checkPostHash(postHash: string) {
 	const post = await prisma.blogPost.findUnique({
@@ -46,4 +52,21 @@ async function createPostDraft(postHash: string, title: string, content: string,
 			},
 		});
 	}
+}
+
+export async function getDrafts(userId: string) {
+	const drafts = await prisma.blogPost.findMany({
+		where: {
+			userId,
+			postDraft: true,
+		},
+		select: {
+			postHash: true,
+			postTitle: true,
+			postPublished: true,
+			postCreatedAt: true,
+			postUpdatedAt: true,
+		},
+	});
+	return drafts;
 }

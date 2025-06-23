@@ -7,7 +7,7 @@ import { CalendarIcon, UserIcon, ClockIcon } from 'lucide-react'; //, ChevronRig
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
-import rehypeSanitize from 'rehype-sanitize';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import { compile } from '@mdx-js/mdx';
@@ -19,6 +19,8 @@ import NotFound from './notfound';
 import { Metadata } from 'next';
 import { getPost } from '@/app/api/services/getPost';
 import ViewCountIncrementer from '@/components/features/blog/ViewCountIncrementer';
+import { visit } from 'unist-util-visit';
+import type { Root } from 'hast';
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
@@ -90,6 +92,27 @@ export default async function BlogPost({ params }: BlogPostProps) {
 	if (!post) {
 		return <NotFound />;
 	}
+	const rehypeAllowBrJsx = () => {
+		return (tree: Root) => {
+			visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
+				if (node.name === 'br' && parent && typeof index === 'number') {
+					parent.children[index] = {
+						type: 'element',
+						tagName: 'br',
+						properties: {},
+						children: [],
+					};
+				}
+			});
+		};
+	};
+	const schema = {
+		...defaultSchema,
+		tagNames: [...(defaultSchema.tagNames || []), 'br'],
+		attributes: {
+			...defaultSchema.attributes,
+		},
+	};
 	const { data } = await compile(post.postContent, {
 		rehypePlugins: [
 			withSlugs,
@@ -163,13 +186,19 @@ export default async function BlogPost({ params }: BlogPostProps) {
 								options={{
 									mdxOptions: {
 										remarkPlugins: [remarkGfm],
-										rehypePlugins: [rehypeSlug, rehypeSanitize, rehypePrettyCode],
+										rehypePlugins: [
+											rehypeSlug,
+											rehypeAllowBrJsx, // JSX <br /> 변환 먼저 실행
+											[rehypeSanitize, schema],
+											// rehypeSanitize, br 허용
+											rehypePrettyCode,
+										],
 									},
 								}}
 							/>
 						</main>
 					</div>
-					<Separator className="" />
+					<Separator className="" id="bottom" />
 
 					{/* 다음화면 */}
 					{/* <div className="flex h-30 gap-5" id="bottom">
