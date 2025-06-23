@@ -54,7 +54,7 @@ async function createPostDraft(postHash: string, title: string, content: string,
 	}
 }
 
-export async function getDrafts(userId: string) {
+async function getDrafts(userId: string) {
 	const drafts = await prisma.blogPost.findMany({
 		where: {
 			userId,
