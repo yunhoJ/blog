@@ -7,9 +7,10 @@ import PublishModal from '@/components/modal/PublishModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { fixBrTags } from '@/lib/replaceContent';
 import { Editor } from '@toast-ui/react-editor';
 import { useRouter } from 'next/navigation';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 // import { Editor } from '@toast-ui/react-editor';
 // import { Separator } from '@/components/ui/separator';
 // import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
@@ -33,6 +34,21 @@ export default function Write() {
 	const editorRef = useRef<Editor | null>(null);
 	const titleRef = useRef<HTMLInputElement>(null);
 	const [visibility, setVisibility] = useState(true);
+	const [title, setTitle] = useState('');
+	const [content, setContent] = useState(' ');
+	useEffect(() => {
+		const postHash = localStorage.getItem('postHash');
+		if (!postHash) return;
+
+		const fetchData = async () => {
+			const draftData = await postApi.getDraftData(postHash, userId);
+			// API 응답이 { data: { postTitle, postContent } } 형태이므로 data 프로퍼티에 접근
+			setTitle(draftData.data.postTitle || '');
+			setContent(draftData.data.postContent || ' ');
+			// editorRef.current?.getInstance().setMarkdown(draftData.data.postContent || '');
+		};
+		fetchData();
+	}, []);
 
 	const onClickSaveBtn = useCallback(async () => {
 		if (!editorRef.current || !titleRef.current) return;
@@ -44,8 +60,8 @@ export default function Write() {
 			postHash = (await postApi.createPostMeta({ userId })) as string;
 			localStorage.setItem('postHash', postHash);
 		}
-
-		await postApi.createDraft({ postHash, title, content, userId });
+		const fixedContent = fixBrTags(content);
+		await postApi.createDraft({ postHash, title, content: fixedContent, userId });
 	}, []);
 
 	// 발행 하기 버튼 클릭 시
@@ -79,6 +95,8 @@ export default function Write() {
 					ref={titleRef}
 					id="title"
 					name="title"
+					onChange={(e) => setTitle(e.target.value)}
+					value={title}
 					placeholder="제목을 입력해주세요"
 					className="text-lg"
 				/>
@@ -88,7 +106,7 @@ export default function Write() {
 
 			{/* 본문 영역 - 남은 공간 모두 차지 */}
 			<div className="flex-1 overflow-hidden rounded-lg">
-				<MarkdownEditor editorRef={editorRef} />
+				<MarkdownEditor editorRef={editorRef} initialContent={content} />
 			</div>
 
 			{/* <Separator /> */}

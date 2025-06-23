@@ -55,3 +55,12 @@ export interface BlogPostMeta {
 	postViewCount: number;
 	postLikeCount: number;
 }
+
+// 임시저장 목록 타입
+export interface DraftItem {
+	postHash: string;
+	postTitle: string;
+	postPublished: boolean;
+	postCreatedAt: string;
+	postUpdatedAt: string;
+}
