@@ -13,7 +13,13 @@ export async function GET(request: NextRequest) {
 	const drafts = await getDrafts(userId);
 	return NextResponse.json({ data: drafts });
 }
-
+export async function DELETE(request: NextRequest) {
+	const { postHash, userId } = await request.json();
+	console.log('postHash', postHash);
+	console.log('userId', userId);
+	await deletePostDraft(postHash, userId);
+	return NextResponse.json({ message: 'Post deleted successfully' });
+}
 async function checkPostHash(postHash: string) {
 	const post = await prisma.blogPost.findUnique({
 		where: {
@@ -68,5 +74,33 @@ async function getDrafts(userId: string) {
 			postUpdatedAt: true,
 		},
 	});
+	return drafts;
+}
+
+async function deletePostDraft(postHash: string, userId: string) {
+	await prisma.blogPost.delete({
+		where: {
+			postHash_postDraft: {
+				postHash,
+				postDraft: true,
+			},
+			userId,
+		},
+	});
+
+	const drafts = await prisma.blogPost.findMany({
+		where: {
+			postHash,
+			userId,
+		},
+	});
+	if (drafts.length === 0) {
+		await prisma.blogPostMeta.delete({
+			where: {
+				postHash,
+				userId,
+			},
+		});
+	}
 	return drafts;
 }

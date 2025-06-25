@@ -97,6 +97,16 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 임시 저장 포스트 삭제
+	deletePostDraft: async (data: { postHash: string; userId: string }) => {
+		const response = await axiosInstance.delete(
+			`${axiosInstance.defaults.baseURL}/api/createPostDraft`,
+			{
+				data,
+			}
+		);
+		return response.data;
+	},
 
 	// 포스트 수정
 	updatePost: async (

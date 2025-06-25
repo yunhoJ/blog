@@ -35,6 +35,7 @@ export default function WriteButton() {
 				isOpen={isDraftModalOpen}
 				onOpenChange={setIsDraftModalOpen}
 				drafts={drafts}
+				userId={userId}
 			/>
 		</>
 	);

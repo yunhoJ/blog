@@ -6,6 +6,7 @@ interface ProfileSectionProps {
 	socialLinks: {
 		icon: LucideIcon;
 		url: string;
+		title: string;
 	}[];
 }
 export default function ProfileSection(props: ProfileSectionProps) {
@@ -21,28 +22,31 @@ export default function ProfileSection(props: ProfileSectionProps) {
 							height={200}
 							className="mb-6 rounded-4xl"
 						/>
-						<div className="text-lg font-bold">전윤호</div>
+						<div className="text-xl font-bold">전윤호</div>
 						<div className="text-primary text-sm">backend developer</div>
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="flex flex-col gap-2">
-						<div className="flex flex-row items-center justify-between">
+						<div className="flex flex-row items-center justify-center gap-5">
 							{props.socialLinks.map((link, index) => (
 								<a
 									key={index}
 									href={link.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="bg-primary/10 rounded-sm p-2 hover:bg-green-100"
+									className="bg-primary/10 hover:bg-muted flex flex-col items-center gap-2 rounded-sm p-2"
 								>
-									<link.icon className="h-4 w-4" />
+									<div className="flex w-auto flex-row items-center gap-2 text-xs">
+										<link.icon className="h-4 w-4" />
+										<span>{link.title}</span>
+									</div>
 								</a>
 							))}
 						</div>
-						<div className="bg-primary/10 rounded-sm p-2 text-center hover:bg-green-100">
+						{/* <div className="bg-primary/10 rounded-sm p-2 text-center hover:bg-green-100">
 							교육 크리에이터
-						</div>
+						</div> */}
 					</div>
 				</CardContent>
 			</Card>
