@@ -7,18 +7,25 @@ import { usePathname, useRouter } from 'next/navigation';
 import { DraftItem } from '@/types/blog';
 import { XIcon } from 'lucide-react';
 import { useState } from 'react';
-import DraftDeleteModal from './\bDraftDeleteModal';
+import DraftDeleteModal from './DraftDeleteModal';
 
 interface DraftListModalProps {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
 	drafts: DraftItem[];
+	userId: string;
 }
 
-export default function DraftListModal({ isOpen, onOpenChange, drafts }: DraftListModalProps) {
+export default function DraftListModal({
+	isOpen,
+	onOpenChange,
+	drafts,
+	userId,
+}: DraftListModalProps) {
 	const router = useRouter();
 	const pathname = usePathname();
-	// const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const [selectedDraft, setSelectedDraft] = useState<DraftItem | null>(null);
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	// 글쓰기 페이지에서 임시저장된 글 목록 모달을 열었을 때, 글쓰기 페이지를 새로고침하여 임시저장된 글 목록을 업데이트
 	const updatePage = () => {
 		if (pathname === '/blog/write') {
@@ -39,6 +46,12 @@ export default function DraftListModal({ isOpen, onOpenChange, drafts }: DraftLi
 		// 새 글 작성
 		localStorage.removeItem('postHash');
 		updatePage();
+	};
+	const deleteOnclick = (e: React.MouseEvent<HTMLButtonElement>, draft: DraftItem) => {
+		e.stopPropagation(); // 이벤트 전파 방지
+		setIsDeleteModalOpen(true);
+		console.log('draft', draft);
+		setSelectedDraft(draft);
 	};
 
 	return (
@@ -61,14 +74,7 @@ export default function DraftListModal({ isOpen, onOpenChange, drafts }: DraftLi
 										<h4 className="truncate text-sm font-medium">
 											제목 : {draft.postTitle || '제목 없음'}
 										</h4>
-										<Button
-											variant="ghost"
-											size="icon"
-											onClick={(e) => {
-												e.stopPropagation(); // 이벤트 전파 방지
-												setIsDeleteModalOpen(true);
-											}}
-										>
+										<Button variant="ghost" size="icon" onClick={(e) => deleteOnclick(e, draft)}>
 											<XIcon />
 										</Button>
 									</div>
@@ -92,6 +98,15 @@ export default function DraftListModal({ isOpen, onOpenChange, drafts }: DraftLi
 					</div>
 				</DialogContent>
 			</Dialog>
+			{isDeleteModalOpen && (
+				<DraftDeleteModal
+					isOpen={isDeleteModalOpen}
+					onOpenChange={setIsDeleteModalOpen}
+					selectedDraft={selectedDraft}
+					userId={userId}
+					parentOnOpenChange={onOpenChange}
+				/>
+			)}
 		</>
 	);
 }
