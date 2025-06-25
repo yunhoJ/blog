@@ -63,7 +63,7 @@ export default function PostCard({
 						{post.description}
 					</p>
 				)} */}
-				<div className="text-muted-foreground items-centert mt-6 flex items-center justify-between gap-x-5 text-sm">
+				<div className="text-muted-foreground items-centert mt-6 flex items-center justify-between text-xs md:text-sm">
 					<div className="flex justify-start gap-x-5">
 						{params.user.userName && (
 							<span className="flex items-center gap-1.5">
