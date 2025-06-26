@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { fixBrTags } from '@/lib/replaceContent';
+import { toastError, toastSuccess } from '@/lib/toasttError';
 import { Editor } from '@toast-ui/react-editor';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -61,7 +62,12 @@ export default function Write() {
 			localStorage.setItem('postHash', postHash);
 		}
 		const fixedContent = fixBrTags(content);
-		await postApi.createDraft({ postHash, title, content: fixedContent, userId });
+		try {
+			await postApi.createDraft({ postHash, title, content: fixedContent, userId });
+			toastSuccess('저장 되었습니다.');
+		} catch {
+			toastError(new Error('임시 저장 중 오류가 발생했습니다.'));
+		}
 	}, []);
 
 	// 발행 하기 버튼 클릭 시
