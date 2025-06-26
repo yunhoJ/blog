@@ -20,6 +20,8 @@ export default function WriteButton() {
 
 		setIsDraftModalOpen(response.data.length > 0);
 		if (response.data.length <= 0) {
+			//로컬스토리지에 데이터 있을경우 지움
+			localStorage.removeItem('postHash');
 			router.push('/blog/write');
 		}
 	};
