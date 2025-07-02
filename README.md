@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 YunHo Blog Platform
 
-## Getting Started
+# **Website**: [yunhoj.com](https://yunhoj.com)
 
-First, run the development server:
+> **Next.js 15 기반의 현대적인 개인 블로그 플랫폼**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📋 **프로젝트 개요**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+이 프로젝트는 **Next.js 15**와 **TypeScript**를 기반으로 한 풀스택 블로그 플랫폼입니다. 개인 블로그 운영에 필요한 기능을 제공합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ **기술 스택**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### **Frontend**
 
-## Learn More
+- **Framework**: Next.js 15.3.2 (App Router)
+- **Language**: TypeScript 5
+- **UI Library**: React 19
+- **Styling**: Tailwind CSS 4.1.7
+- **Components**: shadcn/ui + Radix UI
+- **Icons**: Lucide React
+- **Theme**: next-themes (다크/라이트 모드)
 
-To learn more about Next.js, take a look at the following resources:
+### **Backend & Database**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Database**: PostgreSQL (Prisma ORM 6.8.2)
+- **Storage**: Supabase (이미지 및 파일 스토리지)
+- **API**: Next.js API Routes
+- **Data Fetching**: TanStack React Query 5.77.0
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### **Content Management**
 
-## Deploy on Vercel
+- **Editor**: Toast UI Editor (마크다운 에디터)
+- **MDX**: @next/mdx, next-mdx-remote
+- **Syntax Highlighting**: Shiki, Rehype Pretty Code
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### **Development Tools**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Bundler**: Turbopack (개발 환경)
+- **Linting**: ESLint 9 + Prettier
+- **Package Manager**: npm
+- **Code Quality**: TypeScript
