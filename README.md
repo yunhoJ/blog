@@ -1,6 +1,6 @@
 # 🚀 YunHo Blog Platform
 
-# **Website**: [yunhoj.com](https://yunhoj.com)
+## **Website**: [https://yunhoj.com](https://yunhoj.com)
 
 > **Next.js 15 기반의 현대적인 개인 블로그 플랫폼**
 
@@ -19,23 +19,16 @@
 - **Components**: shadcn/ui + Radix UI
 - **Icons**: Lucide React
 - **Theme**: next-themes (다크/라이트 모드)
+- **Data Fetching**: TanStack React Query 5.77.0
 
 ### **Backend & Database**
 
 - **Database**: PostgreSQL (Prisma ORM 6.8.2)
 - **Storage**: Supabase (이미지 및 파일 스토리지)
 - **API**: Next.js API Routes
-- **Data Fetching**: TanStack React Query 5.77.0
-
-### **Content Management**
-
-- **Editor**: Toast UI Editor (마크다운 에디터)
-- **MDX**: @next/mdx, next-mdx-remote
-- **Syntax Highlighting**: Shiki, Rehype Pretty Code
 
 ### **Development Tools**
 
 - **Bundler**: Turbopack (개발 환경)
 - **Linting**: ESLint 9 + Prettier
 - **Package Manager**: npm
-- **Code Quality**: TypeScript
