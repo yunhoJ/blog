@@ -107,6 +107,19 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 이미지 업로드
+	uploadImage: async (data: FormData) => {
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/images`,
+			data,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			}
+		);
+		return response.data;
+	},
 
 	// 포스트 수정
 	updatePost: async (
