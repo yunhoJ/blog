@@ -55,7 +55,6 @@ export default function Write() {
 		if (!editorRef.current || !titleRef.current) return;
 		const title = titleRef.current.value;
 		const content = editorRef.current.getInstance().getMarkdown();
-
 		let postHash = localStorage.getItem('postHash');
 		if (!postHash) {
 			postHash = (await postApi.createPostMeta({ userId })) as string;
@@ -112,7 +111,7 @@ export default function Write() {
 
 			{/* 본문 영역 - 남은 공간 모두 차지 */}
 			<div className="flex-1 overflow-hidden rounded-lg">
-				<MarkdownEditor editorRef={editorRef} initialContent={content} />
+				<MarkdownEditor editorRef={editorRef} initialContent={content} saveBtn={onClickSaveBtn} />
 			</div>
 
 			{/* <Separator /> */}
