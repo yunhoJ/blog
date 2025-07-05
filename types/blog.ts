@@ -54,6 +54,7 @@ export interface PaginationType {
 export interface BlogPostMeta {
 	postViewCount: number;
 	postLikeCount: number;
+	postMainImageUrl?: string;
 }
 
 // 임시저장 목록 타입
