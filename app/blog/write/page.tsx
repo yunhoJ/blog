@@ -74,7 +74,7 @@ export default function Write() {
 		setIsPublishModalOpen(true);
 	}, []);
 
-	const handlePublish = useCallback(async (category: string | null) => {
+	const handlePublish = useCallback(async (category: string | null, imageUrl: string | null) => {
 		if (!editorRef.current || !titleRef.current) return;
 		// 임시 저장후 포스트 발행
 		await onClickSaveBtn();
@@ -83,6 +83,7 @@ export default function Write() {
 			category: category as string,
 			visibility: visibility,
 			userId: userId,
+			imageUrl: imageUrl as string,
 		});
 		setIsPublishModalOpen(false);
 		localStorage.removeItem('postHash');

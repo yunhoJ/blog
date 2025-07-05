@@ -24,6 +24,9 @@ const nextConfig: NextConfig = {
 			{
 				hostname: 'www.notion.so',
 			},
+			{
+				hostname: 'tbhqyppnxelyeasodmxq.supabase.co',
+			},
 		],
 	},
 	pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'mdx', 'md'],
