@@ -63,8 +63,8 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
 	return (
-		<div className="space-y-6">
-			<div className="grid gap-4">
+		<div>
+			<div className="grid gap-4 md:gap-6">
 				{data.pages
 					.flatMap((page) => page.posts)
 					.map((post) => (
