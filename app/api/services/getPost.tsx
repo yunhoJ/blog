@@ -54,7 +54,10 @@ export const getPostPublishData = async (
 
 	let orderBy = {};
 	if (sort === 'viewCount') {
-		orderBy = { blogPost: { blogPostMeta: { postViewCount: 'desc' } } };
+		orderBy = [
+			{ blogPost: { blogPostMeta: { postViewCount: 'desc' } } },
+			{ blogPost: { postPublished: 'asc' } },
+		];
 	} else if (sort === 'latest') {
 		orderBy = { blogPost: { postPublished: 'desc' } };
 	} else if (sort === 'oldest') {
@@ -77,6 +80,7 @@ export const getPostPublishData = async (
 					},
 					blogPostMeta: {
 						select: {
+							postMainImageUrl: true,
 							postViewCount: true,
 							postLikeCount: true,
 						},
