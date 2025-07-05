@@ -37,6 +37,7 @@ export const postApi = {
 		category: string;
 		visibility: boolean;
 		userId: string;
+		imageUrl: string;
 	}) => {
 		const response = await axiosInstance.post(
 			`${axiosInstance.defaults.baseURL}/api/createPostPublish`,
@@ -120,7 +121,13 @@ export const postApi = {
 		);
 		return response.data;
 	},
-
+	// 이미지 목록 조회
+	getImageList: async (folder: string) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/imageList?folder=${folder}`
+		);
+		return response.data;
+	},
 	// 포스트 수정
 	updatePost: async (
 		id: string,
