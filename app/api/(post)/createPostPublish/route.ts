@@ -5,8 +5,11 @@ import { userId, defaultPageSize } from '../../constant/const';
 // import { getPostPublish } from '../../services/getPost';
 
 export async function POST(request: NextRequest) {
-	const { postHash, category, visibility, userId } = await request.json();
+	const { postHash, category, visibility, userId, imageUrl } = await request.json();
 	const postData = await getPublishedPosts(postHash);
+	if (imageUrl) {
+		await updatePostMainImage(postHash, imageUrl);
+	}
 	await createPostPublish(postData.revisionHash, postHash, category, visibility, userId);
 	return NextResponse.json({ message: 'Post published successfully' });
 }
@@ -46,6 +49,13 @@ const getPublishedPosts = async (postHash: string) => {
 	return post;
 };
 
+const updatePostMainImage = async (postHash: string, imageUrl: string) => {
+	const post = await prisma.blogPostMeta.update({
+		where: { postHash },
+		data: { postMainImageUrl: imageUrl },
+	});
+	return post;
+};
 const createPostPublish = async (
 	revisionHash: string,
 	postHash: string,
