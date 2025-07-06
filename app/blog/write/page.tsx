@@ -4,9 +4,10 @@ import { userId } from '@/app/api/constant/const';
 import { postApi } from '@/app/api/services/api';
 import MarkdownEditor from '@/components/features/MarkdownEditor';
 import PublishModal from '@/components/modal/PublishModal';
+import TagSelect from '@/components/modal/TagSelect';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+// import { Label } from '@/components/ui/label';
 import { fixBrTags } from '@/lib/replaceContent';
 import { toastError, toastSuccess } from '@/lib/toasttError';
 import { Editor } from '@toast-ui/react-editor';
@@ -35,6 +36,7 @@ export default function Write() {
 	const editorRef = useRef<Editor | null>(null);
 	const titleRef = useRef<HTMLInputElement>(null);
 	const [visibility, setVisibility] = useState(true);
+	const [tagList, setTagList] = useState<string[]>([]);
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState(' ');
 	useEffect(() => {
@@ -63,32 +65,37 @@ export default function Write() {
 		const fixedContent = fixBrTags(content);
 		try {
 			await postApi.createDraft({ postHash, title, content: fixedContent, userId });
+			console.log('test44', tagList);
+			await postApi.createBlogTag(userId, tagList, postHash);
 			toastSuccess('저장 되었습니다.');
 		} catch {
 			toastError(new Error('임시 저장 중 오류가 발생했습니다.'));
 		}
-	}, []);
+	}, [tagList]);
 
 	// 발행 하기 버튼 클릭 시
 	const onClickPublishBtn = useCallback(async () => {
 		setIsPublishModalOpen(true);
 	}, []);
 
-	const handlePublish = useCallback(async (category: string | null, imageUrl: string | null) => {
-		if (!editorRef.current || !titleRef.current) return;
-		// 임시 저장후 포스트 발행
-		await onClickSaveBtn();
-		await postApi.createPostPublish({
-			postHash: localStorage.getItem('postHash') as string,
-			category: category as string,
-			visibility: visibility,
-			userId: userId,
-			imageUrl: imageUrl as string,
-		});
-		setIsPublishModalOpen(false);
-		localStorage.removeItem('postHash');
-		router.push(`/`);
-	}, []);
+	const handlePublish = useCallback(
+		async (category: string | null, imageUrl: string | null) => {
+			if (!editorRef.current || !titleRef.current) return;
+			// 임시 저장후 포스트 발행
+			await onClickSaveBtn();
+			await postApi.createPostPublish({
+				postHash: localStorage.getItem('postHash') as string,
+				category: category as string,
+				visibility: visibility,
+				userId: userId,
+				imageUrl: imageUrl as string,
+			});
+			setIsPublishModalOpen(false);
+			localStorage.removeItem('postHash');
+			router.push(`/`);
+		},
+		[tagList]
+	);
 
 	return (
 		<div className="container flex h-[90vh] flex-col gap-4 py-8">
@@ -118,10 +125,9 @@ export default function Write() {
 			{/* <Separator /> */}
 
 			{/* 태그 영역과 버튼 */}
-			<div className="flex flex-row justify-between">
-				<div>
-					<Label className="text-lg font-semibold">태그 선택</Label>
-					<div className="mt-2">태그 선택 컴포넌트가 들어갈 자리</div>
+			<div className="flex flex-row items-start justify-between">
+				<div className="flex-1">
+					<TagSelect tagList={tagList} setTagList={setTagList} />
 				</div>
 
 				{/* 발행하기 버튼 */}
