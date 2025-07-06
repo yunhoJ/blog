@@ -2917,62 +2917,38 @@ export namespace Prisma {
 
   export type AggregateTag = {
     _count: TagCountAggregateOutputType | null
-    _avg: TagAvgAggregateOutputType | null
-    _sum: TagSumAggregateOutputType | null
     _min: TagMinAggregateOutputType | null
     _max: TagMaxAggregateOutputType | null
   }
 
-  export type TagAvgAggregateOutputType = {
-    tagId: number | null
-  }
-
-  export type TagSumAggregateOutputType = {
-    tagId: bigint | null
-  }
-
   export type TagMinAggregateOutputType = {
-    tagId: bigint | null
     tagName: string | null
     userId: string | null
   }
 
   export type TagMaxAggregateOutputType = {
-    tagId: bigint | null
     tagName: string | null
     userId: string | null
   }
 
   export type TagCountAggregateOutputType = {
-    tagId: number
     tagName: number
     userId: number
     _all: number
   }
 
 
-  export type TagAvgAggregateInputType = {
-    tagId?: true
-  }
-
-  export type TagSumAggregateInputType = {
-    tagId?: true
-  }
-
   export type TagMinAggregateInputType = {
-    tagId?: true
     tagName?: true
     userId?: true
   }
 
   export type TagMaxAggregateInputType = {
-    tagId?: true
     tagName?: true
     userId?: true
   }
 
   export type TagCountAggregateInputType = {
-    tagId?: true
     tagName?: true
     userId?: true
     _all?: true
@@ -3016,18 +2992,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: TagAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: TagSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: TagMinAggregateInputType
@@ -3058,19 +3022,14 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: TagCountAggregateInputType | true
-    _avg?: TagAvgAggregateInputType
-    _sum?: TagSumAggregateInputType
     _min?: TagMinAggregateInputType
     _max?: TagMaxAggregateInputType
   }
 
   export type TagGroupByOutputType = {
-    tagId: bigint
     tagName: string
     userId: string
     _count: TagCountAggregateOutputType | null
-    _avg: TagAvgAggregateOutputType | null
-    _sum: TagSumAggregateOutputType | null
     _min: TagMinAggregateOutputType | null
     _max: TagMaxAggregateOutputType | null
   }
@@ -3090,7 +3049,6 @@ export namespace Prisma {
 
 
   export type TagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    tagId?: boolean
     tagName?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3099,26 +3057,23 @@ export namespace Prisma {
   }, ExtArgs["result"]["tag"]>
 
   export type TagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    tagId?: boolean
     tagName?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
 
   export type TagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    tagId?: boolean
     tagName?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
 
   export type TagSelectScalar = {
-    tagId?: boolean
     tagName?: boolean
     userId?: boolean
   }
 
-  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tagId" | "tagName" | "userId", ExtArgs["result"]["tag"]>
+  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tagName" | "userId", ExtArgs["result"]["tag"]>
   export type TagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     blogPostTag?: boolean | Tag$blogPostTagArgs<ExtArgs>
@@ -3138,7 +3093,6 @@ export namespace Prisma {
       blogPostTag: Prisma.$BlogPostTagPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      tagId: bigint
       tagName: string
       userId: string
     }, ExtArgs["result"]["tag"]>
@@ -3224,8 +3178,8 @@ export namespace Prisma {
      * // Get first 10 Tags
      * const tags = await prisma.tag.findMany({ take: 10 })
      * 
-     * // Only select the `tagId`
-     * const tagWithTagIdOnly = await prisma.tag.findMany({ select: { tagId: true } })
+     * // Only select the `tagName`
+     * const tagWithTagNameOnly = await prisma.tag.findMany({ select: { tagName: true } })
      * 
      */
     findMany<T extends TagFindManyArgs>(args?: SelectSubset<T, TagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -3269,9 +3223,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Tags and only return the `tagId`
-     * const tagWithTagIdOnly = await prisma.tag.createManyAndReturn({
-     *   select: { tagId: true },
+     * // Create many Tags and only return the `tagName`
+     * const tagWithTagNameOnly = await prisma.tag.createManyAndReturn({
+     *   select: { tagName: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -3360,9 +3314,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Tags and only return the `tagId`
-     * const tagWithTagIdOnly = await prisma.tag.updateManyAndReturn({
-     *   select: { tagId: true },
+     * // Update zero or more Tags and only return the `tagName`
+     * const tagWithTagNameOnly = await prisma.tag.updateManyAndReturn({
+     *   select: { tagName: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3566,7 +3520,6 @@ export namespace Prisma {
    * Fields of the Tag model
    */
   interface TagFieldRefs {
-    readonly tagId: FieldRef<"Tag", 'BigInt'>
     readonly tagName: FieldRef<"Tag", 'String'>
     readonly userId: FieldRef<"Tag", 'String'>
   }
@@ -7506,62 +7459,44 @@ export namespace Prisma {
 
   export type AggregateBlogPostTag = {
     _count: BlogPostTagCountAggregateOutputType | null
-    _avg: BlogPostTagAvgAggregateOutputType | null
-    _sum: BlogPostTagSumAggregateOutputType | null
     _min: BlogPostTagMinAggregateOutputType | null
     _max: BlogPostTagMaxAggregateOutputType | null
   }
 
-  export type BlogPostTagAvgAggregateOutputType = {
-    tagId: number | null
-  }
-
-  export type BlogPostTagSumAggregateOutputType = {
-    tagId: bigint | null
-  }
-
   export type BlogPostTagMinAggregateOutputType = {
-    tagId: bigint | null
+    tagName: string | null
     postHash: string | null
     userId: string | null
   }
 
   export type BlogPostTagMaxAggregateOutputType = {
-    tagId: bigint | null
+    tagName: string | null
     postHash: string | null
     userId: string | null
   }
 
   export type BlogPostTagCountAggregateOutputType = {
-    tagId: number
+    tagName: number
     postHash: number
     userId: number
     _all: number
   }
 
 
-  export type BlogPostTagAvgAggregateInputType = {
-    tagId?: true
-  }
-
-  export type BlogPostTagSumAggregateInputType = {
-    tagId?: true
-  }
-
   export type BlogPostTagMinAggregateInputType = {
-    tagId?: true
+    tagName?: true
     postHash?: true
     userId?: true
   }
 
   export type BlogPostTagMaxAggregateInputType = {
-    tagId?: true
+    tagName?: true
     postHash?: true
     userId?: true
   }
 
   export type BlogPostTagCountAggregateInputType = {
-    tagId?: true
+    tagName?: true
     postHash?: true
     userId?: true
     _all?: true
@@ -7605,18 +7540,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: BlogPostTagAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: BlogPostTagSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: BlogPostTagMinAggregateInputType
@@ -7647,19 +7570,15 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: BlogPostTagCountAggregateInputType | true
-    _avg?: BlogPostTagAvgAggregateInputType
-    _sum?: BlogPostTagSumAggregateInputType
     _min?: BlogPostTagMinAggregateInputType
     _max?: BlogPostTagMaxAggregateInputType
   }
 
   export type BlogPostTagGroupByOutputType = {
-    tagId: bigint
+    tagName: string
     postHash: string
     userId: string
     _count: BlogPostTagCountAggregateOutputType | null
-    _avg: BlogPostTagAvgAggregateOutputType | null
-    _sum: BlogPostTagSumAggregateOutputType | null
     _min: BlogPostTagMinAggregateOutputType | null
     _max: BlogPostTagMaxAggregateOutputType | null
   }
@@ -7679,7 +7598,7 @@ export namespace Prisma {
 
 
   export type BlogPostTagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    tagId?: boolean
+    tagName?: boolean
     postHash?: boolean
     userId?: boolean
     tag?: boolean | TagDefaultArgs<ExtArgs>
@@ -7688,7 +7607,7 @@ export namespace Prisma {
   }, ExtArgs["result"]["blogPostTag"]>
 
   export type BlogPostTagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    tagId?: boolean
+    tagName?: boolean
     postHash?: boolean
     userId?: boolean
     tag?: boolean | TagDefaultArgs<ExtArgs>
@@ -7697,7 +7616,7 @@ export namespace Prisma {
   }, ExtArgs["result"]["blogPostTag"]>
 
   export type BlogPostTagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    tagId?: boolean
+    tagName?: boolean
     postHash?: boolean
     userId?: boolean
     tag?: boolean | TagDefaultArgs<ExtArgs>
@@ -7706,12 +7625,12 @@ export namespace Prisma {
   }, ExtArgs["result"]["blogPostTag"]>
 
   export type BlogPostTagSelectScalar = {
-    tagId?: boolean
+    tagName?: boolean
     postHash?: boolean
     userId?: boolean
   }
 
-  export type BlogPostTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tagId" | "postHash" | "userId", ExtArgs["result"]["blogPostTag"]>
+  export type BlogPostTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tagName" | "postHash" | "userId", ExtArgs["result"]["blogPostTag"]>
   export type BlogPostTagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tag?: boolean | TagDefaultArgs<ExtArgs>
     blogPostMeta?: boolean | BlogPostMetaDefaultArgs<ExtArgs>
@@ -7736,7 +7655,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      tagId: bigint
+      tagName: string
       postHash: string
       userId: string
     }, ExtArgs["result"]["blogPostTag"]>
@@ -7822,8 +7741,8 @@ export namespace Prisma {
      * // Get first 10 BlogPostTags
      * const blogPostTags = await prisma.blogPostTag.findMany({ take: 10 })
      * 
-     * // Only select the `tagId`
-     * const blogPostTagWithTagIdOnly = await prisma.blogPostTag.findMany({ select: { tagId: true } })
+     * // Only select the `tagName`
+     * const blogPostTagWithTagNameOnly = await prisma.blogPostTag.findMany({ select: { tagName: true } })
      * 
      */
     findMany<T extends BlogPostTagFindManyArgs>(args?: SelectSubset<T, BlogPostTagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogPostTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -7867,9 +7786,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many BlogPostTags and only return the `tagId`
-     * const blogPostTagWithTagIdOnly = await prisma.blogPostTag.createManyAndReturn({
-     *   select: { tagId: true },
+     * // Create many BlogPostTags and only return the `tagName`
+     * const blogPostTagWithTagNameOnly = await prisma.blogPostTag.createManyAndReturn({
+     *   select: { tagName: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -7958,9 +7877,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more BlogPostTags and only return the `tagId`
-     * const blogPostTagWithTagIdOnly = await prisma.blogPostTag.updateManyAndReturn({
-     *   select: { tagId: true },
+     * // Update zero or more BlogPostTags and only return the `tagName`
+     * const blogPostTagWithTagNameOnly = await prisma.blogPostTag.updateManyAndReturn({
+     *   select: { tagName: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8165,7 +8084,7 @@ export namespace Prisma {
    * Fields of the BlogPostTag model
    */
   interface BlogPostTagFieldRefs {
-    readonly tagId: FieldRef<"BlogPostTag", 'BigInt'>
+    readonly tagName: FieldRef<"BlogPostTag", 'String'>
     readonly postHash: FieldRef<"BlogPostTag", 'String'>
     readonly userId: FieldRef<"BlogPostTag", 'String'>
   }
@@ -10862,7 +10781,6 @@ export namespace Prisma {
 
 
   export const TagScalarFieldEnum: {
-    tagId: 'tagId',
     tagName: 'tagName',
     userId: 'userId'
   };
@@ -10906,7 +10824,7 @@ export namespace Prisma {
 
 
   export const BlogPostTagScalarFieldEnum: {
-    tagId: 'tagId',
+    tagName: 'tagName',
     postHash: 'postHash',
     userId: 'userId'
   };
@@ -11124,7 +11042,6 @@ export namespace Prisma {
     AND?: TagWhereInput | TagWhereInput[]
     OR?: TagWhereInput[]
     NOT?: TagWhereInput | TagWhereInput[]
-    tagId?: BigIntFilter<"Tag"> | bigint | number
     tagName?: StringFilter<"Tag"> | string
     userId?: StringFilter<"Tag"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -11132,7 +11049,6 @@ export namespace Prisma {
   }
 
   export type TagOrderByWithRelationInput = {
-    tagId?: SortOrder
     tagName?: SortOrder
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -11140,7 +11056,6 @@ export namespace Prisma {
   }
 
   export type TagWhereUniqueInput = Prisma.AtLeast<{
-    tagId?: bigint | number
     tagName_userId?: TagTagNameUserIdCompoundUniqueInput
     AND?: TagWhereInput | TagWhereInput[]
     OR?: TagWhereInput[]
@@ -11149,24 +11064,20 @@ export namespace Prisma {
     userId?: StringFilter<"Tag"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     blogPostTag?: BlogPostTagListRelationFilter
-  }, "tagId" | "tagName_userId">
+  }, "tagName_userId">
 
   export type TagOrderByWithAggregationInput = {
-    tagId?: SortOrder
     tagName?: SortOrder
     userId?: SortOrder
     _count?: TagCountOrderByAggregateInput
-    _avg?: TagAvgOrderByAggregateInput
     _max?: TagMaxOrderByAggregateInput
     _min?: TagMinOrderByAggregateInput
-    _sum?: TagSumOrderByAggregateInput
   }
 
   export type TagScalarWhereWithAggregatesInput = {
     AND?: TagScalarWhereWithAggregatesInput | TagScalarWhereWithAggregatesInput[]
     OR?: TagScalarWhereWithAggregatesInput[]
     NOT?: TagScalarWhereWithAggregatesInput | TagScalarWhereWithAggregatesInput[]
-    tagId?: BigIntWithAggregatesFilter<"Tag"> | bigint | number
     tagName?: StringWithAggregatesFilter<"Tag"> | string
     userId?: StringWithAggregatesFilter<"Tag"> | string
   }
@@ -11377,7 +11288,7 @@ export namespace Prisma {
     AND?: BlogPostTagWhereInput | BlogPostTagWhereInput[]
     OR?: BlogPostTagWhereInput[]
     NOT?: BlogPostTagWhereInput | BlogPostTagWhereInput[]
-    tagId?: BigIntFilter<"BlogPostTag"> | bigint | number
+    tagName?: StringFilter<"BlogPostTag"> | string
     postHash?: StringFilter<"BlogPostTag"> | string
     userId?: StringFilter<"BlogPostTag"> | string
     tag?: XOR<TagScalarRelationFilter, TagWhereInput>
@@ -11386,7 +11297,7 @@ export namespace Prisma {
   }
 
   export type BlogPostTagOrderByWithRelationInput = {
-    tagId?: SortOrder
+    tagName?: SortOrder
     postHash?: SortOrder
     userId?: SortOrder
     tag?: TagOrderByWithRelationInput
@@ -11395,34 +11306,32 @@ export namespace Prisma {
   }
 
   export type BlogPostTagWhereUniqueInput = Prisma.AtLeast<{
-    tagId_postHash?: BlogPostTagTagIdPostHashCompoundUniqueInput
+    tagName_postHash?: BlogPostTagTagNamePostHashCompoundUniqueInput
     AND?: BlogPostTagWhereInput | BlogPostTagWhereInput[]
     OR?: BlogPostTagWhereInput[]
     NOT?: BlogPostTagWhereInput | BlogPostTagWhereInput[]
-    tagId?: BigIntFilter<"BlogPostTag"> | bigint | number
+    tagName?: StringFilter<"BlogPostTag"> | string
     postHash?: StringFilter<"BlogPostTag"> | string
     userId?: StringFilter<"BlogPostTag"> | string
     tag?: XOR<TagScalarRelationFilter, TagWhereInput>
     blogPostMeta?: XOR<BlogPostMetaScalarRelationFilter, BlogPostMetaWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "tagId_postHash">
+  }, "tagName_postHash">
 
   export type BlogPostTagOrderByWithAggregationInput = {
-    tagId?: SortOrder
+    tagName?: SortOrder
     postHash?: SortOrder
     userId?: SortOrder
     _count?: BlogPostTagCountOrderByAggregateInput
-    _avg?: BlogPostTagAvgOrderByAggregateInput
     _max?: BlogPostTagMaxOrderByAggregateInput
     _min?: BlogPostTagMinOrderByAggregateInput
-    _sum?: BlogPostTagSumOrderByAggregateInput
   }
 
   export type BlogPostTagScalarWhereWithAggregatesInput = {
     AND?: BlogPostTagScalarWhereWithAggregatesInput | BlogPostTagScalarWhereWithAggregatesInput[]
     OR?: BlogPostTagScalarWhereWithAggregatesInput[]
     NOT?: BlogPostTagScalarWhereWithAggregatesInput | BlogPostTagScalarWhereWithAggregatesInput[]
-    tagId?: BigIntWithAggregatesFilter<"BlogPostTag"> | bigint | number
+    tagName?: StringWithAggregatesFilter<"BlogPostTag"> | string
     postHash?: StringWithAggregatesFilter<"BlogPostTag"> | string
     userId?: StringWithAggregatesFilter<"BlogPostTag"> | string
   }
@@ -11657,46 +11566,39 @@ export namespace Prisma {
   }
 
   export type TagCreateInput = {
-    tagId?: bigint | number
     tagName: string
     user: UserCreateNestedOneWithoutTagInput
     blogPostTag?: BlogPostTagCreateNestedManyWithoutTagInput
   }
 
   export type TagUncheckedCreateInput = {
-    tagId?: bigint | number
     tagName: string
     userId: string
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutTagInput
   }
 
   export type TagUpdateInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutTagNestedInput
     blogPostTag?: BlogPostTagUpdateManyWithoutTagNestedInput
   }
 
   export type TagUncheckedUpdateInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutTagNestedInput
   }
 
   export type TagCreateManyInput = {
-    tagId?: bigint | number
     tagName: string
     userId: string
   }
 
   export type TagUpdateManyMutationInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
   }
 
   export type TagUncheckedUpdateManyInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
@@ -11902,7 +11804,7 @@ export namespace Prisma {
   }
 
   export type BlogPostTagUncheckedCreateInput = {
-    tagId: bigint | number
+    tagName: string
     postHash: string
     userId: string
   }
@@ -11914,13 +11816,13 @@ export namespace Prisma {
   }
 
   export type BlogPostTagUncheckedUpdateInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
+    tagName?: StringFieldUpdateOperationsInput | string
     postHash?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type BlogPostTagCreateManyInput = {
-    tagId: bigint | number
+    tagName: string
     postHash: string
     userId: string
   }
@@ -11930,7 +11832,7 @@ export namespace Prisma {
   }
 
   export type BlogPostTagUncheckedUpdateManyInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
+    tagName?: StringFieldUpdateOperationsInput | string
     postHash?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
@@ -12218,17 +12120,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type BigIntFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
-    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
-  }
-
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -12240,32 +12131,21 @@ export namespace Prisma {
   }
 
   export type TagCountOrderByAggregateInput = {
-    tagId?: SortOrder
     tagName?: SortOrder
     userId?: SortOrder
   }
 
-  export type TagAvgOrderByAggregateInput = {
-    tagId?: SortOrder
-  }
-
   export type TagMaxOrderByAggregateInput = {
-    tagId?: SortOrder
     tagName?: SortOrder
     userId?: SortOrder
   }
 
   export type TagMinOrderByAggregateInput = {
-    tagId?: SortOrder
     tagName?: SortOrder
     userId?: SortOrder
   }
 
-  export type TagSumOrderByAggregateInput = {
-    tagId?: SortOrder
-  }
-
-  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+  export type BigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
     notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -12273,12 +12153,7 @@ export namespace Prisma {
     lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedBigIntFilter<$PrismaModel>
-    _min?: NestedBigIntFilter<$PrismaModel>
-    _max?: NestedBigIntFilter<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -12364,6 +12239,22 @@ export namespace Prisma {
     privateCount?: SortOrder
     publicCount?: SortOrder
     categoryDepth?: SortOrder
+  }
+
+  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -12492,35 +12383,27 @@ export namespace Prisma {
     isNot?: TagWhereInput
   }
 
-  export type BlogPostTagTagIdPostHashCompoundUniqueInput = {
-    tagId: bigint | number
+  export type BlogPostTagTagNamePostHashCompoundUniqueInput = {
+    tagName: string
     postHash: string
   }
 
   export type BlogPostTagCountOrderByAggregateInput = {
-    tagId?: SortOrder
+    tagName?: SortOrder
     postHash?: SortOrder
     userId?: SortOrder
   }
 
-  export type BlogPostTagAvgOrderByAggregateInput = {
-    tagId?: SortOrder
-  }
-
   export type BlogPostTagMaxOrderByAggregateInput = {
-    tagId?: SortOrder
+    tagName?: SortOrder
     postHash?: SortOrder
     userId?: SortOrder
   }
 
   export type BlogPostTagMinOrderByAggregateInput = {
-    tagId?: SortOrder
+    tagName?: SortOrder
     postHash?: SortOrder
     userId?: SortOrder
-  }
-
-  export type BlogPostTagSumOrderByAggregateInput = {
-    tagId?: SortOrder
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -12931,14 +12814,6 @@ export namespace Prisma {
     connect?: BlogPostTagWhereUniqueInput | BlogPostTagWhereUniqueInput[]
   }
 
-  export type BigIntFieldUpdateOperationsInput = {
-    set?: bigint | number
-    increment?: bigint | number
-    decrement?: bigint | number
-    multiply?: bigint | number
-    divide?: bigint | number
-  }
-
   export type UserUpdateOneRequiredWithoutTagNestedInput = {
     create?: XOR<UserCreateWithoutTagInput, UserUncheckedCreateWithoutTagInput>
     connectOrCreate?: UserCreateOrConnectWithoutTagInput
@@ -13013,6 +12888,14 @@ export namespace Prisma {
     connectOrCreate?: BlogPostPublishCreateOrConnectWithoutBlogCategoryInput | BlogPostPublishCreateOrConnectWithoutBlogCategoryInput[]
     createMany?: BlogPostPublishCreateManyBlogCategoryInputEnvelope
     connect?: BlogPostPublishWhereUniqueInput | BlogPostPublishWhereUniqueInput[]
+  }
+
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -13485,6 +13368,20 @@ export namespace Prisma {
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
@@ -13510,20 +13407,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -13609,13 +13492,11 @@ export namespace Prisma {
   }
 
   export type TagCreateWithoutUserInput = {
-    tagId?: bigint | number
     tagName: string
     blogPostTag?: BlogPostTagCreateNestedManyWithoutTagInput
   }
 
   export type TagUncheckedCreateWithoutUserInput = {
-    tagId?: bigint | number
     tagName: string
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutTagInput
   }
@@ -13698,7 +13579,7 @@ export namespace Prisma {
   }
 
   export type BlogPostTagUncheckedCreateWithoutUserInput = {
-    tagId: bigint | number
+    tagName: string
     postHash: string
   }
 
@@ -13791,7 +13672,6 @@ export namespace Prisma {
     AND?: TagScalarWhereInput | TagScalarWhereInput[]
     OR?: TagScalarWhereInput[]
     NOT?: TagScalarWhereInput | TagScalarWhereInput[]
-    tagId?: BigIntFilter<"Tag"> | bigint | number
     tagName?: StringFilter<"Tag"> | string
     userId?: StringFilter<"Tag"> | string
   }
@@ -13872,7 +13752,7 @@ export namespace Prisma {
     AND?: BlogPostTagScalarWhereInput | BlogPostTagScalarWhereInput[]
     OR?: BlogPostTagScalarWhereInput[]
     NOT?: BlogPostTagScalarWhereInput | BlogPostTagScalarWhereInput[]
-    tagId?: BigIntFilter<"BlogPostTag"> | bigint | number
+    tagName?: StringFilter<"BlogPostTag"> | string
     postHash?: StringFilter<"BlogPostTag"> | string
     userId?: StringFilter<"BlogPostTag"> | string
   }
@@ -13974,7 +13854,6 @@ export namespace Prisma {
 
   export type BlogPostTagUncheckedCreateWithoutTagInput = {
     postHash: string
-    userId: string
   }
 
   export type BlogPostTagCreateOrConnectWithoutTagInput = {
@@ -14319,7 +14198,7 @@ export namespace Prisma {
   }
 
   export type BlogPostTagUncheckedCreateWithoutBlogPostMetaInput = {
-    tagId: bigint | number
+    tagName: string
     userId: string
   }
 
@@ -14583,13 +14462,11 @@ export namespace Prisma {
   }
 
   export type TagCreateWithoutBlogPostTagInput = {
-    tagId?: bigint | number
     tagName: string
     user: UserCreateNestedOneWithoutTagInput
   }
 
   export type TagUncheckedCreateWithoutBlogPostTagInput = {
-    tagId?: bigint | number
     tagName: string
     userId: string
   }
@@ -14669,13 +14546,11 @@ export namespace Prisma {
   }
 
   export type TagUpdateWithoutBlogPostTagInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutTagNestedInput
   }
 
   export type TagUncheckedUpdateWithoutBlogPostTagInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
@@ -15039,7 +14914,6 @@ export namespace Prisma {
   }
 
   export type TagCreateManyUserInput = {
-    tagId?: bigint | number
     tagName: string
   }
 
@@ -15060,7 +14934,7 @@ export namespace Prisma {
   }
 
   export type BlogPostTagCreateManyUserInput = {
-    tagId: bigint | number
+    tagName: string
     postHash: string
   }
 
@@ -15084,19 +14958,16 @@ export namespace Prisma {
   }
 
   export type TagUpdateWithoutUserInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
     blogPostTag?: BlogPostTagUpdateManyWithoutTagNestedInput
   }
 
   export type TagUncheckedUpdateWithoutUserInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutTagNestedInput
   }
 
   export type TagUncheckedUpdateManyWithoutUserInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
     tagName?: StringFieldUpdateOperationsInput | string
   }
 
@@ -15164,12 +15035,12 @@ export namespace Prisma {
   }
 
   export type BlogPostTagUncheckedUpdateWithoutUserInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
+    tagName?: StringFieldUpdateOperationsInput | string
     postHash?: StringFieldUpdateOperationsInput | string
   }
 
   export type BlogPostTagUncheckedUpdateManyWithoutUserInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
+    tagName?: StringFieldUpdateOperationsInput | string
     postHash?: StringFieldUpdateOperationsInput | string
   }
 
@@ -15233,7 +15104,6 @@ export namespace Prisma {
 
   export type BlogPostTagCreateManyTagInput = {
     postHash: string
-    userId: string
   }
 
   export type BlogPostTagUpdateWithoutTagInput = {
@@ -15243,12 +15113,10 @@ export namespace Prisma {
 
   export type BlogPostTagUncheckedUpdateWithoutTagInput = {
     postHash?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type BlogPostTagUncheckedUpdateManyWithoutTagInput = {
     postHash?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type BlogCategoryCreateManyUpperCategoryInput = {
@@ -15321,7 +15189,7 @@ export namespace Prisma {
   }
 
   export type BlogPostTagCreateManyBlogPostMetaInput = {
-    tagId: bigint | number
+    tagName: string
     userId: string
   }
 
@@ -15363,12 +15231,12 @@ export namespace Prisma {
   }
 
   export type BlogPostTagUncheckedUpdateWithoutBlogPostMetaInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
+    tagName?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaInput = {
-    tagId?: BigIntFieldUpdateOperationsInput | bigint | number
+    tagName?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 

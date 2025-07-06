@@ -31,13 +31,12 @@ model User {
 }
 
 model Tag {
-  tagId       BigInt        @id @default(autoincrement())
   tagName     String
   userId      String
   user        User          @relation(fields: [userId], references: [userId])
   blogPostTag BlogPostTag[]
 
-  @@unique([tagName, userId])
+  @@id([tagName, userId])
 }
 
 model BlogCategory {
@@ -80,14 +79,14 @@ model BlogExtraFile {
 }
 
 model BlogPostTag {
-  tagId        BigInt
+  tagName      String
   postHash     String
   userId       String
-  tag          Tag          @relation(fields: [tagId], references: [tagId])
+  tag          Tag          @relation(fields: [tagName, userId], references: [tagName, userId])
   blogPostMeta BlogPostMeta @relation(fields: [postHash], references: [postHash])
   user         User         @relation(fields: [userId], references: [userId])
 
-  @@id([tagId, postHash])
+  @@id([tagName, postHash])
 }
 
 model BlogPost {

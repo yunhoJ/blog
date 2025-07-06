@@ -128,6 +128,37 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 전체 태그 생성
+	createTag: async (userId: string, tagName: string) => {
+		const response = await axiosInstance.post(`${axiosInstance.defaults.baseURL}/api/createTag`, {
+			userId,
+			tagName,
+		});
+		return response.data;
+	},
+	// 태그 목록 조회
+	getTags: async (userId: string) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/createTag?userId=${userId}`
+		);
+		return response.data;
+	},
+	// 블로그 태그 생성
+	createBlogTag: async (userId: string, tagList: string[], postHash: string) => {
+		console.log('test', userId, tagList, postHash);
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/createPostTag`,
+			{ userId, tagList, postHash }
+		);
+		return response.data;
+	},
+	// 블로그 태그 조회
+	getBlogTag: async (postHash: string) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/createPostTag?postHash=${postHash}`
+		);
+		return response.data;
+	},
 	// 포스트 수정
 	updatePost: async (
 		id: string,

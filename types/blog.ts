@@ -55,6 +55,9 @@ export interface BlogPostMeta {
 	postViewCount: number;
 	postLikeCount: number;
 	postMainImageUrl?: string;
+	blogPostTag: {
+		tagName: string;
+	}[];
 }
 
 // 임시저장 목록 타입
