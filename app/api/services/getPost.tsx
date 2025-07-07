@@ -37,18 +37,37 @@ const pagination = (totalCount: number, pageSize: number, page: number): Paginat
 		hasNextPage: page < totalPage,
 	};
 };
+const getTagList = async (tag: string) => {
+	const tagList = await prisma.blogPostTag.findMany({
+		where: {
+			tagName: tag,
+		},
+		select: {
+			postHash: true,
+		},
+	});
 
+	return tagList.map((item) => item.postHash);
+};
 export const getPostPublishData = async (
 	userId: string,
 	category: string,
 	sort: string,
 	pageSize: number = 0,
-	page: number = 0
+	page: number = 0,
+	tag: string = ''
 ) => {
+	// 태그 필터링이 필요한 경우 먼저 postHash 목록을 가져옵니다
+	let taggedPostHashes: string[] | undefined;
+	if (tag !== '') {
+		taggedPostHashes = await getTagList(tag);
+	}
+
 	const whereClause = {
 		userId,
 		postVisibility: true,
 		...(category !== '전체' && { categoryName: category }),
+		...(taggedPostHashes && { postHash: { in: taggedPostHashes } }),
 	};
 	const totalCount = await prisma.blogPostPublish.count({ where: whereClause });
 

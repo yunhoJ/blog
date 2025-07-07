@@ -22,10 +22,12 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 
 	const category = searchParams.get('category');
 	const sort = searchParams.get('sort');
+	const tag = searchParams.get('tag');
 	const fetchPosts = async ({ pageParam }: { pageParam: number }) => {
 		const params = new URLSearchParams();
 		if (category) params.set('category', category);
 		if (sort) params.set('sort', sort);
+		if (tag) params.set('tag', tag);
 		params.set('page', pageParam.toString());
 
 		const response = await fetch(`/api/createPostPublish?${params.toString()}`);
@@ -36,7 +38,7 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 		return response.json();
 	};
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-		queryKey: ['posts', category, sort],
+		queryKey: ['posts', category, sort, tag],
 		queryFn: fetchPosts,
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => {
