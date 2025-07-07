@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { BlogPostData, BlogPostMeta } from '@/types/blog';
-import { User, Calendar, Folder, ChevronRight, Eye, Heart } from 'lucide-react';
+import { User, Calendar, Folder, ChevronRight, Eye, Heart, Hash } from 'lucide-react';
 import { formatDate } from '@/lib/date';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -43,7 +43,7 @@ export default function PostCard({
 	return (
 		<Card
 			className={cn(
-				'group bg-card/50 border-border/40 hover:border-primary/20 gap-0 overflow-hidden border backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg',
+				'group bg-card/50 border-border/40 hover:border-primary/20 gap-0 overflow-hidden border backdrop-blur-sm transition-all duration-200 hover:scale-[1.03] hover:shadow-lg',
 				postMeta.postMainImageUrl ? 'py-0 pb-6' : 'py-6'
 			)}
 		>
@@ -65,28 +65,30 @@ export default function PostCard({
 					!postMeta.postMainImageUrl && postMeta.blogPostTag.length > 0 ? 'pt-0' : ''
 				)}
 			>
-				<div className="flex flex-wrap justify-end gap-2">
-					{postMeta.blogPostTag.map((tag) => (
-						<Badge
-							key={tag.tagName}
-							className={cn('text-xs transition-colors', getCategoryColor(tag.tagName))}
-						>
-							{tag.tagName}
-						</Badge>
-					))}
-				</div>
-				<div className="flex items-center gap-1">
+				<div className="flex items-center justify-between">
 					<Badge
 						key={category}
 						variant="secondary"
 						className={cn('text-sm transition-colors', getCategoryColor(category))}
 					>
-						<Folder className="mr-1" />
-
+						<Folder />
+						<ChevronRight className="text-muted-foreground h-4 w-4" />
 						{category}
 					</Badge>
-					<ChevronRight className="text-muted-foreground h-4 w-4" />
-					<h2 className="group-hover:text-primary text-xl font-bold tracking-tight transition-colors">
+					<div className="flex basis-4/5 flex-wrap items-center justify-end gap-2">
+						{postMeta.blogPostTag.map((tag) => (
+							<Badge
+								key={tag.tagName}
+								className={cn('text-xs transition-colors', getCategoryColor(tag.tagName))}
+							>
+								<Hash />
+								{tag.tagName}
+							</Badge>
+						))}
+					</div>
+				</div>
+				<div className="mt-6">
+					<h2 className="group-hover:text-primary max-w-xs overflow-hidden text-xl font-bold tracking-tight text-ellipsis transition-colors md:max-w-md lg:max-w-lg xl:max-w-xl">
 						{params.postTitle}
 					</h2>
 				</div>

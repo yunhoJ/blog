@@ -28,8 +28,8 @@ export async function GET(request: NextRequest) {
 	const sort = searchParams.get('sort') || 'latest';
 	const pageSize = Number(searchParams.get('pageSize')) || defaultPageSize;
 	const page = Number(searchParams.get('page')) || 1;
-
-	const post = await getPostPublishData(userId, category, sort, pageSize, page);
+	const tag = searchParams.get('tag') || '';
+	const post = await getPostPublishData(userId, category, sort, pageSize, page, tag);
 	return NextResponse.json(post);
 }
 const getPublishedPosts = async (postHash: string) => {

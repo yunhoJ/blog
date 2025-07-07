@@ -11,7 +11,7 @@ import TagSectionSkeleton from './_components/TagSectionSkeleton';
 import PostListSkeletion from '@/components/features/blog/PostListSkeletion';
 // import { getPublishedPosts } from '@/lib/notion';
 import { defaultPageSize, userId } from './api/constant/const';
-import { getCategories } from './api/services/getCategory';
+import { getCategories, getTags } from './api/services/getCategory';
 
 import CategorySection from './_components/TagSection.client';
 import HeaderSection from './_components/HeaderSection';
@@ -38,6 +38,7 @@ interface HomeProps {
 		sort?: string;
 		pageSize?: number;
 		page?: number;
+		tag?: string;
 	}>;
 }
 
@@ -64,9 +65,12 @@ interface HomeProps {
 export default async function Home({ searchParams }: HomeProps) {
 	// 카테고리 목록 조회
 	const categories = getCategories(userId);
-	const { category, sort, pageSize, page } = await searchParams;
+	// 테그 목록 조회
+	const tags = getTags(userId);
+	const { category, sort, pageSize, page, tag } = await searchParams;
 	//카테고리 선택
 	const selectedCategory = category || '전체';
+	const selectedTag = tag || '';
 	// 정렬 선택
 	const selectedSort = sort || 'latest';
 	const selectedPageSize = Number(pageSize) || defaultPageSize;
@@ -77,21 +81,27 @@ export default async function Home({ searchParams }: HomeProps) {
 		selectedCategory,
 		selectedSort,
 		selectedPageSize,
-		selectedPage
+		selectedPage,
+		selectedTag
 	);
-
+	// TODO: 태그 선택 시 포스트 목록 업데이트
 	// 카테고리
 	const CategorySectionComponent = () => (
 		<aside>
 			<Suspense fallback={<TagSectionSkeleton />}>
-				<CategorySection categories={categories} selectedCategory={selectedCategory} />
+				<CategorySection
+					categories={categories}
+					selectedCategory={selectedCategory}
+					selectedTag={selectedTag}
+					tags={tags}
+				/>
 			</Suspense>
 		</aside>
 	);
 	// 메인 컨텐츠
 	const MainContentComponent = () => (
 		<div className="space-y-8">
-			<HeaderSection selectedTag={selectedCategory} />
+			<HeaderSection selectedCategory={selectedCategory} selectedTag={selectedTag} />
 			<ToastBoundary>
 				<Suspense fallback={<PostListSkeletion />}>
 					<PostListSuspense postsPromise={postPublish} />

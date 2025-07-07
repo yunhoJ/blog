@@ -14,3 +14,35 @@ export const getCategories = async (userId: string) => {
 		publicCount: Number(category.publicCount),
 	}));
 };
+
+export const getTags = async (userId: string) => {
+	const tags = await prisma.blogPostPublish.findMany({
+		where: {
+			userId,
+			postVisibility: true,
+		},
+		select: {
+			postHash: true,
+		},
+	});
+
+	const tagList = await prisma.blogPostTag.findMany({
+		where: {
+			userId,
+			postHash: {
+				in: tags.map((tag) => tag.postHash),
+			},
+		},
+		select: {
+			tagName: true,
+		},
+	});
+	const countTags = tagList.reduce(
+		(acc, cur) => {
+			acc[cur.tagName] = (acc[cur.tagName] || 0) + 1;
+			return acc;
+		},
+		{} as Record<string, number>
+	);
+	return countTags;
+};
