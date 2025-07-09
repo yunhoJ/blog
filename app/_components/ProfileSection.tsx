@@ -18,9 +18,9 @@ export default function ProfileSection(props: ProfileSectionProps) {
 						<Image
 							src="/images/profile.jpeg"
 							alt="profile"
-							width={200}
-							height={200}
-							className="mb-6 rounded-4xl"
+							width={300}
+							height={300}
+							className="mb-6 rounded-full"
 						/>
 						<div className="text-xl font-bold">전윤호</div>
 						<div className="text-primary text-sm">backend developer</div>
