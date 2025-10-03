@@ -21,6 +21,7 @@ model User {
   userPassword String
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  failedLoginCount Int @default(0)
   tag      Tag[]  
   blogCategory BlogCategory[]
   blogPostMeta BlogPostMeta[]
