@@ -84,8 +84,6 @@ export default async function Home({ searchParams }: HomeProps) {
 		selectedPage,
 		selectedTag
 	);
-	// TODO: 태그 선택 시 포스트 목록 업데이트
-	// 카테고리
 	const CategorySectionComponent = () => (
 		<aside>
 			<Suspense fallback={<TagSectionSkeleton />}>

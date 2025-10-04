@@ -1707,8 +1707,18 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    failedLoginCount: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    failedLoginCount: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1717,6 +1727,7 @@ export namespace Prisma {
     userPassword: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    failedLoginCount: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1725,6 +1736,7 @@ export namespace Prisma {
     userPassword: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    failedLoginCount: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1733,9 +1745,18 @@ export namespace Prisma {
     userPassword: number
     createdAt: number
     updatedAt: number
+    failedLoginCount: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    failedLoginCount?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    failedLoginCount?: true
+  }
 
   export type UserMinAggregateInputType = {
     userId?: true
@@ -1743,6 +1764,7 @@ export namespace Prisma {
     userPassword?: true
     createdAt?: true
     updatedAt?: true
+    failedLoginCount?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1751,6 +1773,7 @@ export namespace Prisma {
     userPassword?: true
     createdAt?: true
     updatedAt?: true
+    failedLoginCount?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1759,6 +1782,7 @@ export namespace Prisma {
     userPassword?: true
     createdAt?: true
     updatedAt?: true
+    failedLoginCount?: true
     _all?: true
   }
 
@@ -1800,6 +1824,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -1830,6 +1866,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -1840,7 +1878,10 @@ export namespace Prisma {
     userPassword: string
     createdAt: Date
     updatedAt: Date
+    failedLoginCount: number
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -1865,6 +1906,7 @@ export namespace Prisma {
     userPassword?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    failedLoginCount?: boolean
     tag?: boolean | User$tagArgs<ExtArgs>
     blogCategory?: boolean | User$blogCategoryArgs<ExtArgs>
     blogPostMeta?: boolean | User$blogPostMetaArgs<ExtArgs>
@@ -1880,6 +1922,7 @@ export namespace Prisma {
     userPassword?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    failedLoginCount?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1888,6 +1931,7 @@ export namespace Prisma {
     userPassword?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    failedLoginCount?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1896,9 +1940,10 @@ export namespace Prisma {
     userPassword?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    failedLoginCount?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "userName" | "userPassword" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "userName" | "userPassword" | "createdAt" | "updatedAt" | "failedLoginCount", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tag?: boolean | User$tagArgs<ExtArgs>
     blogCategory?: boolean | User$blogCategoryArgs<ExtArgs>
@@ -1927,6 +1972,7 @@ export namespace Prisma {
       userPassword: string
       createdAt: Date
       updatedAt: Date
+      failedLoginCount: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2361,6 +2407,7 @@ export namespace Prisma {
     readonly userPassword: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly failedLoginCount: FieldRef<"User", 'Int'>
   }
     
 
@@ -10774,7 +10821,8 @@ export namespace Prisma {
     userName: 'userName',
     userPassword: 'userPassword',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    failedLoginCount: 'failedLoginCount'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -10917,20 +10965,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'BigInt'
-   */
-  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
-    
-
-
-  /**
-   * Reference to a field of type 'BigInt[]'
-   */
-  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -10941,6 +10975,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt'
+   */
+  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt[]'
+   */
+  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
@@ -10977,6 +11025,7 @@ export namespace Prisma {
     userPassword?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    failedLoginCount?: IntFilter<"User"> | number
     tag?: TagListRelationFilter
     blogCategory?: BlogCategoryListRelationFilter
     blogPostMeta?: BlogPostMetaListRelationFilter
@@ -10991,6 +11040,7 @@ export namespace Prisma {
     userPassword?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    failedLoginCount?: SortOrder
     tag?: TagOrderByRelationAggregateInput
     blogCategory?: BlogCategoryOrderByRelationAggregateInput
     blogPostMeta?: BlogPostMetaOrderByRelationAggregateInput
@@ -11008,6 +11058,7 @@ export namespace Prisma {
     userPassword?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    failedLoginCount?: IntFilter<"User"> | number
     tag?: TagListRelationFilter
     blogCategory?: BlogCategoryListRelationFilter
     blogPostMeta?: BlogPostMetaListRelationFilter
@@ -11022,9 +11073,12 @@ export namespace Prisma {
     userPassword?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    failedLoginCount?: SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -11036,6 +11090,7 @@ export namespace Prisma {
     userPassword?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    failedLoginCount?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type TagWhereInput = {
@@ -11491,6 +11546,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaCreateNestedManyWithoutUserInput
@@ -11505,6 +11561,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagUncheckedCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryUncheckedCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaUncheckedCreateNestedManyWithoutUserInput
@@ -11519,6 +11576,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUpdateManyWithoutUserNestedInput
@@ -11533,6 +11591,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUncheckedUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUncheckedUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUncheckedUpdateManyWithoutUserNestedInput
@@ -11547,6 +11606,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -11555,6 +11615,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -11563,6 +11624,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type TagCreateInput = {
@@ -12004,6 +12066,17 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type TagListRelationFilter = {
     every?: TagWhereInput
     some?: TagWhereInput
@@ -12070,6 +12143,11 @@ export namespace Prisma {
     userPassword?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    failedLoginCount?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    failedLoginCount?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -12078,6 +12156,7 @@ export namespace Prisma {
     userPassword?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    failedLoginCount?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -12086,6 +12165,11 @@ export namespace Prisma {
     userPassword?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    failedLoginCount?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    failedLoginCount?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -12118,6 +12202,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -12154,17 +12254,6 @@ export namespace Prisma {
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -12255,22 +12344,6 @@ export namespace Prisma {
     _sum?: NestedBigIntFilter<$PrismaModel>
     _min?: NestedBigIntFilter<$PrismaModel>
     _max?: NestedBigIntFilter<$PrismaModel>
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12626,6 +12699,14 @@ export namespace Prisma {
     set?: Date | string
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type TagUpdateManyWithoutUserNestedInput = {
     create?: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput> | TagCreateWithoutUserInput[] | TagUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TagCreateOrConnectWithoutUserInput | TagCreateOrConnectWithoutUserInput[]
@@ -12896,14 +12977,6 @@ export namespace Prisma {
     decrement?: bigint | number
     multiply?: bigint | number
     divide?: bigint | number
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutBlogCategoryNestedInput = {
@@ -13315,6 +13388,17 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -13332,17 +13416,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -13355,6 +13428,33 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedBigIntFilter<$PrismaModel = never> = {
@@ -13396,33 +13496,6 @@ export namespace Prisma {
     _sum?: NestedBigIntFilter<$PrismaModel>
     _min?: NestedBigIntFilter<$PrismaModel>
     _max?: NestedBigIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13822,6 +13895,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     blogCategory?: BlogCategoryCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaCreateNestedManyWithoutUserInput
     blogPostTag?: BlogPostTagCreateNestedManyWithoutUserInput
@@ -13835,6 +13909,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     blogCategory?: BlogCategoryUncheckedCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaUncheckedCreateNestedManyWithoutUserInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutUserInput
@@ -13883,6 +13958,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     blogCategory?: BlogCategoryUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUpdateManyWithoutUserNestedInput
     blogPostTag?: BlogPostTagUpdateManyWithoutUserNestedInput
@@ -13896,6 +13972,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     blogCategory?: BlogCategoryUncheckedUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUncheckedUpdateManyWithoutUserNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutUserNestedInput
@@ -13925,6 +14002,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaCreateNestedManyWithoutUserInput
     blogPostTag?: BlogPostTagCreateNestedManyWithoutUserInput
@@ -13938,6 +14016,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagUncheckedCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaUncheckedCreateNestedManyWithoutUserInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutUserInput
@@ -14044,6 +14123,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUpdateManyWithoutUserNestedInput
     blogPostTag?: BlogPostTagUpdateManyWithoutUserNestedInput
@@ -14057,6 +14137,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUncheckedUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUncheckedUpdateManyWithoutUserNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutUserNestedInput
@@ -14144,6 +14225,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryCreateNestedManyWithoutUserInput
     blogPostTag?: BlogPostTagCreateNestedManyWithoutUserInput
@@ -14157,6 +14239,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagUncheckedCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryUncheckedCreateNestedManyWithoutUserInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutUserInput
@@ -14265,6 +14348,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUpdateManyWithoutUserNestedInput
     blogPostTag?: BlogPostTagUpdateManyWithoutUserNestedInput
@@ -14278,6 +14362,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUncheckedUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUncheckedUpdateManyWithoutUserNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutUserNestedInput
@@ -14366,6 +14451,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaCreateNestedManyWithoutUserInput
@@ -14379,6 +14465,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagUncheckedCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryUncheckedCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaUncheckedCreateNestedManyWithoutUserInput
@@ -14441,6 +14528,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUpdateManyWithoutUserNestedInput
@@ -14454,6 +14542,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUncheckedUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUncheckedUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUncheckedUpdateManyWithoutUserNestedInput
@@ -14509,6 +14598,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaCreateNestedManyWithoutUserInput
@@ -14522,6 +14612,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagUncheckedCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryUncheckedCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaUncheckedCreateNestedManyWithoutUserInput
@@ -14605,6 +14696,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUpdateManyWithoutUserNestedInput
@@ -14618,6 +14710,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUncheckedUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUncheckedUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUncheckedUpdateManyWithoutUserNestedInput
@@ -14631,6 +14724,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaCreateNestedManyWithoutUserInput
@@ -14644,6 +14738,7 @@ export namespace Prisma {
     userPassword: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    failedLoginCount?: number
     tag?: TagUncheckedCreateNestedManyWithoutUserInput
     blogCategory?: BlogCategoryUncheckedCreateNestedManyWithoutUserInput
     blogPostMeta?: BlogPostMetaUncheckedCreateNestedManyWithoutUserInput
@@ -14715,6 +14810,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUpdateManyWithoutUserNestedInput
@@ -14728,6 +14824,7 @@ export namespace Prisma {
     userPassword?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
     tag?: TagUncheckedUpdateManyWithoutUserNestedInput
     blogCategory?: BlogCategoryUncheckedUpdateManyWithoutUserNestedInput
     blogPostMeta?: BlogPostMetaUncheckedUpdateManyWithoutUserNestedInput
