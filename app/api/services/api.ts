@@ -178,4 +178,30 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 로그인
+	login: async (userId: string, password: string) => {
+		const response = await axiosInstance.post(`${axiosInstance.defaults.baseURL}/api/login`, {
+			userId,
+			password,
+		});
+		return response.data;
+	},
+	//로그인 token으로 체크
+	checkLogin: async () => {
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/check`,
+			{},
+			{ withCredentials: true }
+		);
+		return response.data;
+	},
+	//로그아웃
+	logout: async () => {
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/logout`,
+			{},
+			{ withCredentials: true }
+		);
+		return response.data;
+	},
 };
