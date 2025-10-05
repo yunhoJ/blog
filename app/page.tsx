@@ -30,7 +30,7 @@ const socialLinks = [
 	{ icon: Github, url: 'https://github.com/yunhoJ', title: 'GitHub' },
 	// { icon: Linkedin, url: 'https://www.linkedin.com/in/seungmin-dev' },
 	// { icon: Instagram, url: 'https://www.instagram.com/seungmin-dev' },
-	{ icon: Mail, url: 'mailto:wjse213@gmail.com', title: 'Email' },
+	{ icon: Mail, url: 'mailto:yh@yunhoj.com', title: 'Email' },
 ];
 interface HomeProps {
 	searchParams: Promise<{

@@ -65,6 +65,7 @@ export default function LoginModal({ isOpen, onOpenChange }: LoginModalProps) {
 								// 입력값이 변경되면 에러 메시지 초기화
 								if (errorMessage) setErrorMessage('');
 							}}
+							autoFocus
 							onKeyDown={(e) => {
 								if (e.key === 'Enter') {
 									handleLogin();
