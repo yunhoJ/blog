@@ -26,7 +26,6 @@ export default function WriteButton() {
 
 	const handleWriteClick = async () => {
 		const response = await postApi.getDrafts(userId);
-		console.log('response.data : ', response.data);
 		setDrafts(response.data);
 
 		setIsDraftModalOpen(response.data.length > 0);
