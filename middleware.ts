@@ -34,7 +34,7 @@ export async function middleware(req: NextRequest) {
 	// 인증이 필요한 페이지 경로
 	if (protectedPagePaths.some((path) => pathname.startsWith(path))) {
 		if (!accessToken && !refreshToken) {
-			console.log(req.url);
+			console.log('로그인 필요 페이지', req.url);
 			return NextResponse.redirect(new URL('/', req.url));
 		}
 	}
