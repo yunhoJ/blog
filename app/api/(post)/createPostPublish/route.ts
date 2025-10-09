@@ -2,8 +2,7 @@ import { prisma } from '@/lib/prismaSession';
 import { NextRequest, NextResponse } from 'next/server';
 import { getPostPublishData } from '../../services/getPost';
 import { userId, defaultPageSize } from '../../constant/const';
-// import { getPostPublish } from '../../services/getPost';
-
+import { checkLogin } from '../../services/loginService';
 export async function POST(request: NextRequest) {
 	const { postHash, category, visibility, userId, imageUrl } = await request.json();
 	const postData = await getPublishedPosts(postHash);
@@ -13,13 +12,28 @@ export async function POST(request: NextRequest) {
 	await createPostPublish(postData.revisionHash, postHash, category, visibility, userId);
 	return NextResponse.json({ message: 'Post published successfully' });
 }
-// export async function GET(request: NextRequest) {
-// 	const { searchParams } = new URL(request.url);
-// 	const userId = searchParams.get('userId') as string;
-// 	const category = searchParams.get('category') as string;
-// 	const post = await getPostPublish(userId, category);
-// 	return NextResponse.json({ data: post });
-// }
+
+export async function DELETE(request: NextRequest) {
+	const { revisionHash, postHash } = await request.json();
+
+	// 로그인 체크
+	const result = await checkLogin();
+	if (!result.success) {
+		return NextResponse.json(
+			{ success: false, message: result.message },
+			{ status: result.status }
+		);
+	}
+	try {
+		await deletePostPublish(revisionHash, postHash, result.user?.userId as string);
+	} catch {
+		return NextResponse.json(
+			{ success: false, message: '삭제 중 오류가 발생했습니다.' },
+			{ status: 500 }
+		);
+	}
+	return NextResponse.json({ message: '게시글 삭제 성공' });
+}
 
 export async function GET(request: NextRequest) {
 	// 포스트 발행 데이터 조회
@@ -81,6 +95,30 @@ const createPostPublish = async (
 		data: {
 			[visibility ? 'publicCount' : 'privateCount']: {
 				increment: 1,
+			},
+		},
+	});
+
+	return post;
+};
+
+const deletePostPublish = async (revisionHash: string, postHash: string, userId: string) => {
+	const post = await prisma.blogPostPublish.delete({
+		where: {
+			userId: userId,
+			revisionHash,
+			postHash,
+		},
+	});
+
+	// 카테고리 카운트 업데이트
+	await prisma.blogCategory.update({
+		where: {
+			categoryName: post.categoryName,
+		},
+		data: {
+			[post.postVisibility ? 'publicCount' : 'privateCount']: {
+				decrement: 1,
 			},
 		},
 	});

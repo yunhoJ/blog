@@ -171,10 +171,13 @@ export const postApi = {
 		return response.data;
 	},
 
-	// 포스트 삭제
-	deletePost: async (id: string) => {
+	//포스트 삭제
+	deletePost: async (revisionHash: string, postHash: string) => {
 		const response = await axiosInstance.delete(
-			`${axiosInstance.defaults.baseURL}/api/posts/${id}`
+			`${axiosInstance.defaults.baseURL}/api/createPostPublish`,
+			{
+				data: { revisionHash, postHash },
+			}
 		);
 		return response.data;
 	},

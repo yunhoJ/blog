@@ -10,6 +10,7 @@ import { use, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Loader2 } from 'lucide-react';
 import { BlogPostPublish, PaginationType } from '@/types/blog';
+import { useAuthStore } from '@/lib/store/useAuthStore';
 
 interface PostListProps {
 	postsPromise: Promise<{ posts: BlogPostPublish[]; paginationData: PaginationType }>;
@@ -63,21 +64,26 @@ export default function PostListSuspense({ postsPromise }: PostListProps) {
 			fetchNextPage();
 		}
 	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
+	const { isAuthenticated } = useAuthStore();
 	return (
 		<div>
 			<div className="grid gap-4 md:gap-6">
 				{data.pages
 					.flatMap((page) => page.posts)
-					.map((post) => (
-						<Link href={`/blog/${post.revisionHash}`} key={post.revisionHash}>
-							<PostCard
-								params={post.blogPost}
-								category={post.categoryName}
-								postMeta={post.blogPost.blogPostMeta}
-							/>
-						</Link>
-					))}
+					.map((post) => {
+						return (
+							<Link href={`/blog/${post.revisionHash}`} key={post.revisionHash}>
+								<PostCard
+									params={post.blogPost}
+									category={post.categoryName}
+									postMeta={post.blogPost.blogPostMeta}
+									postHash={post.postHash}
+									revisionHash={post.revisionHash}
+									isAuthenticated={isAuthenticated}
+								/>
+							</Link>
+						);
+					})}
 			</div>
 
 			{hasNextPage && !isFetchingNextPage && <div ref={ref} className="h-10" />}

@@ -5,6 +5,7 @@ import { formatDate } from '@/lib/date';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import PostDropdown from '@/components/features/blog/PostDropdown';
 
 const getCategoryColor = (category: string) => {
 	const colors = [
@@ -35,10 +36,16 @@ export default function PostCard({
 	params,
 	category,
 	postMeta,
+	postHash,
+	revisionHash,
+	isAuthenticated,
 }: {
 	params: BlogPostData;
 	category: string;
 	postMeta: BlogPostMeta;
+	postHash: string;
+	revisionHash: string;
+	isAuthenticated: boolean;
 }) {
 	return (
 		<Card
@@ -87,10 +94,17 @@ export default function PostCard({
 						))}
 					</div>
 				</div>
-				<div className="mt-6">
+				<div className="mt-6 flex items-center justify-between">
 					<h2 className="group-hover:text-primary max-w-xs overflow-hidden text-xl font-bold tracking-tight text-ellipsis transition-colors md:max-w-md lg:max-w-lg xl:max-w-xl">
 						{params.postTitle}
 					</h2>
+					{
+						<PostDropdown
+							revisionHash={revisionHash}
+							postHash={postHash}
+							postTitle={params.postTitle}
+						/>
+					}
 				</div>
 				{/* {post.description && (
 					<p className="text-muted-foreground mt-2 line-clamp-2 leading-relaxed">

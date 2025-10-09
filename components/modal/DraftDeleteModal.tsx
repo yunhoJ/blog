@@ -45,7 +45,7 @@ export default function DraftDeleteModal({
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel onClick={() => onOpenChange(false)}>취소</AlertDialogCancel>
+					<AlertDialogCancel>취소</AlertDialogCancel>
 					<AlertDialogAction
 						className="bg-destructive hover:bg-destructive/90 px-6 py-2"
 						onClick={handleDelete}

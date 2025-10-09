@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
 				if (window.location.pathname !== '/') {
 					window.location.href = '/';
 				}
-				toastError(new Error('로그인 토큰이 만료되었습니다. 다시 로그인해주세요.11'));
+				toastError(new Error('로그인 토큰이 만료되었습니다. 다시 로그인해주세요.'));
 			}
 		}
 		return Promise.reject(error);

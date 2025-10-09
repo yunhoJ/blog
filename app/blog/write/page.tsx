@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 // import { Label } from '@/components/ui/label';
 import { fixBrTags } from '@/lib/replaceContent';
 import { toastError, toastSuccess } from '@/lib/toasttError';
+import { useQueryClient } from '@tanstack/react-query';
 import { Editor } from '@toast-ui/react-editor';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -31,6 +32,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 // };
 
 export default function Write() {
+	const queryClient = useQueryClient();
 	const router = useRouter();
 	const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
 	const editorRef = useRef<Editor | null>(null);
@@ -92,6 +94,8 @@ export default function Write() {
 			});
 			setIsPublishModalOpen(false);
 			localStorage.removeItem('postHash');
+			// react query 초기화
+			queryClient.invalidateQueries({ queryKey: ['posts'] });
 			router.push(`/`);
 		},
 		[tagList]
