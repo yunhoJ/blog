@@ -98,13 +98,13 @@ export default function PostCard({
 					<h2 className="group-hover:text-primary max-w-xs overflow-hidden text-xl font-bold tracking-tight text-ellipsis transition-colors md:max-w-md lg:max-w-lg xl:max-w-xl">
 						{params.postTitle}
 					</h2>
-					{
+					{isAuthenticated && (
 						<PostDropdown
 							revisionHash={revisionHash}
 							postHash={postHash}
 							postTitle={params.postTitle}
 						/>
-					}
+					)}
 				</div>
 				{/* {post.description && (
 					<p className="text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
