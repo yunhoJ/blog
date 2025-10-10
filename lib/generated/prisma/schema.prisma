@@ -105,9 +105,9 @@ model BlogPost {
   user            User             @relation(fields: [userId], references: [userId])
   blogPostMeta    BlogPostMeta     @relation(fields: [postHash], references: [postHash])
   blogPostPublish BlogPostPublish?
+  // @@unique([postHash, postDraft])
 
   @@unique([revisionHash, postHash, userId])
-  @@unique([postHash, postDraft])
 }
 
 model BlogPostPublish {

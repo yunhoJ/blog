@@ -100,7 +100,7 @@ model BlogPost{
   blogPostMeta BlogPostMeta @relation(fields: [postHash], references: [postHash])
   blogPostPublish BlogPostPublish?
   @@unique([revisionHash, postHash, userId])
-  @@unique([postHash, postDraft])
+  // @@unique([postHash, postDraft])
 }
 
 
@@ -110,6 +110,7 @@ model BlogPostPublish{
   userId String
   postHash String
   postVisibility Boolean @default(false)
+  @@unique([postHash])
   @@unique([revisionHash, postHash, userId])
   blogPost BlogPost @relation(fields: [revisionHash, postHash, userId], references: [revisionHash, postHash, userId])
   blogCategory BlogCategory @relation(fields: [categoryName], references: [categoryName])

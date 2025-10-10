@@ -11429,7 +11429,6 @@ export namespace Prisma {
   export type BlogPostWhereUniqueInput = Prisma.AtLeast<{
     revisionHash?: string
     revisionHash_postHash_userId?: BlogPostRevisionHashPostHashUserIdCompoundUniqueInput
-    postHash_postDraft?: BlogPostPostHashPostDraftCompoundUniqueInput
     AND?: BlogPostWhereInput | BlogPostWhereInput[]
     OR?: BlogPostWhereInput[]
     NOT?: BlogPostWhereInput | BlogPostWhereInput[]
@@ -11445,7 +11444,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     blogPostMeta?: XOR<BlogPostMetaScalarRelationFilter, BlogPostMetaWhereInput>
     blogPostPublish?: XOR<BlogPostPublishNullableScalarRelationFilter, BlogPostPublishWhereInput> | null
-  }, "revisionHash" | "revisionHash_postHash_userId" | "postHash_postDraft">
+  }, "revisionHash" | "revisionHash_postHash_userId">
 
   export type BlogPostOrderByWithAggregationInput = {
     revisionHash?: SortOrder
@@ -11506,17 +11505,17 @@ export namespace Prisma {
 
   export type BlogPostPublishWhereUniqueInput = Prisma.AtLeast<{
     revisionHash?: string
+    postHash?: string
     revisionHash_postHash_userId?: BlogPostPublishRevisionHashPostHashUserIdCompoundUniqueInput
     AND?: BlogPostPublishWhereInput | BlogPostPublishWhereInput[]
     OR?: BlogPostPublishWhereInput[]
     NOT?: BlogPostPublishWhereInput | BlogPostPublishWhereInput[]
     categoryName?: StringFilter<"BlogPostPublish"> | string
     userId?: StringFilter<"BlogPostPublish"> | string
-    postHash?: StringFilter<"BlogPostPublish"> | string
     postVisibility?: BoolFilter<"BlogPostPublish"> | boolean
     blogPost?: XOR<BlogPostScalarRelationFilter, BlogPostWhereInput>
     blogCategory?: XOR<BlogCategoryScalarRelationFilter, BlogCategoryWhereInput>
-  }, "revisionHash" | "revisionHash_postHash_userId">
+  }, "revisionHash" | "postHash" | "revisionHash_postHash_userId">
 
   export type BlogPostPublishOrderByWithAggregationInput = {
     revisionHash?: SortOrder
@@ -12499,11 +12498,6 @@ export namespace Prisma {
     revisionHash: string
     postHash: string
     userId: string
-  }
-
-  export type BlogPostPostHashPostDraftCompoundUniqueInput = {
-    postHash: string
-    postDraft: boolean
   }
 
   export type BlogPostCountOrderByAggregateInput = {
