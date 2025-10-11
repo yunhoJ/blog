@@ -119,5 +119,6 @@ model BlogPostPublish {
   blogPost       BlogPost     @relation(fields: [revisionHash, postHash, userId], references: [revisionHash, postHash, userId])
   blogCategory   BlogCategory @relation(fields: [categoryName], references: [categoryName])
 
+  @@unique([postHash])
   @@unique([revisionHash, postHash, userId])
 }
