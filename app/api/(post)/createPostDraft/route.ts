@@ -20,26 +20,28 @@ export async function DELETE(request: NextRequest) {
 	await deletePostDraft(postHash, userId);
 	return NextResponse.json({ message: 'Post deleted successfully' });
 }
-async function checkPostHash(postHash: string) {
-	const post = await prisma.blogPost.findUnique({
+async function checkPostHash(postHash: string, userId: string) {
+	const post = await prisma.blogPost.findFirst({
 		where: {
-			postHash_postDraft: {
-				postHash,
-				postDraft: true,
-			},
+			postHash,
+			postDraft: true,
+			userId,
 		},
 	});
-	return !!post;
+	return post;
 }
 
-async function createPostDraft(postHash: string, title: string, content: string, userId: string) {
-	if (await checkPostHash(postHash)) {
+export async function createPostDraft(
+	postHash: string,
+	title: string,
+	content: string,
+	userId: string
+) {
+	const post = await checkPostHash(postHash, userId);
+	if (post) {
 		await prisma.blogPost.update({
 			where: {
-				postHash_postDraft: {
-					postHash,
-					postDraft: true,
-				},
+				revisionHash: post.revisionHash,
 			},
 			data: {
 				postTitle: title,
@@ -78,23 +80,22 @@ async function getDrafts(userId: string) {
 }
 
 async function deletePostDraft(postHash: string, userId: string) {
-	await prisma.blogPost.delete({
+	await prisma.blogPost.deleteMany({
 		where: {
-			postHash_postDraft: {
-				postHash,
-				postDraft: true,
-			},
+			postHash,
+			postDraft: true,
 			userId,
 		},
 	});
 
-	const drafts = await prisma.blogPost.findMany({
+	const draft_count = await prisma.blogPost.count({
 		where: {
 			postHash,
 			userId,
 		},
 	});
-	if (drafts.length === 0) {
+
+	if (draft_count === 0) {
 		await prisma.blogPostMeta.delete({
 			where: {
 				postHash,
@@ -102,5 +103,4 @@ async function deletePostDraft(postHash: string, userId: string) {
 			},
 		});
 	}
-	return drafts;
 }

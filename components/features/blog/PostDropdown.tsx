@@ -1,3 +1,4 @@
+import { postApi } from '@/app/api/services/api';
 import PostDeleteModal from '@/components/modal/PostDeleteModal';
 
 import { Button } from '@/components/ui/button';
@@ -7,8 +8,10 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { handleAxiosError } from '@/lib/toasttError';
 
 import { ClockIcon, Edit2, MoreVerticalIcon, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 interface PostDropdownProps {
 	revisionHash: string;
@@ -16,6 +19,7 @@ interface PostDropdownProps {
 	postTitle: string;
 }
 export default function PostDropdown({ revisionHash, postHash, postTitle }: PostDropdownProps) {
+	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -38,6 +42,22 @@ export default function PostDropdown({ revisionHash, postHash, postTitle }: Post
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [open]);
+	// 수정시 함수
+	const onClickEdit = async () => {
+		// 수정중인 포스트인지 확인
+		try {
+			const draftData = await postApi.getDraftData(postHash);
+			console.log('draftData', draftData);
+			if (!draftData.data) {
+				//임시저장 데이터가 없으면 새로 작성 현재 배포되어 있는 revisionhash를 사용
+				await postApi.EditPublishPost({ postHash, revisionHash });
+			}
+			localStorage.setItem('postHash', postHash);
+			router.push(`/blog/write`);
+		} catch (error) {
+			handleAxiosError(error, '수정 중 오류가 발생했습니다.');
+		}
+	};
 	return (
 		<div
 			onClick={(e) => {
@@ -57,7 +77,7 @@ export default function PostDropdown({ revisionHash, postHash, postTitle }: Post
 						<ClockIcon />
 						히스토리
 					</DropdownMenuItem>
-					<DropdownMenuItem className="text-primary">
+					<DropdownMenuItem className="text-primary" onClick={onClickEdit}>
 						<Edit2 className="text-primary" />
 						수정
 					</DropdownMenuItem>

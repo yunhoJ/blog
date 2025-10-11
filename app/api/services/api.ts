@@ -31,6 +31,15 @@ export const postApi = {
 		return response.data;
 	},
 
+	//발행된 포스트 수정
+	EditPublishPost: async (data: { postHash: string; revisionHash: string }) => {
+		const response = await axiosInstance.post(
+			`${axiosInstance.defaults.baseURL}/api/getPostDraftData`,
+			data
+		);
+		return response.data;
+	},
+
 	// 포스트 생성
 	createPostPublish: async (data: {
 		postHash: string;
@@ -92,9 +101,9 @@ export const postApi = {
 		return response.data;
 	},
 	//임시저장 데이터 조회
-	getDraftData: async (postHash: string, userId: string) => {
+	getDraftData: async (postHash: string) => {
 		const response = await axiosInstance.get(
-			`${axiosInstance.defaults.baseURL}/api/getPostDraftData?postHash=${postHash}&userId=${userId}`
+			`${axiosInstance.defaults.baseURL}/api/getPostDraftData?postHash=${postHash}`
 		);
 		return response.data;
 	},

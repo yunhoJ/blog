@@ -5,6 +5,9 @@ export const getCategories = async (userId: string) => {
 		where: {
 			userId,
 		},
+		orderBy: {
+			categoryName: 'asc',
+		},
 	});
 
 	// BigInt를 일반 숫자로 변환

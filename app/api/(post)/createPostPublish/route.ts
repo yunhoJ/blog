@@ -3,14 +3,32 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPostPublishData } from '../../services/getPost';
 import { userId, defaultPageSize } from '../../constant/const';
 import { checkLogin } from '../../services/loginService';
+import supabase from '@/app/api/services/imageStorage';
 export async function POST(request: NextRequest) {
-	const { postHash, category, visibility, userId, imageUrl } = await request.json();
-	const postData = await getPublishedPosts(postHash);
-	if (imageUrl) {
-		await updatePostMainImage(postHash, imageUrl);
+	const result = await checkLogin();
+	if (!result.success) {
+		return NextResponse.json(
+			{ success: false, message: result.message },
+			{ status: result.status }
+		);
 	}
-	await createPostPublish(postData.revisionHash, postHash, category, visibility, userId);
-	return NextResponse.json({ message: 'Post published successfully' });
+	const { userId } = result.user as { userId: string };
+	const { postHash, category, visibility, imageUrl } = await request.json();
+	try {
+		const postData = await getPublishedPosts(postHash, userId);
+		if (imageUrl) {
+			await updatePostMainImage(postHash, imageUrl);
+		}
+		// 포스트 발행
+
+		await createPostPublish(postData.revisionHash, postHash, category, visibility, userId);
+		return NextResponse.json({ message: 'Post published successfully' });
+	} catch (error) {
+		return NextResponse.json(
+			{ success: false, message: error instanceof Error ? error.message : '오류가 발생했습니다.' },
+			{ status: 400 }
+		);
+	}
 }
 
 export async function DELETE(request: NextRequest) {
@@ -26,7 +44,8 @@ export async function DELETE(request: NextRequest) {
 	}
 	try {
 		await deletePostPublish(revisionHash, postHash, result.user?.userId as string);
-	} catch {
+	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
 			{ success: false, message: '삭제 중 오류가 발생했습니다.' },
 			{ status: 500 }
@@ -46,20 +65,27 @@ export async function GET(request: NextRequest) {
 	const post = await getPostPublishData(userId, category, sort, pageSize, page, tag);
 	return NextResponse.json(post);
 }
-const getPublishedPosts = async (postHash: string) => {
+const getPublishedPosts = async (postHash: string, userId: string) => {
 	// 포스트 발행 상태로 업데이트
-	const post = await prisma.blogPost.update({
-		where: {
-			postHash_postDraft: {
+	const post = await prisma.$transaction(async (tx) => {
+		const post = await tx.blogPost.updateManyAndReturn({
+			where: {
+				userId,
 				postHash,
 				postDraft: true,
 			},
-		},
-		data: {
-			postDraft: false,
-			postPublished: new Date(),
-		},
+			data: {
+				postDraft: false,
+				postPublished: new Date(),
+			},
+		});
+		if (post.length === 1) {
+			return post[0];
+		} else {
+			throw new Error('조회된 포스트가 1개 이상입니다.');
+		}
 	});
+
 	return post;
 };
 
@@ -77,51 +103,116 @@ const createPostPublish = async (
 	visibility: boolean,
 	userId: string
 ) => {
-	const post = await prisma.blogPostPublish.create({
-		data: {
-			userId: userId,
-			revisionHash,
-			postHash,
-			categoryName: category,
-			postVisibility: visibility,
-		},
-	});
-
-	// 카테고리 카운트 업데이트
-	await prisma.blogCategory.update({
+	// 발행 포스트가 있으면 업데이트
+	const post = await prisma.blogPostPublish.findUnique({
 		where: {
-			categoryName: category,
-		},
-		data: {
-			[visibility ? 'publicCount' : 'privateCount']: {
-				increment: 1,
-			},
+			postHash,
 		},
 	});
+	if (post) {
+		if (post.categoryName !== category || post.postVisibility !== visibility) {
+			await prisma.blogCategory.update({
+				where: {
+					categoryName: post.categoryName,
+				},
+				data: {
+					[post.postVisibility ? 'publicCount' : 'privateCount']: {
+						decrement: 1,
+					},
+				},
+			});
+			await prisma.blogCategory.update({
+				where: {
+					categoryName: category,
+				},
+				data: {
+					[visibility ? 'publicCount' : 'privateCount']: {
+						increment: 1,
+					},
+				},
+			});
+		}
+		await prisma.blogPostPublish.update({
+			where: {
+				postHash,
+			},
+			data: {
+				revisionHash,
+				categoryName: category,
+				postVisibility: visibility,
+			},
+		});
+	} else {
+		await prisma.blogPostPublish.create({
+			data: {
+				userId: userId,
+				revisionHash,
+				postHash,
+				categoryName: category,
+				postVisibility: visibility,
+			},
+		});
 
-	return post;
+		// 카테고리 카운트 업데이트
+		await prisma.blogCategory.update({
+			where: {
+				categoryName: category,
+			},
+			data: {
+				[visibility ? 'publicCount' : 'privateCount']: {
+					increment: 1,
+				},
+			},
+		});
+	}
 };
 
 const deletePostPublish = async (revisionHash: string, postHash: string, userId: string) => {
-	const post = await prisma.blogPostPublish.delete({
-		where: {
-			userId: userId,
-			revisionHash,
-			postHash,
-		},
-	});
-
-	// 카테고리 카운트 업데이트
-	await prisma.blogCategory.update({
-		where: {
-			categoryName: post.categoryName,
-		},
-		data: {
-			[post.postVisibility ? 'publicCount' : 'privateCount']: {
-				decrement: 1,
+	await prisma.$transaction(async (tx) => {
+		const post = await tx.blogPostPublish.delete({
+			where: {
+				userId: userId,
+				revisionHash,
+				postHash,
 			},
-		},
+		});
+		//포스트 태그 삭제
+		await tx.blogPostTag.deleteMany({
+			where: {
+				postHash,
+			},
+		});
+		// 포스트 삭제
+		await tx.blogPost.deleteMany({
+			where: {
+				userId: userId,
+				postHash,
+			},
+		});
+		// 포스트 메타 삭제
+		await tx.blogPostMeta.delete({
+			where: {
+				postHash,
+			},
+		});
+		// 카테고리 카운트 업데이트
+		await tx.blogCategory.update({
+			where: {
+				categoryName: post.categoryName,
+			},
+			data: {
+				[post.postVisibility ? 'publicCount' : 'privateCount']: {
+					decrement: 1,
+				},
+			},
+		});
 	});
 
-	return post;
+	// 이미지 폴더 삭제
+	const { data: files } = await supabase.storage.from('blog-storage').list(postHash);
+
+	if (files && files.length > 0) {
+		const filePathList = files.map((file) => `${postHash}/${file.name}`);
+		await supabase.storage.from('blog-storage').remove(filePathList);
+	}
 };

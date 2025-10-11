@@ -1,6 +1,15 @@
 import { prisma } from '@/lib/prismaSession';
 import { PaginationType } from '@/types/blog';
 
+export async function getPublishPost(revisionHash: string) {
+	const post = await prisma.blogPost.findUnique({
+		where: {
+			revisionHash,
+		},
+	});
+	return post;
+}
+
 export async function getPost(revisionHash: string) {
 	const post = await prisma.blogPost.findUnique({
 		where: {

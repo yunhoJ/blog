@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 // import { Label } from '@/components/ui/label';
 import { fixBrTags } from '@/lib/replaceContent';
-import { toastError, toastSuccess } from '@/lib/toasttError';
+import { handleAxiosError, toastError, toastSuccess } from '@/lib/toasttError';
 import { useQueryClient } from '@tanstack/react-query';
 import { Editor } from '@toast-ui/react-editor';
 import { useRouter } from 'next/navigation';
@@ -46,11 +46,14 @@ export default function Write() {
 		if (!postHash) return;
 
 		const fetchData = async () => {
-			const draftData = await postApi.getDraftData(postHash, userId);
-			// API 응답이 { data: { postTitle, postContent } } 형태이므로 data 프로퍼티에 접근
-			setTitle(draftData.data.postTitle || '');
-			setContent(draftData.data.postContent || ' ');
-			// editorRef.current?.getInstance().setMarkdown(draftData.data.postContent || '');
+			try {
+				const draftData = await postApi.getDraftData(postHash);
+
+				setTitle(draftData.data.postTitle || '');
+				setContent(draftData.data.postContent || ' ');
+			} catch (error) {
+				handleAxiosError(error, '임시저장 데이터 조회 중 오류가 발생했습니다.');
+			}
 		};
 		fetchData();
 	}, []);
@@ -85,13 +88,17 @@ export default function Write() {
 			if (!editorRef.current || !titleRef.current) return;
 			// 임시 저장후 포스트 발행
 			await onClickSaveBtn();
-			await postApi.createPostPublish({
-				postHash: localStorage.getItem('postHash') as string,
-				category: category as string,
-				visibility: visibility,
-				userId: userId,
-				imageUrl: imageUrl as string,
-			});
+			try {
+				await postApi.createPostPublish({
+					postHash: localStorage.getItem('postHash') as string,
+					category: category as string,
+					visibility: visibility,
+					userId: userId,
+					imageUrl: imageUrl as string,
+				});
+			} catch (error) {
+				handleAxiosError(error, '포스트 발행 중 오류가 발생했습니다.');
+			}
 			setIsPublishModalOpen(false);
 			localStorage.removeItem('postHash');
 			// react query 초기화
