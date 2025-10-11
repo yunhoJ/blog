@@ -1,4 +1,5 @@
 // lib/toastError.ts
+import axios from 'axios';
 import { toast } from 'sonner';
 
 export function toastError(error: unknown, fallbackMessage: string = 'Error loading posts') {
@@ -26,4 +27,15 @@ export function toastSuccess(message: string) {
 			borderRadius: '8px',
 		},
 	});
+}
+
+export function handleAxiosError(
+	error: unknown,
+	fallbackMessage: string = '알수 없는 오류가 발생했습니다.'
+) {
+	if (axios.isAxiosError(error)) {
+		toastError(new Error(error.response?.data.message));
+	} else {
+		toastError(new Error(fallbackMessage));
+	}
 }
