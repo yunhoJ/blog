@@ -1,10 +1,13 @@
 'use client';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import '@/components/theme/editorColorPicker.css';
+import '@/components/theme/editorColorPlugin.css';
 import dynamic from 'next/dynamic';
 import type { Editor as EditorType } from '@toast-ui/react-editor';
 import { postApi } from '@/app/api/services/api';
 import { toastError } from '@/lib/toasttError';
 import { userId } from '@/app/api/constant/const';
+import { useEffect, useState } from 'react';
 
 const Editor = dynamic(() => import('@toast-ui/react-editor').then((mod) => mod.Editor), {
 	ssr: false,
@@ -113,20 +116,56 @@ export default function MarkdownEditor({
 	initialContent,
 	saveBtn,
 }: MarkdownEditorProps) {
+	const [plugins, setPlugins] = useState<unknown[]>([]);
+	//color preset
+	const colorSyntaxOptions = {
+		preset: [
+			'#F48FB1', // 소프트 핑크
+			'#E53935', // 딥 레드
+			'#FFAB91', // 라이트 코랄
+			'#FF8A65', // 딥 오렌지
+			'#FFB347', // 코랄 오렌지
+			'#FFD966', // 밝은 옐로우
+			'#FFF176', // 라이트 머스타드
+			'#A7F3D0', // 민트
+			'#6EE7B7', // 라이트 그린
+			'#6EC1E4', // 소프트 블루
+			'#4FC3F7', // 스카이 블루
+			'#B39DDB', // 라이트 퍼플
+			'#8B5CF6', // 퍼플
+			'#9575CD', // 딥 라일락
+			'#CFD8DC', // 라이트 그레이
+			'#6C757D', // 그레이
+		],
+	};
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			import('@toast-ui/editor-plugin-color-syntax').then((mod) => {
+				// 플러그인 함수를 옵션과 함께 래핑
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const pluginWithOptions = (context: any) => mod.default(context, colorSyntaxOptions);
+				setPlugins([pluginWithOptions]);
+			});
+		}
+	}, []);
+
 	const handleAddImageBlobHook = (blob: Blob, callback: (url: string, altText: string) => void) => {
 		return addImageBlobHook(blob, callback, saveBtn);
 	};
+
 	return (
 		<Editor
 			key={initialContent}
 			ref={editorRef}
 			initialValue={initialContent}
 			previewStyle="vertical"
-			initialEditType="markdown"
+			initialEditType={
+				typeof window !== 'undefined' && window.innerWidth <= 768 ? 'wysiwyg' : 'markdown'
+			}
 			height="100%"
 			useCommandShortcut={true}
 			hooks={{ addImageBlobHook: handleAddImageBlobHook }}
-			// plugins={[colorSyntax]}
+			plugins={plugins}
 		/>
 	);
 }
