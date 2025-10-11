@@ -37,3 +37,45 @@ export const createPostMeta = async (userId: string) => {
 	});
 	return postHash;
 };
+
+async function checkPostHash(postHash: string, userId: string) {
+	const post = await prisma.blogPost.findFirst({
+		where: {
+			postHash,
+			postDraft: true,
+			userId,
+		},
+	});
+	return post;
+}
+
+export async function createPostDraft(
+	postHash: string,
+	title: string,
+	content: string,
+	userId: string
+) {
+	const post = await checkPostHash(postHash, userId);
+	if (post) {
+		await prisma.blogPost.update({
+			where: {
+				revisionHash: post.revisionHash,
+			},
+			data: {
+				postTitle: title,
+				postContent: content,
+			},
+		});
+	} else {
+		const revisionHash = createRevisionHash(postHash);
+		await prisma.blogPost.create({
+			data: {
+				revisionHash,
+				postHash,
+				userId,
+				postTitle: title,
+				postContent: content,
+			},
+		});
+	}
+}

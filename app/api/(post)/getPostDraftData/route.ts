@@ -1,8 +1,8 @@
 import { prisma } from '@/lib/prismaSession';
 import { NextRequest, NextResponse } from 'next/server';
-import { checkLogin } from '../../services/loginService';
-import { getPublishPost } from '../../services/getPost';
-import { createPostDraft } from '../createPostDraft/route';
+import { checkLogin } from '@/app/api/services/loginService';
+import { getPublishPost } from '@/app/api/services/getPost';
+import { createPostDraft } from '@/app/api/services/createPost';
 
 export async function GET(request: NextRequest) {
 	const { searchParams } = new URL(request.url);

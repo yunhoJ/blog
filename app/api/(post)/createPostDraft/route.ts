@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prismaSession';
-import { createRevisionHash } from '../../services/createHashdata';
+import { createPostDraft } from '@/app/api/services/createPost';
 
 export async function POST(request: NextRequest) {
 	const { postHash, title, content, userId } = await request.json();
@@ -19,47 +19,6 @@ export async function DELETE(request: NextRequest) {
 	console.log('userId', userId);
 	await deletePostDraft(postHash, userId);
 	return NextResponse.json({ message: 'Post deleted successfully' });
-}
-async function checkPostHash(postHash: string, userId: string) {
-	const post = await prisma.blogPost.findFirst({
-		where: {
-			postHash,
-			postDraft: true,
-			userId,
-		},
-	});
-	return post;
-}
-
-export async function createPostDraft(
-	postHash: string,
-	title: string,
-	content: string,
-	userId: string
-) {
-	const post = await checkPostHash(postHash, userId);
-	if (post) {
-		await prisma.blogPost.update({
-			where: {
-				revisionHash: post.revisionHash,
-			},
-			data: {
-				postTitle: title,
-				postContent: content,
-			},
-		});
-	} else {
-		const revisionHash = createRevisionHash(postHash);
-		await prisma.blogPost.create({
-			data: {
-				revisionHash,
-				postHash,
-				userId,
-				postTitle: title,
-				postContent: content,
-			},
-		});
-	}
 }
 
 async function getDrafts(userId: string) {
