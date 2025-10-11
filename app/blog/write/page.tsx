@@ -109,7 +109,7 @@ export default function Write() {
 	);
 
 	return (
-		<div className="container flex h-[90vh] flex-col gap-4 py-8">
+		<div className="container flex h-[calc(100vh-var(--sticky-bottom))] flex-col gap-4 py-4">
 			{/* 제목 영역 */}
 			<div className="flex flex-row items-center gap-5">
 				{/* <Label htmlFor="title" className="text-lg font-semibold whitespace-nowrap">
