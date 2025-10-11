@@ -19,8 +19,8 @@ import NotFound from './notfound';
 import { Metadata } from 'next';
 import { getPost } from '@/app/api/services/getPost';
 import ViewCountIncrementer from '@/components/features/blog/ViewCountIncrementer';
-import { visit } from 'unist-util-visit';
 import type { Root } from 'hast';
+import { extractMdxJsxFromP } from '@/lib/replaceContent';
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
@@ -94,27 +94,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 	}
 	const rehypeAllowBrJsx = () => {
 		return (tree: Root) => {
-			visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
-				if (node.name === 'br' && parent && typeof index === 'number') {
-					parent.children[index] = {
-						type: 'element',
-						tagName: 'br',
-						properties: {},
-						children: [],
-					};
-				}
-				if (node.name === 'span' && parent && typeof index === 'number') {
-					const styleAttr = node.attributes.find(
-						(attr) => attr.type === 'mdxJsxAttribute' && attr.name === 'style'
-					);
-					parent.children[index] = {
-						type: 'element',
-						tagName: 'span',
-						properties: { style: styleAttr?.value as string },
-						children: node.children,
-					};
-				}
-			});
+			extractMdxJsxFromP(tree);
 		};
 	};
 	const schema = {
