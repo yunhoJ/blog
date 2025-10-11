@@ -6,18 +6,20 @@ import PostCard from './PostCard';
 // import { GetPublishedPostsResponse } from '@/lib/notion';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Loader2 } from 'lucide-react';
 import { BlogPostPublish, PaginationType } from '@/types/blog';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 
 interface PostListProps {
-	postsPromise: Promise<{ posts: BlogPostPublish[]; paginationData: PaginationType }>;
+	postsList: { posts: BlogPostPublish[]; paginationData: PaginationType };
 }
 
-export default function PostListSuspense({ postsPromise }: PostListProps) {
-	const initialData = use(postsPromise);
+export default function PostListSuspense({ postsList }: PostListProps) {
+	// const initialData = use(postsPromise);
+	const initialData = postsList;
+
 	// console.log('initialData : ', initialData);
 	const searchParams = useSearchParams();
 

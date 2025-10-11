@@ -76,7 +76,7 @@ export default async function Home({ searchParams }: HomeProps) {
 	const selectedPageSize = Number(pageSize) || defaultPageSize;
 	const selectedPage = Number(page) || 1;
 	// const postsPromise = getPublishedPosts({ sort: selectedSort });
-	const postPublish = getPostPublishData(
+	const postPublish = await getPostPublishData(
 		userId,
 		selectedCategory,
 		selectedSort,
@@ -102,7 +102,7 @@ export default async function Home({ searchParams }: HomeProps) {
 			<HeaderSection selectedCategory={selectedCategory} selectedTag={selectedTag} />
 			<ToastBoundary>
 				<Suspense fallback={<PostListSkeletion />}>
-					<PostListSuspense postsPromise={postPublish} />
+					<PostListSuspense postsList={postPublish} />
 				</Suspense>
 			</ToastBoundary>
 		</div>
