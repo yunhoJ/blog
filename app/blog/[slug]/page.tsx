@@ -103,6 +103,17 @@ export default async function BlogPost({ params }: BlogPostProps) {
 						children: [],
 					};
 				}
+				if (node.name === 'span' && parent && typeof index === 'number') {
+					const styleAttr = node.attributes.find(
+						(attr) => attr.type === 'mdxJsxAttribute' && attr.name === 'style'
+					);
+					parent.children[index] = {
+						type: 'element',
+						tagName: 'span',
+						properties: { style: styleAttr?.value as string },
+						children: node.children,
+					};
+				}
 			});
 		};
 	};
@@ -111,6 +122,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 		tagNames: [...(defaultSchema.tagNames || []), 'br'],
 		attributes: {
 			...defaultSchema.attributes,
+			span: ['style'],
 		},
 	};
 	const { data } = await compile(post.postContent, {
@@ -169,7 +181,9 @@ export default async function BlogPost({ params }: BlogPostProps) {
 						<details className="bg-muted/60 rounded-lg p-4 backdrop-blur-sm">
 							<summary className="cursor-pointer text-lg font-semibold">목차</summary>
 							<nav className="mt-3 space-y-3 text-sm">
-								{data?.toc?.map((item) => <TableOfContentsLink key={item.id} item={item} />)}
+								{data?.toc?.map((item: TocEntry) => (
+									<TableOfContentsLink key={item.id} item={item} />
+								))}
 								<div className="space-y-2 border-t pt-5">
 									<TableOfContentsLink item={{ id: 'top', value: '맨위로', depth: 2 }} />
 									<TableOfContentsLink item={{ id: 'bottom', value: '맨아래로', depth: 2 }} />
@@ -241,7 +255,9 @@ export default async function BlogPost({ params }: BlogPostProps) {
 					<div className="bg-muted/20 sticky top-[var(--sticky-top)] space-y-4 p-6 backdrop-blur-sm">
 						<h3 className="text-lg font-semibold">목차</h3>
 						<nav className="space-y-2 text-sm">
-							{data?.toc?.map((item) => <TableOfContentsLink key={item.id} item={item} />)}
+							{data?.toc?.map((item: TocEntry) => (
+								<TableOfContentsLink key={item.id} item={item} />
+							))}
 							<div className="space-y-2 border-t pt-5">
 								<TableOfContentsLink item={{ id: 'top', value: '맨위로', depth: 2 }} />
 								<TableOfContentsLink item={{ id: 'bottom', value: '맨아래로', depth: 2 }} />
