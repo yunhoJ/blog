@@ -136,7 +136,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 								</Badge>
 							))}
 						</div> */}
-						<h1 className="text-3xl font-bold">{post.postTitle}</h1>
+						<h1 className="text-3xl font-bold break-words">{post.postTitle}</h1>
 						<div className="flex flex-row gap-3">
 							<div className="text-muted-foreground flex items-center gap-3 text-sm">
 								<div className="flex items-center gap-1">
