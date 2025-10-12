@@ -94,8 +94,8 @@ export default function PostCard({
 						))}
 					</div>
 				</div>
-				<div className="mt-6 flex items-center justify-between">
-					<h2 className="group-hover:text-primary max-w-xs overflow-hidden text-xl font-bold tracking-tight text-ellipsis transition-colors md:max-w-md lg:max-w-lg xl:max-w-xl">
+				<div className="mt-6 flex items-center justify-between gap-4">
+					<h2 className="group-hover:text-primary truncate text-xl font-bold tracking-tight transition-colors">
 						{params.postTitle}
 					</h2>
 					{isAuthenticated && (
