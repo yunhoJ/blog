@@ -73,7 +73,7 @@ export default function PostDropdown({ revisionHash, postHash, postTitle }: Post
 				</DropdownMenuTrigger>
 				<DropdownMenuContent sideOffset={4} align="end">
 					{/* 히스토리 */}
-					<DropdownMenuItem>
+					<DropdownMenuItem onClick={() => router.push(`/blog/history/${postHash}`)}>
 						<ClockIcon />
 						히스토리
 					</DropdownMenuItem>

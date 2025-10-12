@@ -216,4 +216,12 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 버전 히스토리 조회
+	getVersionHistory: async (postHash: string) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/getVersionHistory?postHash=${postHash}`,
+			{ withCredentials: true }
+		);
+		return response.data;
+	},
 };

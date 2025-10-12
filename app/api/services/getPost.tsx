@@ -31,6 +31,18 @@ export async function getPost(revisionHash: string) {
 	});
 	return post;
 }
+export async function existVersionHistory(postHash: string) {
+	try {
+		await prisma.blogPost.findFirstOrThrow({
+			where: {
+				postHash,
+			},
+		});
+		return true;
+	} catch {
+		return false;
+	}
+}
 
 const pagination = (totalCount: number, pageSize: number, page: number): PaginationType => {
 	// totalcount가 0이면 1페이지 반환
