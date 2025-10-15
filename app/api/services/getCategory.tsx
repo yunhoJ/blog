@@ -36,13 +36,16 @@ export const getTags = async (userId: string) => {
 				in: tags.map((tag) => tag.postHash),
 			},
 		},
+		orderBy: {
+			tagName: 'asc',
+		},
 		select: {
 			tagName: true,
 		},
 	});
 	const countTags = tagList.reduce(
 		(acc, cur) => {
-			acc[cur.tagName] = (acc[cur.tagName] || 0) + 1;
+			acc[cur.tagName] = (acc[cur.tagName] ?? 0) + 1;
 			return acc;
 		},
 		{} as Record<string, number>
