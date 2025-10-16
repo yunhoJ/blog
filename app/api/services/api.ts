@@ -217,9 +217,17 @@ export const postApi = {
 		return response.data;
 	},
 	// 버전 히스토리 조회
-	getVersionHistory: async (postHash: string) => {
+	getVersionTimeLine: async (postHash: string) => {
 		const response = await axiosInstance.get(
 			`${axiosInstance.defaults.baseURL}/api/getVersionHistory?postHash=${postHash}`,
+			{ withCredentials: true }
+		);
+		return response.data;
+	},
+	// 버전 비교 데이터 조회
+	getVersionDetailData: async (revisionHash: string, previousRevisionHash: string) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/getVersionHistory/detailData?revisionHash=${revisionHash}&previousRevisionHash=${previousRevisionHash}`,
 			{ withCredentials: true }
 		);
 		return response.data;

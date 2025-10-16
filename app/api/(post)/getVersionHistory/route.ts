@@ -31,14 +31,21 @@ export async function GET(request: Request) {
 	}
 
 	const versionHistoryWithDiff = versionHistory.map((value, idx, arr) => {
-		const nextVersion = arr[idx + 1];
-		const diffLine = nextVersion
-			? calculateDiff(value.postContent, nextVersion.postContent)
-			: calculateDiff('', value.postContent);
+		let diffLine = { added: 0, removed: 0, unchanged: 0 };
+		let previousRevisionHash = '';
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-		const { postContent, ...rest } = value; // postContent는 제외하고 나머지 속성들을 반환
-		return { ...rest, diffLine };
+		const previousVersion = arr[idx + 1];
+		if (previousVersion) {
+			diffLine = calculateDiff(previousVersion.postContent, value.postContent);
+			previousRevisionHash = previousVersion.revisionHash;
+		} else {
+			diffLine = calculateDiff('', value.postContent);
+			previousRevisionHash = '';
+		}
+
+		const { postContent: _, ...rest } = value; // postContent는 제외하고 나머지 속성들을 반환
+
+		return { ...rest, diffLine, previousRevisionHash };
 	});
 
 	return NextResponse.json({ success: true, data: versionHistoryWithDiff });

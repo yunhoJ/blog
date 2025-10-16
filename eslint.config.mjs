@@ -30,6 +30,13 @@ const eslintConfig = [
 			// 여기에 추가적인 규칙을 설정할 수 있습니다
 			'no-unused-vars': 'warn',
 			'no-console': 'warn',
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					varsIgnorePattern: '^_',
+					argsIgnorePattern: '^_',
+				},
+			],
 		},
 	},
 	eslintConfigPrettier,

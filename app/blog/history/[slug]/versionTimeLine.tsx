@@ -6,34 +6,20 @@ import { postApi } from '@/app/api/services/api';
 import { useEffect, useState } from 'react';
 import { handleAxiosError } from '@/lib/toasttError';
 import { formatDate } from '@/lib/date';
+import { useRouter } from 'next/navigation';
+import { PostVersionData } from '@/types/versionHistory';
 
-interface PostVersionData {
-	revisionHash: string;
-	postTitle: string;
-	postDraft: boolean;
-	postUpdatedAt: string; // ISO date string
-	diffLine: { added: number; removed: number; unchanged: number };
-	blogPostPublish?: { categoryName: string; postVisibility: boolean };
+interface VersionTimeLineProps {
+	versionTimeLine: PostVersionData[];
+	onVersionChange: (revisionHash: string, previousRevisionHash: string) => void;
+	selectedVersion: string;
 }
-
-export default function VersionTimeLine({ postHash }: { postHash: string }) {
-	const [versionHistory, setVersionHistory] = useState<PostVersionData[]>([]);
-	useEffect(() => {
-		if (!postHash) return;
-		const fetchVersionHistory = async () => {
-			try {
-				const versionHistory = await postApi.getVersionHistory(postHash);
-				if (versionHistory.success) {
-					setVersionHistory(versionHistory.data);
-				}
-			} catch (error) {
-				handleAxiosError(error, '버전 히스토리 조회 중 오류가 발생했습니다.');
-			}
-		};
-		fetchVersionHistory();
-	}, [postHash]);
-
-	return versionHistory.map((version: PostVersionData) => (
+export default function VersionTimeLine({
+	versionTimeLine,
+	onVersionChange,
+	selectedVersion,
+}: VersionTimeLineProps) {
+	return versionTimeLine.map((version: PostVersionData) => (
 		<div key={version.revisionHash} className="relative">
 			{/* 타임라인 점 */}
 			<div
@@ -43,7 +29,14 @@ export default function VersionTimeLine({ postHash }: { postHash: string }) {
 			></div>
 
 			{/* 버전 카드 */}
-			<Card className={`hover:shadow-m ml-8 gap-2 transition-all duration-200`}>
+			<Card
+				className={`hover:shadow-m ml-8 cursor-pointer gap-2 transition-all duration-200 ${
+					selectedVersion === version.revisionHash ? 'ring-primary bg-primary/10 ring-2' : ''
+				}`}
+				onClick={() => {
+					onVersionChange(version.revisionHash, version.previousRevisionHash);
+				}}
+			>
 				<CardHeader className="gap-0 pb-0">
 					{version.postDraft && (
 						<Badge variant={'outline'} className="mb-2">

@@ -1,75 +1,94 @@
+'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GitCommit } from 'lucide-react';
 import VersionTimeLine from './versionTimeLine';
-import NotFound from '../../[slug]/notfound';
-import { existVersionHistory } from '@/app/api/services/getPost';
+import { notFound, useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { postApi } from '@/app/api/services/api';
+import { handleAxiosError } from '@/lib/toasttError';
+import { PostVersionData, SelectedVersionData } from '@/types/versionHistory';
+import { useRouter } from 'next/navigation';
+import NotFound from '@/app/not-found';
+import HistoryDetail from './historyDetail';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
-export default async function History({ params }: BlogPostProps) {
-	const oldCode = `test222`;
-	const newCode = `test`;
-	const postHash = (await params).slug;
-
-	if (!(await existVersionHistory(postHash))) {
+export default function History({ params }: BlogPostProps) {
+	const { slug: postHash } = useParams();
+	const router = useRouter();
+	const [notFound, setNotFound] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+	const [versionTimeLine, setversionTimeLine] = useState<PostVersionData[]>([]);
+	const [versionDetail, setversionDetail] = useState<SelectedVersionData>({
+		revisionHash: '',
+		previousRevisionHash: '',
+	});
+	useEffect(() => {
+		if (!postHash) return;
+		const fetchversionTimeLine = async () => {
+			try {
+				const versionTimeLineResponse = await postApi.getVersionTimeLine(postHash as string);
+				if (versionTimeLineResponse.success) {
+					setversionTimeLine(versionTimeLineResponse.data);
+					// 첫 번째 버전 자동 선택
+					setversionDetail({
+						revisionHash: versionTimeLineResponse.data[0].revisionHash,
+						previousRevisionHash: versionTimeLineResponse.data[0].previousRevisionHash,
+					});
+				}
+				setIsLoading(false);
+			} catch (error) {
+				handleAxiosError(error, '버전 히스토리 조회 중 오류가 발생했습니다.');
+				// 404 페이지로 이동
+				setNotFound(true);
+			}
+		};
+		fetchversionTimeLine();
+	}, [postHash]);
+	if (notFound) {
 		return <NotFound />;
 	}
 
+	if (isLoading) {
+		return null; // 로딩 중에는 아무것도 렌더링하지 않음
+	}
+
 	return (
-		<div className="mx-auto max-w-[1600px] px-4 py-8">
-			<h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
-				<GitCommit className="h-5 w-5" />
-				버전 타임라인
-			</h2>
+		<>
+			<div className="mx-auto max-w-[1600px] px-4 py-8">
+				{versionTimeLine.length > 0 && (
+					<h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
+						<GitCommit className="h-5 w-5" />
+						버전 타임라인
+					</h2>
+				)}
 
-			<div className="grid grid-cols-[300px_1fr] gap-8">
-				{/* 타임라인 사이드바 */}
-				<aside className="space-y-4">
-					<div className="relative">
-						{/* 타임라인 라인 */}
-						<div className="bg-border absolute top-0 bottom-0 left-2 w-0.5"></div>
+				<div className="grid grid-cols-[300px_1fr] gap-8">
+					{/* 타임라인 사이드바 */}
+					<aside className="space-y-4">
+						<div className="relative">
+							{/* 타임라인 라인 */}
+							<div className="bg-border absolute top-0 bottom-0 left-2 w-0.5"></div>
 
-						<div className="space-y-4">
-							<VersionTimeLine postHash={postHash} />
-						</div>
-					</div>
-				</aside>
-
-				{/* 메인 컨텐츠 영역 */}
-				<main>
-					<Card>
-						<CardHeader>
-							<CardTitle>버전 비교 및 상세 내용</CardTitle>
-						</CardHeader>
-						<CardContent>
 							<div className="space-y-4">
-								<div className="bg-muted/50 rounded-lg p-4">
-									<h3 className="mb-2 font-semibold">현재 선택된 버전: v1.3</h3>
-									<p className="text-muted-foreground text-sm">
-										이 버전에서는 이미지가 추가되고 내용이 보완되었습니다.
-									</p>
-								</div>
-
-								<div className="grid grid-cols-2 gap-4">
-									<div className="space-y-2">
-										<h4 className="text-sm font-medium">이전 버전 (v1.2)</h4>
-										<div className="rounded border border-red-200 bg-red-50 p-3 text-sm dark:border-red-800 dark:bg-red-950/20">
-											<pre className="whitespace-pre-wrap">{oldCode}</pre>
-										</div>
-									</div>
-									<div className="space-y-2">
-										<h4 className="text-sm font-medium">현재 버전 (v1.3)</h4>
-										<div className="rounded border border-green-200 bg-green-50 p-3 text-sm dark:border-green-800 dark:bg-green-950/20">
-											<pre className="whitespace-pre-wrap">{newCode}</pre>
-										</div>
-									</div>
-								</div>
+								<VersionTimeLine
+									versionTimeLine={versionTimeLine}
+									onVersionChange={(revisionHash, previousRevisionHash) => {
+										setversionDetail({ revisionHash, previousRevisionHash });
+									}}
+									selectedVersion={versionDetail.revisionHash}
+								/>
 							</div>
-						</CardContent>
-					</Card>
-				</main>
+						</div>
+					</aside>
+
+					{/* 메인 컨텐츠 영역 */}
+					<main>
+						<HistoryDetail versionDetail={versionDetail} />
+					</main>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 }

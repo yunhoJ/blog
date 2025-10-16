@@ -15,12 +15,12 @@ import withSlugs from 'rehype-slug';
 import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import GiscusComments from '@/components/GiscusComments';
-import NotFound from './notfound';
 import { Metadata } from 'next';
 import { getPost } from '@/app/api/services/getPost';
 import ViewCountIncrementer from '@/components/features/blog/ViewCountIncrementer';
 import type { Root } from 'hast';
 import { extractMdxJsxFromP } from '@/lib/replaceContent';
+import { notFound } from 'next/navigation';
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
@@ -90,7 +90,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 	const slug = (await params).slug;
 	const post = await getPost(slug);
 	if (!post) {
-		return <NotFound />;
+		notFound();
 	}
 	const rehypeAllowBrJsx = () => {
 		return (tree: Root) => {
