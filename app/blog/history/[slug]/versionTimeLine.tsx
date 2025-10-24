@@ -39,17 +39,17 @@ export default function VersionTimeLine({
 			>
 				<CardHeader className="gap-0 pb-0">
 					{version.postDraft && (
-						<Badge variant={'outline'} className="mb-2">
+						<Badge variant={'outline'} className="absolute -top-2 left-10 bg-white">
 							수정중
 						</Badge>
 					)}
 					{version.blogPostPublish && (
-						<Badge variant={'default'} className="mb-2">
+						<Badge variant={'default'} className="absolute -top-2 left-10">
 							배포중
 						</Badge>
 					)}
 
-					<CardTitle className="overflow-hidden leading-tight break-words">
+					<CardTitle className={`overflow-hidden leading-tight break-words`}>
 						{version.postTitle}
 					</CardTitle>
 				</CardHeader>
