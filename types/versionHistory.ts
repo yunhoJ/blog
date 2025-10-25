@@ -18,4 +18,6 @@ export interface SelectedVersionData {
 export interface VersionComparison {
 	previousVersion?: BlogPost;
 	currentVersion?: BlogPost;
+	previousVersionChangeContent?: string;
+	currentVersionChangeContent?: string;
 }

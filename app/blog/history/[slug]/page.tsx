@@ -1,6 +1,6 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { GitCommit } from 'lucide-react';
+import { CodeIcon, FileTextIcon, GitCommit } from 'lucide-react';
 import VersionTimeLine from './versionTimeLine';
 import { notFound, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import { PostVersionData, SelectedVersionData } from '@/types/versionHistory';
 import { useRouter } from 'next/navigation';
 import NotFound from '@/app/not-found';
 import HistoryDetail from './historyDetail';
+import { Button } from '@/components/ui/button';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
@@ -19,6 +20,7 @@ export default function History({ params }: BlogPostProps) {
 	const router = useRouter();
 	const [notFound, setNotFound] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isHtmlview, setIsHtmlview] = useState(true);
 	const [versionTimeLine, setversionTimeLine] = useState<PostVersionData[]>([]);
 	const [versionDetail, setversionDetail] = useState<SelectedVersionData>({
 		revisionHash: '',
@@ -56,12 +58,47 @@ export default function History({ params }: BlogPostProps) {
 
 	return (
 		<>
-			<div className="mx-auto max-w-[1600px] px-4 py-8">
+			<div className="mx-auto max-w-[1600px] p-4">
 				{versionTimeLine.length > 0 && (
-					<h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
-						<GitCommit className="h-5 w-5" />
-						버전 타임라인
-					</h2>
+					<div className="mb-4 flex items-center justify-between">
+						<h2 className="flex items-center gap-2 text-lg font-semibold">
+							<GitCommit className="h-5 w-5" />
+							버전 타임라인
+						</h2>
+						<div className="flex gap-2">
+							<Button
+								size="sm"
+								variant="outline"
+								onClick={() => setIsHtmlview(false)}
+								className={`${!isHtmlview ? 'border-primary' : 'border-gray-300'}`}
+							>
+								<CodeIcon
+									className={`${!isHtmlview ? 'text-primary border-primary' : 'text-gray-500'}`}
+								/>
+								<span
+									className={`text-xs font-medium ${!isHtmlview ? 'text-primary' : 'text-gray-500'}`}
+								>
+									코드
+								</span>
+							</Button>
+
+							<Button
+								size="sm"
+								variant="outline"
+								onClick={() => setIsHtmlview(true)}
+								className={`${isHtmlview ? 'border-primary' : 'border-gray-300'}`}
+							>
+								<FileTextIcon
+									className={`${isHtmlview ? 'text-primary border-primary' : 'text-gray-500'}`}
+								/>
+								<span
+									className={`text-xs font-medium ${isHtmlview ? 'text-primary' : 'text-gray-500'}`}
+								>
+									문서
+								</span>
+							</Button>
+						</div>
+					</div>
 				)}
 
 				<div className="grid grid-cols-[300px_1fr] gap-8">
@@ -85,7 +122,7 @@ export default function History({ params }: BlogPostProps) {
 
 					{/* 메인 컨텐츠 영역 */}
 					<main>
-						<HistoryDetail versionDetail={versionDetail} />
+						<HistoryDetail versionDetail={versionDetail} isHtmlview={isHtmlview} />
 					</main>
 				</div>
 			</div>

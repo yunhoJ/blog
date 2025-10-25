@@ -1,11 +1,20 @@
 'use client';
 import { postApi } from '@/app/api/services/api';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { SelectedVersionData } from '@/types/versionHistory';
 import { useEffect, useState } from 'react';
 import { VersionComparison } from '@/types/versionHistory';
-export default function HistoryDetail({ versionDetail }: { versionDetail: SelectedVersionData }) {
+import MdxClient from './viewerMdx';
+import { CodeIcon, FileTextIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+export default function HistoryDetail({
+	versionDetail,
+	isHtmlview,
+}: {
+	versionDetail: SelectedVersionData;
+	isHtmlview: boolean;
+}) {
 	const [versionDetailData, setVersionDetailData] = useState<VersionComparison>({});
+
 	useEffect(() => {
 		const fetchVersionDetailData = async () => {
 			const response = await postApi.getVersionDetailData(
@@ -19,43 +28,79 @@ export default function HistoryDetail({ versionDetail }: { versionDetail: Select
 		fetchVersionDetailData();
 	}, [versionDetail]);
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>버전 비교 및 상세 내용</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div className="space-y-4">
-					<div className="bg-muted/50 rounded-lg p-4">
-						<h3 className="mb-2 font-semibold">현재 선택된 버전: v1.3</h3>
-						<p className="text-muted-foreground text-sm">
-							이 버전에서는 이미지가 추가되고 내용이 보완되었습니다.
-						</p>
-					</div>
-
-					<div className="grid grid-cols-2 gap-4">
-						<div className="space-y-2">
-							<h4 className="text-sm font-medium">
-								제목 : {versionDetailData.previousVersion?.postTitle}
-							</h4>
-							<div className="rounded border border-red-200 bg-red-50 p-3 text-sm dark:border-red-800 dark:bg-red-950/20">
-								<pre className="whitespace-pre-wrap">
-									{versionDetailData.previousVersion?.postContent}
-								</pre>
-							</div>
-						</div>
-						<div className="space-y-2">
-							<h4 className="text-sm font-medium">
-								제목 : {versionDetailData.currentVersion?.postTitle}
-							</h4>
-							<div className="rounded border border-green-200 bg-green-50 p-3 text-sm dark:border-green-800 dark:bg-green-950/20">
-								<pre className="whitespace-pre-wrap">
-									{versionDetailData.currentVersion?.postContent}
-								</pre>
-							</div>
-						</div>
+		<div className="space-y-4">
+			<style
+				dangerouslySetInnerHTML={{
+					__html: `
+					.diff-added {
+						background-color: #dcfce7 !important;
+						color: #166534 !important;
+						padding: 4px !important;
+						border-radius: 4px !important;
+						display: block !important;
+						position: relative !important;
+						padding-left: 24px !important;
+					}
+					.diff-removed {
+						background-color: #fee2e2 !important;
+						color: #991b1b !important;
+						padding: 4px !important;
+						border-radius: 4px !important;
+						display: block !important;
+						position: relative !important;
+						padding-left: 24px !important;
+					}
+					.diff-added::before {
+						content: '+' !important;
+						color: #166534 !important;
+						position: absolute !important;
+						left: 8px !important;
+						top: 4px !important;
+						font-weight: bold !important;
+					}
+					.diff-removed::before {
+						content: '−' !important;
+						color: #991b1b !important;
+						position: absolute !important;
+						left: 8px !important;
+						top: 4px !important;
+						font-weight: bold !important;
+					}
+				`,
+				}}
+			/>
+			<div className="grid grid-cols-2 gap-4">
+				<div className="space-y-2">
+					<h4 className="font-medium">제목 : {versionDetailData.previousVersion?.postTitle}</h4>
+					<div className="mdx-viewer">
+						{isHtmlview ? (
+							<MdxClient source={versionDetailData.previousVersion?.postContent || ''} />
+						) : (
+							<div
+								className="text-sm break-words whitespace-pre-wrap"
+								dangerouslySetInnerHTML={{
+									__html: versionDetailData.previousVersionChangeContent || '',
+								}}
+							/>
+						)}
 					</div>
 				</div>
-			</CardContent>
-		</Card>
+				<div className="space-y-2">
+					<h4 className="font-medium">제목 : {versionDetailData.currentVersion?.postTitle}</h4>
+					<div className="mdx-viewer">
+						{isHtmlview ? (
+							<MdxClient source={versionDetailData.currentVersion?.postContent || ''} />
+						) : (
+							<div
+								className="text-sm break-words whitespace-pre-wrap"
+								dangerouslySetInnerHTML={{
+									__html: versionDetailData.currentVersionChangeContent || '',
+								}}
+							/>
+						)}
+					</div>
+				</div>
+			</div>
+		</div>
 	);
 }
