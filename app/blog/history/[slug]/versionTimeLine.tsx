@@ -39,7 +39,10 @@ export default function VersionTimeLine({
 			>
 				<CardHeader className="gap-0 pb-0">
 					{version.postDraft && (
-						<Badge variant={'outline'} className="absolute -top-2 left-10 bg-white">
+						<Badge
+							variant={'outline'}
+							className="dark:bg-secondary absolute -top-2 left-10 bg-white"
+						>
 							수정중
 						</Badge>
 					)}
