@@ -6,8 +6,6 @@ import { cn } from '@/lib/utils';
 import { use, useState } from 'react';
 import { ChevronDown, ChevronUp, Folder, Hash } from 'lucide-react';
 
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
 interface CategorySectionProps {
 	categories: Promise<Category[]>;
 	selectedCategory: string;
@@ -32,28 +30,28 @@ export default function CategorySection({
 		<>
 			{/* lg 이상에서 보이는 카테고리 목록 */}
 			<Card className="hidden space-y-3 border-1 py-4 lg:block">
-				<Tabs
-					defaultValue={activeTab}
-					className="px-2"
-					onValueChange={(value) => setActiveTab(value)}
-				>
-					<TabsList className="grid w-full grid-cols-2 bg-gray-100 dark:bg-gray-800">
-						<TabsTrigger
-							className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-sm font-medium transition-all duration-200 data-[state=active]:scale-110"
-							value="categories"
-						>
-							<Folder className="mr-1 h-3 w-3" />
-							카테고리
-						</TabsTrigger>
-						<TabsTrigger
-							className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-sm font-medium transition-all duration-200 data-[state=active]:scale-110"
-							value="tags"
-						>
-							<Hash className="mr-1 h-3 w-3" />
-							태그
-						</TabsTrigger>
-					</TabsList>
-				</Tabs>
+				<div className="flex justify-center gap-2 px-4">
+					<button
+						className={cn(
+							'text-muted-foreground flex w-full items-center justify-center border-b-2 font-extrabold',
+							activeTab === 'categories' && 'border-primary text-primary'
+						)}
+						onClick={() => setActiveTab('categories')}
+					>
+						<Folder className="mr-1 h-4 w-4" />
+						카테고리
+					</button>
+					<button
+						className={cn(
+							'text-muted-foreground flex w-full items-center justify-center border-b-2 font-extrabold',
+							activeTab === 'tags' && 'border-primary text-primary'
+						)}
+						onClick={() => setActiveTab('tags')}
+					>
+						<Hash className="mr-1 h-4 w-4" />
+						태그
+					</button>
+				</div>
 
 				<CardContent className="flex flex-col gap-2 text-sm">
 					{activeTab === 'categories' ? (
@@ -94,31 +92,28 @@ export default function CategorySection({
 
 			{/* lg 미만에서 보이는 접을 수 있는 카테고리 */}
 			<Card className="block space-y-3 border-1 pt-0 lg:hidden">
-				<Tabs
-					defaultValue={activeTab}
-					className="mb-0 p-4"
-					onValueChange={(value) => {
-						setActiveTab(value);
-					}}
-					onClick={() => setIsOpen(true)}
-				>
-					<TabsList className="grid w-full grid-cols-2 bg-gray-100 dark:bg-gray-800">
-						<TabsTrigger
-							className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-sm font-medium transition-all duration-200 data-[state=active]:scale-105"
-							value="categories"
-						>
-							<Folder className="mr-1 h-3 w-3" />
-							카테고리
-						</TabsTrigger>
-						<TabsTrigger
-							className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-sm font-medium transition-all duration-200 data-[state=active]:scale-105"
-							value="tags"
-						>
-							<Hash className="mr-1 h-3 w-3" />
-							태그
-						</TabsTrigger>
-					</TabsList>
-				</Tabs>
+				<div className="flex justify-center gap-2 p-4">
+					<button
+						className={cn(
+							'text-muted-foreground flex w-full items-center justify-center border-b-2 font-extrabold',
+							activeTab === 'categories' && 'border-primary text-primary'
+						)}
+						onClick={() => setActiveTab('categories')}
+					>
+						<Folder className="mr-1 h-4 w-4" />
+						카테고리
+					</button>
+					<button
+						className={cn(
+							'text-muted-foreground flex w-full items-center justify-center border-b-2 font-extrabold',
+							activeTab === 'tags' && 'border-primary text-primary'
+						)}
+						onClick={() => setActiveTab('tags')}
+					>
+						<Hash className="mr-1 h-4 w-4" />
+						태그
+					</button>
+				</div>
 				<CardHeader
 					className="flex items-center justify-between"
 					onClick={() => setIsOpen(!isOpen)}
