@@ -240,4 +240,11 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 포스트 카테고리 조회
+	getPostPublishCategory: async (postHash: string) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/getPostPublishCategory?postHash=${postHash}`
+		);
+		return response.data;
+	},
 };

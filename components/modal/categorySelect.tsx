@@ -7,13 +7,14 @@ import {
 	CommandItem,
 	CommandEmpty,
 } from '@/components/ui/command';
+import { handleAxiosError, toastError } from '@/lib/toasttError';
 import { useEffect, useState } from 'react';
 
 interface CategorySelectorProps {
 	onSelect: (category: string | null) => void;
 }
 
-const categories = ['운동', '공부', '여행']; // 서버에서 불러올 수도 있음
+const categories = ['']; // 서버에서 불러올 수도 있음
 
 export default function CategorySelector({ onSelect }: CategorySelectorProps) {
 	const [input, setInput] = useState('');
@@ -22,9 +23,29 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
 
 	useEffect(() => {
 		const fetchCategories = async () => {
+			// 포스트 카테고리 조회
+			const postHash = localStorage.getItem('postHash');
+			let selectedPostCategory: string | null = null;
+			if (postHash) {
+				try {
+					const postCategory = await postApi.getPostPublishCategory(postHash);
+					if (postCategory.success && postCategory.data) {
+						selectedPostCategory = postCategory.data;
+						setSelected(selectedPostCategory);
+						onSelect(selectedPostCategory);
+					}
+				} catch (error) {
+					handleAxiosError(error);
+				}
+			}
+			// 카테고리 조회
 			const categories = await postApi.getCategories(userId);
-			const categoryNames = categories.map((item: { categoryName: string }) => item.categoryName);
-			setAllCategories(categoryNames);
+			const newCategoryNames: string[] = selectedPostCategory ? [selectedPostCategory] : [];
+			for (const { categoryName } of categories) {
+				if (categoryName === selectedPostCategory) continue;
+				newCategoryNames.push(categoryName);
+			}
+			setAllCategories(newCategoryNames);
 		};
 		fetchCategories();
 	}, []);
