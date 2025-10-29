@@ -232,4 +232,12 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 포스트 비공개 변경
+	updatePostVisibility: async (revisionHash: string, visibility: boolean) => {
+		const response = await axiosInstance.patch(
+			`${axiosInstance.defaults.baseURL}/api/updatePostVisibility`,
+			{ revisionHash, visibility }
+		);
+		return response.data;
+	},
 };

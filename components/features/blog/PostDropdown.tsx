@@ -1,5 +1,6 @@
 import { postApi } from '@/app/api/services/api';
 import PostDeleteModal from '@/components/modal/PostDeleteModal';
+import PostLockModal from '@/components/modal/postLockModal';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -10,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { handleAxiosError } from '@/lib/toasttError';
 
-import { ClockIcon, Edit2, MoreVerticalIcon, Trash2 } from 'lucide-react';
+import { ClockIcon, Edit2, LockIcon, MoreVerticalIcon, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 interface PostDropdownProps {
@@ -22,7 +23,7 @@ export default function PostDropdown({ revisionHash, postHash, postTitle }: Post
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-
+	const [postLockModalOpen, setPostLockModalOpen] = useState(false);
 	// 스크롤 시 드롭다운 닫기
 	useEffect(() => {
 		if (!open) return;
@@ -72,7 +73,10 @@ export default function PostDropdown({ revisionHash, postHash, postTitle }: Post
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent sideOffset={4} align="end">
-					{/* 히스토리 */}
+					<DropdownMenuItem onClick={() => setPostLockModalOpen(true)}>
+						<LockIcon />
+						비공개
+					</DropdownMenuItem>
 					<DropdownMenuItem onClick={() => router.push(`/blog/history/${postHash}`)}>
 						<ClockIcon />
 						히스토리
@@ -91,6 +95,11 @@ export default function PostDropdown({ revisionHash, postHash, postTitle }: Post
 			<PostDeleteModal
 				deleteModalOpen={deleteModalOpen}
 				setDeleteModalOpen={setDeleteModalOpen}
+				postInfo={{ revisionHash, postHash, postTitle }}
+			/>
+			<PostLockModal
+				postLockModalOpen={postLockModalOpen}
+				setPostLockModalOpen={setPostLockModalOpen}
 				postInfo={{ revisionHash, postHash, postTitle }}
 			/>
 		</div>
