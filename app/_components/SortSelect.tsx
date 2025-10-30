@@ -21,7 +21,7 @@ export default function SortSelect() {
 
 	return (
 		<Select value={sort} onValueChange={handleSortChange}>
-			<SelectTrigger className="w-[180px]">
+			<SelectTrigger className="w-[120px]">
 				<SelectValue placeholder="정렬방식선택" />
 			</SelectTrigger>
 			<SelectContent>

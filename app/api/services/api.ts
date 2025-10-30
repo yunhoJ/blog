@@ -61,10 +61,11 @@ export const postApi = {
 		category: string,
 		sort: string,
 		pageSize: number,
-		page: number
+		page: number,
+		keyword: string
 	) => {
 		const response = await axiosInstance.get(
-			`${axiosInstance.defaults.baseURL}/api/createPostPublish?userId=${userId}&category=${category}&sort=${sort}&pageSize=${pageSize}&page=${page}`
+			`${axiosInstance.defaults.baseURL}/api/createPostPublish?userId=${userId}&category=${category}&sort=${sort}&pageSize=${pageSize}&page=${page}&keyword=${keyword}`
 		);
 		return response.data;
 	},

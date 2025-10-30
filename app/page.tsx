@@ -98,7 +98,7 @@ export default async function Home({ searchParams }: HomeProps) {
 	);
 	// 메인 컨텐츠
 	const MainContentComponent = () => (
-		<div className="space-y-8">
+		<div className="space-y-4">
 			<HeaderSection selectedCategory={selectedCategory} selectedTag={selectedTag} />
 			<ToastBoundary>
 				<Suspense fallback={<PostListSkeletion />}>

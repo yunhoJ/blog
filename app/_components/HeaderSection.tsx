@@ -1,4 +1,5 @@
 import SortSelect from './SortSelect';
+import SearchSelect from './searchSelect';
 
 interface HeaderSectionProps {
 	selectedCategory: string;
@@ -13,9 +14,12 @@ export default function HeaderSection({ selectedCategory, selectedTag }: HeaderS
 	}
 
 	return (
-		<div className="flex items-center justify-between">
+		<>
 			<h2 className="text-2xl font-bold tracking-tight md:text-3xl">{content}</h2>
-			<SortSelect />
-		</div>
+			<div className="flex items-center justify-between gap-4">
+				<SearchSelect />
+				<SortSelect />
+			</div>
+		</>
 	);
 }
