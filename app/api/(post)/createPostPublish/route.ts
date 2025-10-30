@@ -62,7 +62,9 @@ export async function GET(request: NextRequest) {
 	const pageSize = Number(searchParams.get('pageSize')) || defaultPageSize;
 	const page = Number(searchParams.get('page')) || 1;
 	const tag = searchParams.get('tag') || '';
-	const post = await getPostPublishData(userId, category, sort, pageSize, page, tag);
+	const keyword = searchParams.get('keyword') || '';
+
+	const post = await getPostPublishData(userId, category, sort, pageSize, page, tag, keyword);
 	return NextResponse.json(post);
 }
 const getPublishedPosts = async (postHash: string, userId: string) => {

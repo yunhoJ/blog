@@ -70,18 +70,44 @@ const getTagList = async (tag: string) => {
 
 	return tagList.map((item) => item.postHash);
 };
+export const getPostListByKeyword = async (keyword: string) => {
+	const postList = await prisma.blogPost.findMany({
+		where: {
+			OR: [
+				{ postTitle: { contains: keyword, mode: 'insensitive' } },
+				{ postContent: { contains: keyword, mode: 'insensitive' } },
+			],
+			blogPostPublish: {
+				postVisibility: true,
+			},
+		},
+		select: {
+			postHash: true,
+		},
+	});
+	return new Set(postList.map((item) => item.postHash));
+};
 export const getPostPublishData = async (
 	userId: string,
 	category: string,
 	sort: string,
 	pageSize: number = 0,
 	page: number = 0,
-	tag: string = ''
+	tag: string = '',
+	keyword: string = ''
 ) => {
 	// 태그 필터링이 필요한 경우 먼저 postHash 목록을 가져옵니다
 	let taggedPostHashes: string[] | undefined;
 	if (tag !== '') {
 		taggedPostHashes = await getTagList(tag);
+	}
+	if (keyword !== '') {
+		const keywordPostHashes = Array.from(await getPostListByKeyword(keyword));
+		if (taggedPostHashes) {
+			taggedPostHashes = taggedPostHashes.filter((hash) => keywordPostHashes.includes(hash));
+		} else {
+			taggedPostHashes = keywordPostHashes;
+		}
 	}
 
 	const whereClause = {

@@ -39,6 +39,7 @@ interface HomeProps {
 		pageSize?: number;
 		page?: number;
 		tag?: string;
+		keyword?: string;
 	}>;
 }
 
@@ -67,7 +68,7 @@ export default async function Home({ searchParams }: HomeProps) {
 	const categories = getCategories(userId);
 	// 테그 목록 조회
 	const tags = getTags(userId);
-	const { category, sort, pageSize, page, tag } = await searchParams;
+	const { category, sort, pageSize, page, tag, keyword } = await searchParams;
 	//카테고리 선택
 	const selectedCategory = category || '전체';
 	const selectedTag = tag || '';
@@ -75,6 +76,9 @@ export default async function Home({ searchParams }: HomeProps) {
 	const selectedSort = sort || 'latest';
 	const selectedPageSize = Number(pageSize) || defaultPageSize;
 	const selectedPage = Number(page) || 1;
+
+	// 검색어 선택
+	const selectedKeyword = keyword || '';
 	// const postsPromise = getPublishedPosts({ sort: selectedSort });
 	const postPublish = await getPostPublishData(
 		userId,
@@ -82,7 +86,8 @@ export default async function Home({ searchParams }: HomeProps) {
 		selectedSort,
 		selectedPageSize,
 		selectedPage,
-		selectedTag
+		selectedTag,
+		selectedKeyword
 	);
 	const CategorySectionComponent = () => (
 		<aside>
