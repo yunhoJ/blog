@@ -54,6 +54,7 @@ export interface PaginationType {
 export interface BlogPostMeta {
 	postViewCount: number;
 	postLikeCount: number;
+	postCommentCount: number;
 	postMainImageUrl?: string;
 	blogPostTag: {
 		tagName: string;

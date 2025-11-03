@@ -149,6 +149,7 @@ export const getPostPublishData = async (
 							postMainImageUrl: true,
 							postViewCount: true,
 							postLikeCount: true,
+							postCommentCount: true,
 							blogPostTag: {
 								select: {
 									tagName: true,

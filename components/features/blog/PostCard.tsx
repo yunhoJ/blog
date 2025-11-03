@@ -1,7 +1,16 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { BlogPostData, BlogPostMeta } from '@/types/blog';
-import { User, Calendar, Folder, ChevronRight, Eye, Heart, Hash } from 'lucide-react';
-import { formatDate } from '@/lib/date';
+import {
+	User,
+	Calendar,
+	Folder,
+	ChevronRight,
+	Eye,
+	Heart,
+	Hash,
+	MessageSquareText,
+} from 'lucide-react';
+import { formatDate, formatDateWithoutTime } from '@/lib/date';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -113,29 +122,36 @@ export default function PostCard({
 				)} */}
 
 				<div className="text-muted-foreground items-centert mt-6 flex items-center justify-between text-xs md:text-sm">
-					<div className="flex justify-start gap-x-5">
+					<div className="flex justify-start gap-x-2 sm:gap-x-5">
 						{params.user.userName && (
-							<span className="flex items-center gap-1.5">
+							<span className="flex items-center gap-1 sm:gap-1.5">
 								<User className="h-4 w-4" />
 								<span>{params.user.userName}</span>
 							</span>
 						)}
 						{params.postPublished && (
-							<span className="flex items-center gap-1.5">
+							<span className="flex items-center gap-1 sm:gap-1.5">
 								<Calendar className="h-4 w-4" />
-								<time>{formatDate(params.postPublished)}</time>
+								<time className="mobile:hidden block">
+									{formatDateWithoutTime(params.postPublished)}
+								</time>
+								<time className="mobile:block hidden">{formatDate(params.postPublished)}</time>
 							</span>
 						)}
 					</div>
 
-					<div className="flex justify-end gap-x-5">
-						<span className="flex items-center gap-1.5">
+					<div className="flex justify-end gap-x-2 sm:gap-x-5">
+						<span className="flex items-center gap-1 sm:gap-1.5">
 							<Eye className="h-4 w-4" />
 							<span>{postMeta.postViewCount}</span>
 						</span>
-						<span className="flex items-center gap-1.5">
+						<span className="flex items-center gap-1 sm:gap-1.5">
 							<Heart className="h-4 w-4" />
 							<span>{postMeta.postLikeCount}</span>
+						</span>
+						<span className="flex items-center gap-1 sm:gap-1.5">
+							<MessageSquareText className="h-4 w-4" />
+							<span>{postMeta.postCommentCount}</span>
 						</span>
 					</div>
 				</div>
