@@ -56,6 +56,7 @@ model BlogPostMeta{
   postDelete Boolean @default(false)
   postViewCount Int @default(0)
   postLikeCount Int @default(0)
+  postCommentCount Int @default(0)
   postMainImageUrl String?
   
   @@id([postHash])
