@@ -145,10 +145,10 @@ export default function PostCard({
 							<Eye className="h-4 w-4" />
 							<span>{postMeta.postViewCount}</span>
 						</span>
-						{/* <span className="flex items-center gap-1 sm:gap-1.5">
+						<span className="flex items-center gap-1 sm:gap-1.5">
 							<Heart className="h-4 w-4" />
 							<span>{postMeta.postLikeCount}</span>
-						</span> */}
+						</span>
 						<span className="flex items-center gap-1 sm:gap-1.5">
 							<MessageSquareText className="h-4 w-4" />
 							<span>{postMeta.postCommentCount}</span>
