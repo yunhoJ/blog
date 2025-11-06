@@ -229,7 +229,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
 							</Button>
 						</Link>
 					</div> */}
-					<GiscusComments />
+					<GiscusComments
+						postHash={post.postHash}
+						postReactionCount={post.blogPostMeta.postLikeCount}
+					/>
 				</div>
 				<aside className="relative hidden md:block">
 					<div className="bg-muted/20 sticky top-[var(--sticky-top)] space-y-4 p-6 backdrop-blur-sm">

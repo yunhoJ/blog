@@ -22,6 +22,11 @@ export async function getPost(revisionHash: string) {
 					postVisibility: true,
 				},
 			},
+			blogPostMeta: {
+				select: {
+					postLikeCount: true,
+				},
+			},
 			user: {
 				select: {
 					userName: true,

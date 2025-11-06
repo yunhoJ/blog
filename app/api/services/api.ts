@@ -248,4 +248,12 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 포스트 리액션 수 업데이트
+	updatePostReactionCount: async (postHash: string, reactionCount: number) => {
+		const response = await axiosInstance.patch(
+			`${axiosInstance.defaults.baseURL}/api/PostReaction`,
+			{ postHash, reactionCount }
+		);
+		return response.data;
+	},
 };
