@@ -4,13 +4,14 @@ import { prisma } from '@/lib/prismaSession';
 
 export async function POST(request: NextRequest) {
 	const secret = process.env.GITHUB_REACTION_WEBHOOK_SECRET;
+	const event = request.headers.get('x-github-event');
 	if (!secret) {
 		return NextResponse.json(
 			{ success: false, message: '리엑션 웹훅 시크릿 키가 설정되지 않았습니다.' },
 			{ status: 500 }
 		);
 	}
-	if (request.headers.get('x-github-event') !== 'discussion_comment') {
+	if (event !== 'discussion_comment' && event !== 'discussion') {
 		return NextResponse.json(
 			{ success: false, message: '웹훅 이벤트가 일치하지 않습니다.' },
 			{ status: 401 }
@@ -41,7 +42,16 @@ export async function POST(request: NextRequest) {
 			{ status: 401 }
 		);
 	}
+
 	try {
+		switch (event) {
+			case 'discussion_comment':
+				await updatePostCommentCount(revisionHash, payload.discussion.comments);
+				break;
+			case 'discussion':
+				await updateDiscussionGitnumber(revisionHash, payload.discussion.number);
+				break;
+		}
 		await updatePostCommentCount(revisionHash, payload.discussion.comments);
 		return NextResponse.json({ success: true, message: '웹훅 처리 성공' }, { status: 200 });
 	} catch (error) {
@@ -63,5 +73,22 @@ const updatePostCommentCount = async (revisionHash: string, commentCount: number
 	await prisma.blogPostMeta.update({
 		where: { postHash: post.postHash },
 		data: { postCommentCount: commentCount },
+	});
+};
+
+const updateDiscussionGitnumber = async (revisionHash: string, gitnumber: number) => {
+	if (typeof gitnumber !== 'number' || gitnumber < 0) {
+		throw new Error(`유효하지 않은 디스커션 번호입니다: ${gitnumber}`);
+	}
+	const post = await prisma.blogPostPublish.findUnique({
+		where: { revisionHash },
+		select: { postHash: true },
+	});
+	if (!post) {
+		throw new Error('포스트가 없습니다.');
+	}
+	await prisma.blogPostMeta.update({
+		where: { postHash: post.postHash },
+		data: { postCommentGitnumber: gitnumber },
 	});
 };

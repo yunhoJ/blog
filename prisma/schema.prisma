@@ -57,6 +57,7 @@ model BlogPostMeta{
   postViewCount Int @default(0)
   postLikeCount Int @default(0)
   postCommentCount Int @default(0)
+  postCommentGitnumber Int? @unique
   postMainImageUrl String?
   
   @@id([postHash])

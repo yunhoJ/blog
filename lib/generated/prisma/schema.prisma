@@ -54,17 +54,18 @@ model BlogCategory {
 }
 
 model BlogPostMeta {
-  postHash         String
-  userId           String
-  postDelete       Boolean         @default(false)
-  postViewCount    Int             @default(0)
-  postLikeCount    Int             @default(0)
-  postCommentCount Int             @default(0)
-  postMainImageUrl String?
-  user             User            @relation(fields: [userId], references: [userId])
-  extraFile        BlogExtraFile[]
-  blogPostTag      BlogPostTag[]
-  blogPost         BlogPost[]
+  postHash             String
+  userId               String
+  postDelete           Boolean         @default(false)
+  postViewCount        Int             @default(0)
+  postLikeCount        Int             @default(0)
+  postCommentCount     Int             @default(0)
+  postCommentGitnumber Int?            @unique
+  postMainImageUrl     String?
+  user                 User            @relation(fields: [userId], references: [userId])
+  extraFile            BlogExtraFile[]
+  blogPostTag          BlogPostTag[]
+  blogPost             BlogPost[]
 
   @@id([postHash])
 }
