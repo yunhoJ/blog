@@ -5230,6 +5230,7 @@ export namespace Prisma {
     postLikeCount: number | null
     postCommentCount: number | null
     postCommentGitnumber: number | null
+    postCommentGitId: string | null
     postMainImageUrl: string | null
   }
 
@@ -5241,6 +5242,7 @@ export namespace Prisma {
     postLikeCount: number | null
     postCommentCount: number | null
     postCommentGitnumber: number | null
+    postCommentGitId: string | null
     postMainImageUrl: string | null
   }
 
@@ -5252,6 +5254,7 @@ export namespace Prisma {
     postLikeCount: number
     postCommentCount: number
     postCommentGitnumber: number
+    postCommentGitId: number
     postMainImageUrl: number
     _all: number
   }
@@ -5279,6 +5282,7 @@ export namespace Prisma {
     postLikeCount?: true
     postCommentCount?: true
     postCommentGitnumber?: true
+    postCommentGitId?: true
     postMainImageUrl?: true
   }
 
@@ -5290,6 +5294,7 @@ export namespace Prisma {
     postLikeCount?: true
     postCommentCount?: true
     postCommentGitnumber?: true
+    postCommentGitId?: true
     postMainImageUrl?: true
   }
 
@@ -5301,6 +5306,7 @@ export namespace Prisma {
     postLikeCount?: true
     postCommentCount?: true
     postCommentGitnumber?: true
+    postCommentGitId?: true
     postMainImageUrl?: true
     _all?: true
   }
@@ -5399,6 +5405,7 @@ export namespace Prisma {
     postLikeCount: number
     postCommentCount: number
     postCommentGitnumber: number | null
+    postCommentGitId: string | null
     postMainImageUrl: string | null
     _count: BlogPostMetaCountAggregateOutputType | null
     _avg: BlogPostMetaAvgAggregateOutputType | null
@@ -5429,6 +5436,7 @@ export namespace Prisma {
     postLikeCount?: boolean
     postCommentCount?: boolean
     postCommentGitnumber?: boolean
+    postCommentGitId?: boolean
     postMainImageUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     extraFile?: boolean | BlogPostMeta$extraFileArgs<ExtArgs>
@@ -5445,6 +5453,7 @@ export namespace Prisma {
     postLikeCount?: boolean
     postCommentCount?: boolean
     postCommentGitnumber?: boolean
+    postCommentGitId?: boolean
     postMainImageUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["blogPostMeta"]>
@@ -5457,6 +5466,7 @@ export namespace Prisma {
     postLikeCount?: boolean
     postCommentCount?: boolean
     postCommentGitnumber?: boolean
+    postCommentGitId?: boolean
     postMainImageUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["blogPostMeta"]>
@@ -5469,10 +5479,11 @@ export namespace Prisma {
     postLikeCount?: boolean
     postCommentCount?: boolean
     postCommentGitnumber?: boolean
+    postCommentGitId?: boolean
     postMainImageUrl?: boolean
   }
 
-  export type BlogPostMetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"postHash" | "userId" | "postDelete" | "postViewCount" | "postLikeCount" | "postCommentCount" | "postCommentGitnumber" | "postMainImageUrl", ExtArgs["result"]["blogPostMeta"]>
+  export type BlogPostMetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"postHash" | "userId" | "postDelete" | "postViewCount" | "postLikeCount" | "postCommentCount" | "postCommentGitnumber" | "postCommentGitId" | "postMainImageUrl", ExtArgs["result"]["blogPostMeta"]>
   export type BlogPostMetaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     extraFile?: boolean | BlogPostMeta$extraFileArgs<ExtArgs>
@@ -5503,6 +5514,7 @@ export namespace Prisma {
       postLikeCount: number
       postCommentCount: number
       postCommentGitnumber: number | null
+      postCommentGitId: string | null
       postMainImageUrl: string | null
     }, ExtArgs["result"]["blogPostMeta"]>
     composites: {}
@@ -5938,6 +5950,7 @@ export namespace Prisma {
     readonly postLikeCount: FieldRef<"BlogPostMeta", 'Int'>
     readonly postCommentCount: FieldRef<"BlogPostMeta", 'Int'>
     readonly postCommentGitnumber: FieldRef<"BlogPostMeta", 'Int'>
+    readonly postCommentGitId: FieldRef<"BlogPostMeta", 'String'>
     readonly postMainImageUrl: FieldRef<"BlogPostMeta", 'String'>
   }
     
@@ -10881,6 +10894,7 @@ export namespace Prisma {
     postLikeCount: 'postLikeCount',
     postCommentCount: 'postCommentCount',
     postCommentGitnumber: 'postCommentGitnumber',
+    postCommentGitId: 'postCommentGitId',
     postMainImageUrl: 'postMainImageUrl'
   };
 
@@ -11246,6 +11260,7 @@ export namespace Prisma {
     postLikeCount?: IntFilter<"BlogPostMeta"> | number
     postCommentCount?: IntFilter<"BlogPostMeta"> | number
     postCommentGitnumber?: IntNullableFilter<"BlogPostMeta"> | number | null
+    postCommentGitId?: StringNullableFilter<"BlogPostMeta"> | string | null
     postMainImageUrl?: StringNullableFilter<"BlogPostMeta"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     extraFile?: BlogExtraFileListRelationFilter
@@ -11261,6 +11276,7 @@ export namespace Prisma {
     postLikeCount?: SortOrder
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrderInput | SortOrder
+    postCommentGitId?: SortOrderInput | SortOrder
     postMainImageUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     extraFile?: BlogExtraFileOrderByRelationAggregateInput
@@ -11271,6 +11287,7 @@ export namespace Prisma {
   export type BlogPostMetaWhereUniqueInput = Prisma.AtLeast<{
     postHash?: string
     postCommentGitnumber?: number
+    postCommentGitId?: string
     AND?: BlogPostMetaWhereInput | BlogPostMetaWhereInput[]
     OR?: BlogPostMetaWhereInput[]
     NOT?: BlogPostMetaWhereInput | BlogPostMetaWhereInput[]
@@ -11284,7 +11301,7 @@ export namespace Prisma {
     extraFile?: BlogExtraFileListRelationFilter
     blogPostTag?: BlogPostTagListRelationFilter
     blogPost?: BlogPostListRelationFilter
-  }, "postHash" | "postCommentGitnumber">
+  }, "postHash" | "postCommentGitnumber" | "postCommentGitId">
 
   export type BlogPostMetaOrderByWithAggregationInput = {
     postHash?: SortOrder
@@ -11294,6 +11311,7 @@ export namespace Prisma {
     postLikeCount?: SortOrder
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrderInput | SortOrder
+    postCommentGitId?: SortOrderInput | SortOrder
     postMainImageUrl?: SortOrderInput | SortOrder
     _count?: BlogPostMetaCountOrderByAggregateInput
     _avg?: BlogPostMetaAvgOrderByAggregateInput
@@ -11313,6 +11331,7 @@ export namespace Prisma {
     postLikeCount?: IntWithAggregatesFilter<"BlogPostMeta"> | number
     postCommentCount?: IntWithAggregatesFilter<"BlogPostMeta"> | number
     postCommentGitnumber?: IntNullableWithAggregatesFilter<"BlogPostMeta"> | number | null
+    postCommentGitId?: StringNullableWithAggregatesFilter<"BlogPostMeta"> | string | null
     postMainImageUrl?: StringNullableWithAggregatesFilter<"BlogPostMeta"> | string | null
   }
 
@@ -11777,6 +11796,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     user: UserCreateNestedOneWithoutBlogPostMetaInput
     extraFile?: BlogExtraFileCreateNestedManyWithoutBlogPostMetaInput
@@ -11792,6 +11812,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -11805,6 +11826,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBlogPostMetaNestedInput
     extraFile?: BlogExtraFileUpdateManyWithoutBlogPostMetaNestedInput
@@ -11820,6 +11842,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -11834,6 +11857,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
   }
 
@@ -11844,6 +11868,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -11855,6 +11880,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -12438,6 +12464,7 @@ export namespace Prisma {
     postLikeCount?: SortOrder
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrder
+    postCommentGitId?: SortOrder
     postMainImageUrl?: SortOrder
   }
 
@@ -12456,6 +12483,7 @@ export namespace Prisma {
     postLikeCount?: SortOrder
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrder
+    postCommentGitId?: SortOrder
     postMainImageUrl?: SortOrder
   }
 
@@ -12467,6 +12495,7 @@ export namespace Prisma {
     postLikeCount?: SortOrder
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrder
+    postCommentGitId?: SortOrder
     postMainImageUrl?: SortOrder
   }
 
@@ -13738,6 +13767,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileCreateNestedManyWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagCreateNestedManyWithoutBlogPostMetaInput
@@ -13751,6 +13781,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -13925,6 +13956,7 @@ export namespace Prisma {
     postLikeCount?: IntFilter<"BlogPostMeta"> | number
     postCommentCount?: IntFilter<"BlogPostMeta"> | number
     postCommentGitnumber?: IntNullableFilter<"BlogPostMeta"> | number | null
+    postCommentGitId?: StringNullableFilter<"BlogPostMeta"> | string | null
     postMainImageUrl?: StringNullableFilter<"BlogPostMeta"> | string | null
   }
 
@@ -14548,6 +14580,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     user: UserCreateNestedOneWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagCreateNestedManyWithoutBlogPostMetaInput
@@ -14562,6 +14595,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPost?: BlogPostUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -14623,6 +14657,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUpdateManyWithoutBlogPostMetaNestedInput
@@ -14637,6 +14672,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPost?: BlogPostUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -14703,6 +14739,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     user: UserCreateNestedOneWithoutBlogPostMetaInput
     extraFile?: BlogExtraFileCreateNestedManyWithoutBlogPostMetaInput
@@ -14717,6 +14754,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPost?: BlogPostUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -14799,6 +14837,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBlogPostMetaNestedInput
     extraFile?: BlogExtraFileUpdateManyWithoutBlogPostMetaNestedInput
@@ -14813,6 +14852,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPost?: BlogPostUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -14897,6 +14937,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     user: UserCreateNestedOneWithoutBlogPostMetaInput
     extraFile?: BlogExtraFileCreateNestedManyWithoutBlogPostMetaInput
@@ -14911,6 +14952,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -14993,6 +15035,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBlogPostMetaNestedInput
     extraFile?: BlogExtraFileUpdateManyWithoutBlogPostMetaNestedInput
@@ -15007,6 +15050,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -15176,6 +15220,7 @@ export namespace Prisma {
     postLikeCount?: number
     postCommentCount?: number
     postCommentGitnumber?: number | null
+    postCommentGitId?: string | null
     postMainImageUrl?: string | null
   }
 
@@ -15252,6 +15297,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUpdateManyWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUpdateManyWithoutBlogPostMetaNestedInput
@@ -15265,6 +15311,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -15278,6 +15325,7 @@ export namespace Prisma {
     postLikeCount?: IntFieldUpdateOperationsInput | number
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
+    postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

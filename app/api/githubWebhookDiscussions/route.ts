@@ -49,7 +49,11 @@ export async function POST(request: NextRequest) {
 				await updatePostCommentCount(revisionHash, payload.discussion.comments);
 				break;
 			case 'discussion':
-				await updateDiscussionGitnumber(revisionHash, payload.discussion.number);
+				await updateDiscussionGitnumber(
+					revisionHash,
+					payload.discussion.number,
+					payload.discussion.node_id
+				);
 				break;
 		}
 		await updatePostCommentCount(revisionHash, payload.discussion.comments);
@@ -76,9 +80,16 @@ const updatePostCommentCount = async (revisionHash: string, commentCount: number
 	});
 };
 
-const updateDiscussionGitnumber = async (revisionHash: string, gitnumber: number) => {
+const updateDiscussionGitnumber = async (
+	revisionHash: string,
+	gitnumber: number,
+	gitNodeId: string
+) => {
 	if (typeof gitnumber !== 'number' || gitnumber < 0) {
 		throw new Error(`유효하지 않은 디스커션 번호입니다: ${gitnumber}`);
+	}
+	if (typeof gitNodeId !== 'string' || gitNodeId.length === 0) {
+		throw new Error(`유효하지 않은 디스커션 노드 ID입니다: ${gitNodeId}`);
 	}
 	const post = await prisma.blogPostPublish.findUnique({
 		where: { revisionHash },
@@ -89,6 +100,6 @@ const updateDiscussionGitnumber = async (revisionHash: string, gitnumber: number
 	}
 	await prisma.blogPostMeta.update({
 		where: { postHash: post.postHash },
-		data: { postCommentGitnumber: gitnumber },
+		data: { postCommentGitnumber: gitnumber, postCommentGitId: gitNodeId },
 	});
 };

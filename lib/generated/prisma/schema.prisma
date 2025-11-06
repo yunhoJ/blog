@@ -61,6 +61,7 @@ model BlogPostMeta {
   postLikeCount        Int             @default(0)
   postCommentCount     Int             @default(0)
   postCommentGitnumber Int?            @unique
+  postCommentGitId     String?         @unique
   postMainImageUrl     String?
   user                 User            @relation(fields: [userId], references: [userId])
   extraFile            BlogExtraFile[]
