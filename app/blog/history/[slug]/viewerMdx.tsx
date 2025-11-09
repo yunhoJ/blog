@@ -26,7 +26,7 @@ export default function MdxClient({ source }: { source: string }) {
 			span: ['style', 'class'],
 		},
 	};
-	console.log(schema);
+	// console.log(schema);
 	const [mdx, setMdx] = useState<MDXRemoteSerializeResult | null>(null);
 
 	useEffect(() => {
@@ -47,7 +47,7 @@ export default function MdxClient({ source }: { source: string }) {
 
 		process();
 	}, [source]);
-	console.log(mdx?.compiledSource);
+	// console.log(mdx?.compiledSource);
 	if (!mdx) return <div>Loading...</div>;
 	return (
 		<>

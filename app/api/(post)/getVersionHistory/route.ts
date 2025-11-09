@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { checkLogin } from '@/app/api/services/loginService';
 import { prisma } from '@/lib/prismaSession';
 import * as Diff from 'diff';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
 	const { searchParams } = new URL(request.url);
 	const postHash = searchParams.get('postHash');
 
@@ -51,6 +51,44 @@ export async function GET(request: Request) {
 	return NextResponse.json({ success: true, data: versionHistoryWithDiff });
 }
 
+export async function DELETE(request: NextRequest) {
+	const { revisionHash } = await request.json();
+	const result = await checkLogin();
+	if (!result.success) {
+		return NextResponse.json(
+			{ success: false, message: result.message },
+			{ status: result.status }
+		);
+	}
+	const userId = result.user?.userId as string;
+	if (!revisionHash || !userId) {
+		return NextResponse.json(
+			{ success: false, message: '유저아이디 또는 리비전해시가 없습니다.' },
+			{ status: 400 }
+		);
+	}
+
+	try {
+		await deletePostHistory(revisionHash, userId);
+	} catch (error) {
+		console.log('error', error);
+		return NextResponse.json(
+			{ success: false, message: '히스토리 삭제 중 오류가 발생했습니다.' },
+			{ status: 500 }
+		);
+	}
+	return NextResponse.json({ success: true, message: '히스토리 삭제 성공' });
+}
+
+async function deletePostHistory(revisionHash: string, userId: string) {
+	const data = await prisma.blogPost.delete({
+		where: {
+			userId,
+			revisionHash,
+		},
+	});
+	console.log('data', data);
+}
 async function getVersionHistory(postHash: string) {
 	const versionHistory = await prisma.blogPost.findMany({
 		where: {

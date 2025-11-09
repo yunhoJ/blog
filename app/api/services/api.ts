@@ -191,6 +191,14 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 히스토리 삭제
+	deletePostHistory: async (revisionHash: string) => {
+		const response = await axiosInstance.delete(
+			`${axiosInstance.defaults.baseURL}/api/getVersionHistory`,
+			{ data: { revisionHash } }
+		);
+		return response.data;
+	},
 	// 로그인
 	login: async (userId: string, password: string) => {
 		const response = await axiosInstance.post(`${axiosInstance.defaults.baseURL}/api/login`, {

@@ -1,13 +1,11 @@
 'use client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CodeIcon, FileTextIcon, GitCommit } from 'lucide-react';
 import VersionTimeLine from './versionTimeLine';
-import { notFound, useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import { postApi } from '@/app/api/services/api';
 import { handleAxiosError } from '@/lib/toasttError';
 import { PostVersionData, SelectedVersionData } from '@/types/versionHistory';
-import { useRouter } from 'next/navigation';
 import NotFound from '@/app/not-found';
 import HistoryDetail from './historyDetail';
 import { Button } from '@/components/ui/button';
@@ -17,7 +15,6 @@ interface BlogPostProps {
 }
 export default function History({ params }: BlogPostProps) {
 	const { slug: postHash } = useParams();
-	const router = useRouter();
 	const [notFound, setNotFound] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isHtmlview, setIsHtmlview] = useState(true);
@@ -26,28 +23,32 @@ export default function History({ params }: BlogPostProps) {
 		revisionHash: '',
 		previousRevisionHash: '',
 	});
-	useEffect(() => {
+
+	const fetchversionTimeLine = useCallback(async () => {
 		if (!postHash) return;
-		const fetchversionTimeLine = async () => {
-			try {
-				const versionTimeLineResponse = await postApi.getVersionTimeLine(postHash as string);
-				if (versionTimeLineResponse.success) {
-					setversionTimeLine(versionTimeLineResponse.data);
-					// 첫 번째 버전 자동 선택
+		try {
+			const versionTimeLineResponse = await postApi.getVersionTimeLine(postHash as string);
+			if (versionTimeLineResponse.success) {
+				setversionTimeLine(versionTimeLineResponse.data);
+				// 첫 번째 버전 자동 선택
+				if (versionTimeLineResponse.data.length > 0) {
 					setversionDetail({
 						revisionHash: versionTimeLineResponse.data[0].revisionHash,
 						previousRevisionHash: versionTimeLineResponse.data[0].previousRevisionHash,
 					});
 				}
-				setIsLoading(false);
-			} catch (error) {
-				handleAxiosError(error, '버전 히스토리 조회 중 오류가 발생했습니다.');
-				// 404 페이지로 이동
-				setNotFound(true);
 			}
-		};
-		fetchversionTimeLine();
+			setIsLoading(false);
+		} catch (error) {
+			handleAxiosError(error, '버전 히스토리 조회 중 오류가 발생했습니다.');
+			// 404 페이지로 이동
+			setNotFound(true);
+		}
 	}, [postHash]);
+
+	useEffect(() => {
+		fetchversionTimeLine();
+	}, [fetchversionTimeLine]);
 	if (notFound) {
 		return <NotFound />;
 	}
@@ -115,6 +116,8 @@ export default function History({ params }: BlogPostProps) {
 										setversionDetail({ revisionHash, previousRevisionHash });
 									}}
 									selectedVersion={versionDetail.revisionHash}
+									postHash={postHash as string}
+									onDeleteSuccess={fetchversionTimeLine}
 								/>
 							</div>
 						</div>

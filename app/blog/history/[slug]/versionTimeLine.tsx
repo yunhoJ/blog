@@ -2,22 +2,23 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Plus, Minus, Equal } from 'lucide-react';
-import { postApi } from '@/app/api/services/api';
-import { useEffect, useState } from 'react';
-import { handleAxiosError } from '@/lib/toasttError';
 import { formatDate } from '@/lib/date';
-import { useRouter } from 'next/navigation';
 import { PostVersionData } from '@/types/versionHistory';
+import PostHistoryDropdown from '@/components/features/blog/PostHistoryDropdown';
 
 interface VersionTimeLineProps {
 	versionTimeLine: PostVersionData[];
+	postHash: string;
 	onVersionChange: (revisionHash: string, previousRevisionHash: string) => void;
 	selectedVersion: string;
+	onDeleteSuccess: () => void;
 }
 export default function VersionTimeLine({
 	versionTimeLine,
+	postHash,
 	onVersionChange,
 	selectedVersion,
+	onDeleteSuccess,
 }: VersionTimeLineProps) {
 	return versionTimeLine.map((version: PostVersionData) => (
 		<div key={version.revisionHash} className="relative">
@@ -51,10 +52,17 @@ export default function VersionTimeLine({
 							배포중
 						</Badge>
 					)}
-
-					<CardTitle className={`overflow-hidden leading-tight break-words`}>
-						{version.postTitle}
-					</CardTitle>
+					<div className="flex items-start justify-between">
+						<CardTitle className={`overflow-hidden leading-tight break-words`}>
+							{version.postTitle}
+						</CardTitle>
+						<PostHistoryDropdown
+							revisionHash={version.revisionHash}
+							postHash={postHash}
+							postTitle={version.postTitle}
+							onDeleteSuccess={onDeleteSuccess}
+						/>
+					</div>
 				</CardHeader>
 				<CardContent>
 					<div className="text-muted-foreground flex flex-col gap-1 text-xs">
