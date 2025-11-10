@@ -14,6 +14,7 @@ import { toastError, toastSuccess } from '@/lib/toasttError';
 interface PostInfo {
 	revisionHash: string;
 	postTitle: string;
+	blogPostPublish: boolean;
 }
 interface PostDeleteModalProps {
 	deleteModalOpen: boolean;
@@ -29,6 +30,10 @@ export default function PostDeleteHistoryModal({
 	onDeleteSuccess,
 }: PostDeleteModalProps) {
 	const handleDelete = async () => {
+		if (postInfo.blogPostPublish) {
+			toastSuccess('발행중인 포스트는 삭제할 수 없습니다.');
+			return;
+		}
 		try {
 			await postApi.deletePostHistory(postInfo.revisionHash);
 			toastSuccess('히스토리가 삭제 되었습니다.');
@@ -53,7 +58,7 @@ export default function PostDeleteHistoryModal({
 						className="bg-destructive hover:bg-destructive/80"
 						onClick={handleDelete}
 					>
-						히스토리 삭제
+						삭제
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

@@ -14,12 +14,14 @@ interface PostHistoryDropdownProps {
 	revisionHash: string;
 	postHash: string;
 	postTitle: string;
+	blogPostPublish: boolean;
 	onDeleteSuccess: () => void;
 }
 export default function PostHistoryDropdown({
 	revisionHash,
 	postHash,
 	postTitle,
+	blogPostPublish,
 	onDeleteSuccess,
 }: PostHistoryDropdownProps) {
 	console.log('postHash', postHash);
@@ -74,7 +76,7 @@ export default function PostHistoryDropdown({
 					</DropdownMenuItem> */}
 					<DropdownMenuItem className="text-destructive" onClick={() => setDeleteModalOpen(true)}>
 						<Trash2 className="text-destructive" />
-						히스토리 삭제
+						삭제
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
@@ -82,7 +84,7 @@ export default function PostHistoryDropdown({
 			<PostDeleteHistoryModal
 				deleteModalOpen={deleteModalOpen}
 				setDeleteModalOpen={setDeleteModalOpen}
-				postInfo={{ revisionHash, postTitle }}
+				postInfo={{ revisionHash, postTitle, blogPostPublish }}
 				onDeleteSuccess={onDeleteSuccess}
 			/>
 			{/* <PostLockModal

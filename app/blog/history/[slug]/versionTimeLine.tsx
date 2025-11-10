@@ -60,6 +60,7 @@ export default function VersionTimeLine({
 							revisionHash={version.revisionHash}
 							postHash={postHash}
 							postTitle={version.postTitle}
+							blogPostPublish={version.blogPostPublish ? true : false}
 							onDeleteSuccess={onDeleteSuccess}
 						/>
 					</div>
