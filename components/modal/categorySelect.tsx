@@ -35,7 +35,7 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
 						onSelect(selectedPostCategory);
 					}
 				} catch (error) {
-					handleAxiosError(error);
+					handleAxiosError(error, '카테고리 조회 중 오류가 발생했습니다.');
 				}
 			}
 			// 카테고리 조회
