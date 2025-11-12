@@ -5,6 +5,7 @@ export interface PostVersionData {
 	postTitle: string;
 	postDraft: boolean;
 	postUpdatedAt: string; // ISO date string
+	postCreatedAt: string; // ISO date string
 	previousRevisionHash: string;
 	diffLine: { added: number; removed: number; unchanged: number };
 	blogPostPublish?: { categoryName: string; postVisibility: boolean };
