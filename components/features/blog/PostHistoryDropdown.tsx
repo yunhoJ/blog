@@ -1,4 +1,5 @@
 import PostDeleteHistoryModal from '@/components/modal/PostDeleteHistoryModal';
+import PostPublishModal from '@/components/modal/postPublishModal';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -8,27 +9,29 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { MoreVerticalIcon, Trash2 } from 'lucide-react';
+import { MoreVerticalIcon, SendIcon, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 interface PostHistoryDropdownProps {
 	revisionHash: string;
 	postHash: string;
+	postDraft: boolean;
 	postTitle: string;
 	blogPostPublish: boolean;
-	onDeleteSuccess: () => void;
+	onSuccess: () => void;
 }
 export default function PostHistoryDropdown({
 	revisionHash,
 	postHash,
+	postDraft,
 	postTitle,
 	blogPostPublish,
-	onDeleteSuccess,
+	onSuccess,
 }: PostHistoryDropdownProps) {
 	console.log('postHash', postHash);
 	// const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-	// const [postLockModalOpen, setPostLockModalOpen] = useState(false);
+	const [postPublishModalOpen, setPostPublishModalOpen] = useState(false);
 	// 스크롤 시 드롭다운 닫기
 	useEffect(() => {
 		if (!open) return;
@@ -62,10 +65,7 @@ export default function PostHistoryDropdown({
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent sideOffset={4} align="end">
-					{/* <DropdownMenuItem onClick={() => setPostLockModalOpen(true)}>
-						<LockIcon />
-						비공개
-					</DropdownMenuItem>
+					{/* 
 					<DropdownMenuItem onClick={() => router.push(`/blog/history/${postHash}`)}>
 						<ClockIcon />
 						히스토리
@@ -74,6 +74,11 @@ export default function PostHistoryDropdown({
 						<Edit2 className="text-primary" />
 						수정
 					</DropdownMenuItem> */}
+
+					<DropdownMenuItem className="text-primary" onClick={() => setPostPublishModalOpen(true)}>
+						<SendIcon className="text-primary" />
+						발행
+					</DropdownMenuItem>
 					<DropdownMenuItem className="text-destructive" onClick={() => setDeleteModalOpen(true)}>
 						<Trash2 className="text-destructive" />
 						삭제
@@ -85,13 +90,14 @@ export default function PostHistoryDropdown({
 				deleteModalOpen={deleteModalOpen}
 				setDeleteModalOpen={setDeleteModalOpen}
 				postInfo={{ revisionHash, postTitle, blogPostPublish }}
-				onDeleteSuccess={onDeleteSuccess}
+				onDeleteSuccess={onSuccess}
 			/>
-			{/* <PostLockModal
-				postLockModalOpen={postLockModalOpen}
-				setPostLockModalOpen={setPostLockModalOpen}
-				postInfo={{ revisionHash, postHash, postTitle }}
-			/> */}
+			<PostPublishModal
+				postPublishModalOpen={postPublishModalOpen}
+				setPostPublishModalOpen={setPostPublishModalOpen}
+				postInfo={{ revisionHash, postHash, postTitle, blogPostPublish, postDraft }}
+				onPublishSuccess={onSuccess}
+			/>
 		</div>
 	);
 }

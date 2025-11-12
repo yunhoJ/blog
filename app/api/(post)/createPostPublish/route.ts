@@ -67,6 +67,33 @@ export async function GET(request: NextRequest) {
 	const post = await getPostPublishData(userId, category, sort, pageSize, page, tag, keyword);
 	return NextResponse.json(post);
 }
+
+export async function PUT(request: NextRequest) {
+	// 포스트 발행 수정
+	const result = await checkLogin();
+	if (!result.success) {
+		return NextResponse.json(
+			{ success: false, message: result.message },
+			{ status: result.status }
+		);
+	}
+	const { userId } = result.user as { userId: string };
+	const { postHash, revisionHash, category, visibility, imageUrl } = await request.json();
+	try {
+		await updatePostPublish(revisionHash);
+		await createPostPublish(revisionHash, postHash, category, visibility, userId);
+		if (imageUrl) {
+			await updatePostMainImage(postHash, imageUrl);
+		}
+		return NextResponse.json({ success: true, message: '게시글 발행 성공' });
+	} catch (error) {
+		return NextResponse.json(
+			{ success: false, message: error instanceof Error ? error.message : '오류가 발생했습니다.' },
+			{ status: 400 }
+		);
+	}
+}
+
 const getPublishedPosts = async (postHash: string, userId: string) => {
 	// 포스트 발행 상태로 업데이트
 	const post = await prisma.$transaction(async (tx) => {
@@ -90,7 +117,19 @@ const getPublishedPosts = async (postHash: string, userId: string) => {
 
 	return post;
 };
+const updatePostPublish = async (revisionHash: string) => {
+	const post = await prisma.blogPost.update({
+		where: {
+			revisionHash,
+		},
+		data: {
+			postDraft: false,
+			postPublished: new Date(),
+		},
+	});
 
+	console.log(post);
+};
 const updatePostMainImage = async (postHash: string, imageUrl: string) => {
 	const post = await prisma.blogPostMeta.update({
 		where: { postHash },

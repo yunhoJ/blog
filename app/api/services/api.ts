@@ -54,6 +54,19 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	updatePostPublish: async (data: {
+		postHash: string;
+		revisionHash: string;
+		category: string;
+		visibility: boolean;
+		imageUrl: string;
+	}) => {
+		const response = await axiosInstance.put(
+			`${axiosInstance.defaults.baseURL}/api/createPostPublish`,
+			data
+		);
+		return response.data;
+	},
 
 	// 포스트 발행 데이터 조회
 	getPostPublish: async (

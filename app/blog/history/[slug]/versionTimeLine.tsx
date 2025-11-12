@@ -11,14 +11,14 @@ interface VersionTimeLineProps {
 	postHash: string;
 	onVersionChange: (revisionHash: string, previousRevisionHash: string) => void;
 	selectedVersion: string;
-	onDeleteSuccess: () => void;
+	onSuccess: () => void;
 }
 export default function VersionTimeLine({
 	versionTimeLine,
 	postHash,
 	onVersionChange,
 	selectedVersion,
-	onDeleteSuccess,
+	onSuccess,
 }: VersionTimeLineProps) {
 	return versionTimeLine.map((version: PostVersionData) => (
 		<div key={version.revisionHash} className="relative">
@@ -61,7 +61,8 @@ export default function VersionTimeLine({
 							postHash={postHash}
 							postTitle={version.postTitle}
 							blogPostPublish={version.blogPostPublish ? true : false}
-							onDeleteSuccess={onDeleteSuccess}
+							postDraft={version.postDraft}
+							onSuccess={onSuccess}
 						/>
 					</div>
 				</CardHeader>

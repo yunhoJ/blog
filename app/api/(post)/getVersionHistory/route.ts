@@ -95,7 +95,7 @@ async function getVersionHistory(postHash: string) {
 			postHash,
 		},
 		orderBy: {
-			postCreatedAt: 'desc',
+			postUpdatedAt: 'desc',
 		},
 		select: {
 			revisionHash: true,

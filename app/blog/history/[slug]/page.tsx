@@ -117,7 +117,7 @@ export default function History({ params }: BlogPostProps) {
 									}}
 									selectedVersion={versionDetail.revisionHash}
 									postHash={postHash as string}
-									onDeleteSuccess={fetchversionTimeLine}
+									onSuccess={fetchversionTimeLine}
 								/>
 							</div>
 						</div>
