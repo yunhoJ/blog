@@ -122,11 +122,11 @@ export const postApi = {
 		return response.data;
 	},
 	// 임시 저장 포스트 삭제
-	deletePostDraft: async (data: { postHash: string; userId: string }) => {
+	deletePostDraft: async (postHash: string) => {
 		const response = await axiosInstance.delete(
 			`${axiosInstance.defaults.baseURL}/api/createPostDraft`,
 			{
-				data,
+				data: { postHash },
 			}
 		);
 		return response.data;
@@ -209,6 +209,14 @@ export const postApi = {
 		const response = await axiosInstance.delete(
 			`${axiosInstance.defaults.baseURL}/api/getVersionHistory`,
 			{ data: { revisionHash } }
+		);
+		return response.data;
+	},
+	// 수정중인 포스트 저장
+	changeDraftState: async (data: { postHash: string; draftState: boolean }) => {
+		const response = await axiosInstance.patch(
+			`${axiosInstance.defaults.baseURL}/api/createPostDraft`,
+			data
 		);
 		return response.data;
 	},

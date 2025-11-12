@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prismaSession';
 import { createPostDraft } from '@/app/api/services/createPost';
+import { checkLogin } from '../../services/loginService';
 
 export async function POST(request: NextRequest) {
 	const { postHash, title, content, userId } = await request.json();
@@ -13,12 +14,54 @@ export async function GET(request: NextRequest) {
 	const drafts = await getDrafts(userId);
 	return NextResponse.json({ data: drafts });
 }
+export async function PATCH(request: NextRequest) {
+	const result = await checkLogin();
+	if (!result.success) {
+		return NextResponse.json(
+			{ success: false, message: result.message },
+			{ status: result.status }
+		);
+	}
+	const userId = result.user?.userId as string;
+	const { postHash, draftState } = await request.json();
+
+	if (!postHash || !userId) {
+		return NextResponse.json(
+			{ success: false, message: '유저아이디 또는 포스트해시가 없습니다.' },
+			{ status: 400 }
+		);
+	}
+	try {
+		await saveDraftfalse(postHash, userId, draftState);
+	} catch (error) {
+		console.log('error', error);
+		return NextResponse.json(
+			{ success: false, message: '임시 포스트 저장 중 오류가 발생했습니다.' },
+			{ status: 400 }
+		);
+	}
+	return NextResponse.json({ success: true, message: '임시 포스트 저장 완료' });
+}
 export async function DELETE(request: NextRequest) {
-	const { postHash, userId } = await request.json();
-	console.log('postHash', postHash);
-	console.log('userId', userId);
+	const result = await checkLogin();
+	if (!result.success) {
+		return NextResponse.json(
+			{ success: false, message: result.message },
+			{ status: result.status }
+		);
+	}
+	const userId = result.user?.userId as string;
+	const { postHash } = await request.json();
+
+	if (!postHash || !userId) {
+		return NextResponse.json(
+			{ success: false, message: '유저아이디 또는 포스트해시가 없습니다.' },
+			{ status: 400 }
+		);
+	}
+
 	await deletePostDraft(postHash, userId);
-	return NextResponse.json({ message: 'Post deleted successfully' });
+	return NextResponse.json({ success: true, message: '임시 포스트 삭제 성공' });
 }
 
 async function getDrafts(userId: string) {
@@ -62,4 +105,15 @@ async function deletePostDraft(postHash: string, userId: string) {
 			},
 		});
 	}
+}
+async function saveDraftfalse(postHash: string, userId: string, draftState: boolean) {
+	await prisma.blogPost.updateMany({
+		where: {
+			postHash,
+			userId,
+		},
+		data: {
+			postDraft: draftState,
+		},
+	});
 }

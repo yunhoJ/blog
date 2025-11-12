@@ -8,15 +8,20 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { handleAxiosError, toastSuccess } from '@/lib/toasttError';
 
-import { MoreVerticalIcon, SendIcon, Trash2 } from 'lucide-react';
+import { Edit2Icon, MoreVerticalIcon, SendIcon, Trash2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { postApi } from '@/app/api/services/api';
+import HistoryDraftModal from '@/components/modal/HistoryDraftModal';
 interface PostHistoryDropdownProps {
 	revisionHash: string;
 	postHash: string;
 	postDraft: boolean;
 	postTitle: string;
 	blogPostPublish: boolean;
+	isContainDraft: boolean;
 	onSuccess: () => void;
 }
 export default function PostHistoryDropdown({
@@ -25,13 +30,15 @@ export default function PostHistoryDropdown({
 	postDraft,
 	postTitle,
 	blogPostPublish,
+	isContainDraft,
 	onSuccess,
 }: PostHistoryDropdownProps) {
-	console.log('postHash', postHash);
-	// const router = useRouter();
+	console.log('postTitle', postTitle);
+	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [postPublishModalOpen, setPostPublishModalOpen] = useState(false);
+	const [draftModalOpen, setDraftModalOpen] = useState(false);
 	// 스크롤 시 드롭다운 닫기
 	useEffect(() => {
 		if (!open) return;
@@ -51,6 +58,38 @@ export default function PostHistoryDropdown({
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [open]);
+	const navigateToEdit = (hash: string) => {
+		localStorage.setItem('postHash', hash);
+		router.push('/blog/write');
+	};
+	// 수정시 함수
+	const onClickEditHistory = async () => {
+		// 수정중인 포스트인지 확인
+		if (postDraft) {
+			navigateToEdit(postHash);
+			return;
+		}
+
+		if (isContainDraft) {
+			setDraftModalOpen(true);
+			return;
+		}
+
+		try {
+			await postApi.EditPublishPost({ postHash, revisionHash });
+			navigateToEdit(postHash);
+		} catch (error) {
+			handleAxiosError(error, '수정 중 오류가 발생했습니다.');
+		}
+	};
+	// 발행시 함수
+	const onClickPublishHistory = () => {
+		if (blogPostPublish) {
+			toastSuccess('이미 발행중인 포스트입니다.');
+			return;
+		}
+		setPostPublishModalOpen(true);
+	};
 	return (
 		<div
 			onClick={(e) => {
@@ -70,17 +109,19 @@ export default function PostHistoryDropdown({
 						<ClockIcon />
 						히스토리
 					</DropdownMenuItem>
-					<DropdownMenuItem className="text-primary" onClick={onClickEdit}>
-						<Edit2 className="text-primary" />
-						수정
-					</DropdownMenuItem> */}
-
-					<DropdownMenuItem className="text-primary" onClick={() => setPostPublishModalOpen(true)}>
-						<SendIcon className="text-primary" />
+					*/}
+					<DropdownMenuItem onClick={onClickPublishHistory}>
+						<SendIcon />
 						발행
 					</DropdownMenuItem>
+
+					<DropdownMenuItem className="text-primary" onClick={onClickEditHistory}>
+						<Edit2Icon className="text-primary" />
+						수정
+					</DropdownMenuItem>
+
 					<DropdownMenuItem className="text-destructive" onClick={() => setDeleteModalOpen(true)}>
-						<Trash2 className="text-destructive" />
+						<Trash2Icon className="text-destructive" />
 						삭제
 					</DropdownMenuItem>
 				</DropdownMenuContent>
@@ -95,8 +136,13 @@ export default function PostHistoryDropdown({
 			<PostPublishModal
 				postPublishModalOpen={postPublishModalOpen}
 				setPostPublishModalOpen={setPostPublishModalOpen}
-				postInfo={{ revisionHash, postHash, postTitle, blogPostPublish, postDraft }}
+				postInfo={{ revisionHash, postHash, postTitle }}
 				onPublishSuccess={onSuccess}
+			/>
+			<HistoryDraftModal
+				draftModalOpen={draftModalOpen}
+				setDraftModalOpen={setDraftModalOpen}
+				postInfo={{ revisionHash, postHash }}
 			/>
 		</div>
 	);

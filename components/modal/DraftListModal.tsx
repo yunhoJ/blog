@@ -13,15 +13,9 @@ interface DraftListModalProps {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
 	drafts: DraftItem[];
-	userId: string;
 }
 
-export default function DraftListModal({
-	isOpen,
-	onOpenChange,
-	drafts,
-	userId,
-}: DraftListModalProps) {
+export default function DraftListModal({ isOpen, onOpenChange, drafts }: DraftListModalProps) {
 	const router = useRouter();
 	const pathname = usePathname();
 	const [selectedDraft, setSelectedDraft] = useState<DraftItem | null>(null);
@@ -103,7 +97,6 @@ export default function DraftListModal({
 					isOpen={isDeleteModalOpen}
 					onOpenChange={setIsDeleteModalOpen}
 					selectedDraft={selectedDraft}
-					userId={userId}
 					parentOnOpenChange={onOpenChange}
 				/>
 			)}

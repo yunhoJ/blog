@@ -10,12 +10,12 @@ import {
 } from '@/components/ui/alert-dialog';
 import { DraftItem } from '@/types/blog';
 import { postApi } from '@/app/api/services/api';
+import { handleAxiosError, toastSuccess } from '@/lib/toasttError';
 
 interface DraftDeleteModalProps {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
 	selectedDraft: DraftItem | null;
-	userId: string;
 	parentOnOpenChange: (open: boolean) => void;
 }
 
@@ -23,15 +23,18 @@ export default function DraftDeleteModal({
 	isOpen,
 	onOpenChange,
 	selectedDraft,
-	userId,
 	parentOnOpenChange,
 }: DraftDeleteModalProps) {
 	const handleDelete = async () => {
 		if (selectedDraft?.postHash) {
-			console.log('삭제');
-			await postApi.deletePostDraft({ postHash: selectedDraft.postHash, userId });
-			onOpenChange(false);
-			parentOnOpenChange(false);
+			try {
+				await postApi.deletePostDraft(selectedDraft.postHash);
+				onOpenChange(false);
+				parentOnOpenChange(false);
+				toastSuccess('임시 포스트가 삭제 되었습니다.');
+			} catch (error) {
+				handleAxiosError(error, '삭제 중 오류가 발생했습니다.');
+			}
 		}
 	};
 	return (

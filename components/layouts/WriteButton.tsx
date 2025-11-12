@@ -58,7 +58,6 @@ export default function WriteButton() {
 				isOpen={isDraftModalOpen}
 				onOpenChange={setIsDraftModalOpen}
 				drafts={drafts}
-				userId={userId}
 			/>
 			{/* 로그인 모달 */}
 			<LoginModal isOpen={isLoginModalOpen} onOpenChange={setIsLoginModalOpen} />
