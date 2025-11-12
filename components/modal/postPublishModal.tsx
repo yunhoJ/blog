@@ -32,6 +32,7 @@ export default function PostPublishModal({
 			try {
 				if (postInfo.blogPostPublish) {
 					toastSuccess('이미 발행중인 포스트입니다.');
+					setPostPublishModalOpen(false);
 					return;
 				}
 				await postApi.updatePostPublish({
