@@ -9,8 +9,6 @@ interface PostInfo {
 	revisionHash: string;
 	postHash: string;
 	postTitle: string;
-	blogPostPublish: boolean;
-	postDraft: boolean;
 }
 interface PostPublishModalProps {
 	postPublishModalOpen: boolean;
@@ -25,16 +23,10 @@ export default function PostPublishModal({
 	postInfo,
 	onPublishSuccess,
 }: PostPublishModalProps) {
-	console.log(postInfo.postDraft);
 	const [visibility, setVisibility] = useState(true);
 	const handlePublish = useCallback(
 		async (category: string | null, imageUrl: string | null) => {
 			try {
-				if (postInfo.blogPostPublish) {
-					toastSuccess('이미 발행중인 포스트입니다.');
-					setPostPublishModalOpen(false);
-					return;
-				}
 				await postApi.updatePostPublish({
 					postHash: postInfo.postHash,
 					revisionHash: postInfo.revisionHash,
@@ -58,6 +50,7 @@ export default function PostPublishModal({
 			onOpenChange={setPostPublishModalOpen}
 			onPublish={handlePublish}
 			onChange={setVisibility}
+			postTitle={postInfo.postTitle}
 		/>
 	);
 }

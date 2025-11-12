@@ -21,6 +21,7 @@ interface PublishModalProps {
 	onOpenChange: (open: boolean) => void;
 	onPublish: (category: string | null, imageUrl: string | null) => Promise<void>;
 	onChange: (value: boolean) => void;
+	postTitle?: string;
 }
 
 export default function PublishModal({
@@ -28,6 +29,7 @@ export default function PublishModal({
 	onOpenChange,
 	onPublish,
 	onChange,
+	postTitle,
 }: PublishModalProps) {
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 	const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
@@ -41,8 +43,8 @@ export default function PublishModal({
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
 			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>포스트 발행</DialogTitle>
+				<DialogHeader className="px-1">
+					<DialogTitle className="text-lg leading-snug">제목 : {postTitle}</DialogTitle>
 				</DialogHeader>
 				<div>
 					<CategorySelector onSelect={handleCategorySelect} />

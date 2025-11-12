@@ -156,6 +156,7 @@ export default function Write() {
 				onOpenChange={setIsPublishModalOpen}
 				onPublish={handlePublish}
 				onChange={setVisibility}
+				postTitle={title}
 			/>
 		</div>
 	);

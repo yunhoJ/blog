@@ -5,6 +5,7 @@ import { Clock, Plus, Minus, Equal } from 'lucide-react';
 import { formatDate } from '@/lib/date';
 import { PostVersionData } from '@/types/versionHistory';
 import PostHistoryDropdown from '@/components/features/blog/PostHistoryDropdown';
+import { useEffect, useState } from 'react';
 
 interface VersionTimeLineProps {
 	versionTimeLine: PostVersionData[];
@@ -20,6 +21,13 @@ export default function VersionTimeLine({
 	selectedVersion,
 	onSuccess,
 }: VersionTimeLineProps) {
+	const [isContainDraft, setIsContainDraft] = useState(false);
+
+	useEffect(() => {
+		const hasDraft = versionTimeLine.some((version) => version.postDraft);
+		setIsContainDraft(hasDraft);
+	}, [versionTimeLine]);
+
 	return versionTimeLine.map((version: PostVersionData) => (
 		<div key={version.revisionHash} className="relative">
 			{/* 타임라인 점 */}
@@ -62,6 +70,7 @@ export default function VersionTimeLine({
 							postTitle={version.postTitle}
 							blogPostPublish={version.blogPostPublish ? true : false}
 							postDraft={version.postDraft}
+							isContainDraft={isContainDraft}
 							onSuccess={onSuccess}
 						/>
 					</div>
@@ -90,7 +99,7 @@ export default function VersionTimeLine({
 						</div>
 						<div className="flex items-center gap-1">
 							<Clock className="h-3 w-3" />
-							<span>{formatDate(version.postUpdatedAt)}</span>
+							<span>{formatDate(version.postCreatedAt)}</span>
 						</div>
 					</div>
 				</CardContent>

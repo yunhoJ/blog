@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { handleAxiosError } from '@/lib/toasttError';
 
-import { ClockIcon, Edit2, LockIcon, MoreVerticalIcon, Trash2 } from 'lucide-react';
+import { ClockIcon, Edit2Icon, LockIcon, MoreVerticalIcon, Trash2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 interface PostDropdownProps {
@@ -82,11 +82,11 @@ export default function PostDropdown({ revisionHash, postHash, postTitle }: Post
 						히스토리
 					</DropdownMenuItem>
 					<DropdownMenuItem className="text-primary" onClick={onClickEdit}>
-						<Edit2 className="text-primary" />
+						<Edit2Icon className="text-primary" />
 						수정
 					</DropdownMenuItem>
 					<DropdownMenuItem className="text-destructive" onClick={() => setDeleteModalOpen(true)}>
-						<Trash2 className="text-destructive" />
+						<Trash2Icon className="text-destructive" />
 						삭제
 					</DropdownMenuItem>
 				</DropdownMenuContent>
