@@ -12,3 +12,19 @@ export const DELETE_DISCUSSION_MUTATION = `
     }
   }
 `;
+
+// GitHub Discussion title update Mutation
+export const UPDATE_DISCUSSION_TITLE_MUTATION = `
+  mutation UpdateDiscussionTitle($discussionId: ID!, $title: String!, $body: String!) {
+    updateDiscussion(input: {
+      discussionId: $discussionId,
+      title: $title
+      body: $body
+    }) {
+      discussion {
+        id
+        title
+      }
+    }
+  }
+`;

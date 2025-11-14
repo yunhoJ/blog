@@ -19,10 +19,21 @@ export async function POST(request: NextRequest) {
 		if (imageUrl) {
 			await updatePostMainImage(postHash, imageUrl);
 		}
-		// 포스트 발행
-
-		await createPostPublish(postData.revisionHash, postHash, category, visibility, userId);
-		return NextResponse.json({ message: 'Post published successfully' });
+		// 포스트 발행 - 두 작업을 동시에 실행하고 둘 다 완료되면 리턴
+		const [_, postMetadata] = await Promise.all([
+			createPostPublish(postData.revisionHash, postHash, category, visibility, userId),
+			selectPostMetadata(postHash),
+		]);
+		return NextResponse.json({
+			success: true,
+			message: '포스트 발행 성공했습니다.',
+			responseData: {
+				revisionHash: postData.revisionHash,
+				postCommentGitId: postMetadata?.postCommentGitId,
+				postCommentGitnumber: postMetadata?.postCommentGitnumber,
+				postHash: postMetadata?.postHash,
+			},
+		});
 	} catch (error) {
 		return NextResponse.json(
 			{ success: false, message: error instanceof Error ? error.message : '오류가 발생했습니다.' },
@@ -262,4 +273,18 @@ const deletePostPublish = async (revisionHash: string, postHash: string, userId:
 		await supabase.storage.from('blog-storage').remove(filePathList);
 	}
 	return postMatadata;
+};
+
+const selectPostMetadata = async (postHash: string) => {
+	const post = await prisma.blogPostMeta.findUnique({
+		select: {
+			postCommentGitId: true,
+			postCommentGitnumber: true,
+			postHash: true,
+		},
+		where: {
+			postHash,
+		},
+	});
+	return post;
 };

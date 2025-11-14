@@ -2,7 +2,25 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { executeGitHubGraphQL } from '@/lib/graphql/client';
-import { DELETE_DISCUSSION_MUTATION } from '@/lib/graphql/schema';
+import { DELETE_DISCUSSION_MUTATION, UPDATE_DISCUSSION_TITLE_MUTATION } from '@/lib/graphql/schema';
+import { prisma } from '@/lib/prismaSession';
+import { BLOG_BASE_URL, BLOG_PATH_PREFIX } from '../../constant/const';
+
+// 상수 정의
+
+/**
+ * Discussion content 포맷팅 헬퍼 함수
+ * @param revisionHash - 포스트 revision hash
+ * @param postContent - 포스트 본문 내용
+ * @returns 포맷팅된 Discussion content
+ */
+function formatDiscussionContent(revisionHash: string, postContent: string): string {
+	const blogTitle = `# ${BLOG_PATH_PREFIX}/${revisionHash}`;
+	const blogUrl = `${BLOG_BASE_URL}/${BLOG_PATH_PREFIX}/${revisionHash}`;
+	const content = postContent;
+
+	return `${blogTitle}\n\n${content}\n\n${blogUrl}`;
+}
 
 export async function DELETE(request: NextRequest) {
 	try {
@@ -28,4 +46,46 @@ export async function DELETE(request: NextRequest) {
 			{ status: 500 }
 		);
 	}
+}
+
+export async function PATCH(request: NextRequest) {
+	try {
+		const { id, revisionHash } = await request.json();
+		if (!id || !revisionHash) {
+			return NextResponse.json(
+				{ success: false, message: 'Discussion ID 또는 revisionHash가 필요합니다.' },
+				{ status: 400 }
+			);
+		}
+
+		const postContent = await selectDiscussionContent(revisionHash);
+		const formattedContent = formatDiscussionContent(revisionHash, postContent?.postContent || '');
+
+		const result = await executeGitHubGraphQL(UPDATE_DISCUSSION_TITLE_MUTATION, {
+			discussionId: id,
+			title: `${BLOG_PATH_PREFIX}/${revisionHash}`,
+			body: formattedContent,
+		});
+		return NextResponse.json({ success: true, data: result });
+	} catch (error) {
+		console.error('Discussion 업데이트 중 오류:', error);
+		return NextResponse.json(
+			{
+				success: false,
+				error: error instanceof Error ? error.message : 'Discussion 업데이트에 실패했습니다.',
+			},
+			{ status: 500 }
+		);
+	}
+}
+async function selectDiscussionContent(revisionHash: string) {
+	const post = await prisma.blogPost.findUnique({
+		select: {
+			postContent: true,
+		},
+		where: {
+			revisionHash,
+		},
+	});
+	return post;
 }

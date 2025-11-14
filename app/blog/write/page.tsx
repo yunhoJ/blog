@@ -70,7 +70,6 @@ export default function Write() {
 		const fixedContent = fixBrTags(content);
 		try {
 			await postApi.createDraft({ postHash, title, content: fixedContent, userId });
-			console.log('test44', tagList);
 			await postApi.createBlogTag(userId, tagList, postHash);
 			toastSuccess('저장 되었습니다.');
 		} catch {
@@ -89,13 +88,32 @@ export default function Write() {
 			// 임시 저장후 포스트 발행
 			await onClickSaveBtn();
 			try {
-				await postApi.createPostPublish({
+				const postPublishData = await postApi.createPostPublish({
 					postHash: localStorage.getItem('postHash') as string,
 					category: category as string,
 					visibility: visibility,
 					userId: userId,
 					imageUrl: imageUrl as string,
 				});
+
+				// GitHub Discussion 제목 업데이트 (백그라운드 실행, 실패해도 포스트 발행은 성공)
+				if (
+					postPublishData.success &&
+					postPublishData.responseData.postCommentGitId &&
+					postPublishData.responseData.revisionHash
+				) {
+					postApi
+						.updateDiscussionTitle(
+							postPublishData.responseData.postCommentGitId as string,
+							postPublishData.responseData.revisionHash as string
+						)
+						.then(() => {
+							toastSuccess('GitHub Discussion 제목 업데이트 되었습니다.');
+						})
+						.catch((error) => {
+							handleAxiosError(error, 'GitHub Discussion 제목 업데이트 중 오류가 발생했습니다.');
+						});
+				}
 			} catch (error) {
 				handleAxiosError(error, '포스트 발행 중 오류가 발생했습니다.');
 			}
