@@ -43,7 +43,12 @@ export async function DELETE(request: NextRequest) {
 		);
 	}
 	try {
-		await deletePostPublish(revisionHash, postHash, result.user?.userId as string);
+		const postMatadata = await deletePostPublish(
+			revisionHash,
+			postHash,
+			result.user?.userId as string
+		);
+		return NextResponse.json({ success: true, message: '게시글 삭제 성공', postMatadata });
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(
@@ -51,7 +56,6 @@ export async function DELETE(request: NextRequest) {
 			{ status: 500 }
 		);
 	}
-	return NextResponse.json({ message: '게시글 삭제 성공' });
 }
 
 export async function GET(request: NextRequest) {
@@ -209,7 +213,7 @@ const createPostPublish = async (
 };
 
 const deletePostPublish = async (revisionHash: string, postHash: string, userId: string) => {
-	await prisma.$transaction(async (tx) => {
+	const postMatadata = await prisma.$transaction(async (tx) => {
 		const post = await tx.blogPostPublish.delete({
 			where: {
 				userId: userId,
@@ -231,7 +235,7 @@ const deletePostPublish = async (revisionHash: string, postHash: string, userId:
 			},
 		});
 		// 포스트 메타 삭제
-		await tx.blogPostMeta.delete({
+		const postMatadata = await tx.blogPostMeta.delete({
 			where: {
 				postHash,
 			},
@@ -247,6 +251,7 @@ const deletePostPublish = async (revisionHash: string, postHash: string, userId:
 				},
 			},
 		});
+		return postMatadata;
 	});
 
 	// 이미지 폴더 삭제
@@ -256,4 +261,5 @@ const deletePostPublish = async (revisionHash: string, postHash: string, userId:
 		const filePathList = files.map((file) => `${postHash}/${file.name}`);
 		await supabase.storage.from('blog-storage').remove(filePathList);
 	}
+	return postMatadata;
 };

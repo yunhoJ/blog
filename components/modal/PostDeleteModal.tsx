@@ -9,7 +9,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { toastError, toastSuccess } from '@/lib/toasttError';
+import { handleAxiosError, toastError, toastSuccess } from '@/lib/toasttError';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface PostInfo {
@@ -32,7 +32,13 @@ export default function PostDeleteModal({
 
 	const handleDelete = async () => {
 		try {
-			await postApi.deletePost(postInfo.revisionHash, postInfo.postHash);
+			const data = await postApi.deletePost(postInfo.revisionHash, postInfo.postHash);
+
+			// GitHub Discussion 삭제
+			if (data.success && data.postMatadata.postCommentGitId) {
+				await postApi.deleteDiscussion(data.postMatadata.postCommentGitId);
+			}
+
 			toastSuccess('삭제 되었습니다.');
 
 			// 삭제 성공시 react query 초기화
@@ -41,8 +47,7 @@ export default function PostDeleteModal({
 				queryKey: ['posts'],
 			});
 		} catch (error) {
-			console.log('error', error);
-			toastError(new Error('삭제 중 오류가 발생했습니다.'));
+			handleAxiosError(error, '삭제 중 오류가 발생했습니다.');
 		}
 	};
 

@@ -285,4 +285,12 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// GitHub Discussion 삭제
+	deleteDiscussion: async (id: string) => {
+		const response = await axiosInstance.delete(
+			`${axiosInstance.defaults.baseURL}/api/graphql/discussion`,
+			{ data: { id } }
+		);
+		return response.data;
+	},
 };

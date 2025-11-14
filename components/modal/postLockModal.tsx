@@ -35,7 +35,7 @@ export default function PostDeleteModal({
 			await postApi.updatePostVisibility(postInfo.revisionHash, false);
 			toastSuccess('비공개로 변경 되었습니다.');
 
-			// 삭제 성공시 react query 초기화
+			// 비공개 변경 성공시 react query 초기화
 			// 1. 포스트 목록 쿼리 무효화 (모든 카테고리, 정렬, 태그 조합)
 			await queryClient.invalidateQueries({
 				queryKey: ['posts'],
