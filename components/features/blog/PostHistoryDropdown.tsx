@@ -88,6 +88,8 @@ export default function PostHistoryDropdown({
 			toastSuccess('이미 발행중인 포스트입니다.');
 			return;
 		}
+
+		localStorage.setItem('postHash', postHash);
 		setPostPublishModalOpen(true);
 	};
 	return (
