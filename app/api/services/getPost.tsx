@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prismaSession';
 import { PaginationType } from '@/types/blog';
+import { getAuthTokens } from './loginService';
 
 export async function getPublishPost(revisionHash: string) {
 	const post = await prisma.blogPost.findUnique({
@@ -14,6 +15,9 @@ export async function getPost(revisionHash: string) {
 	const post = await prisma.blogPost.findUnique({
 		where: {
 			revisionHash,
+			blogPostPublish: {
+				postVisibility: true,
+			},
 		},
 		include: {
 			blogPostPublish: {
