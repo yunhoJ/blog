@@ -33,7 +33,6 @@ export default function PostHistoryDropdown({
 	isContainDraft,
 	onSuccess,
 }: PostHistoryDropdownProps) {
-	console.log('postTitle', postTitle);
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -114,6 +113,7 @@ export default function PostHistoryDropdown({
 					*/}
 					<DropdownMenuItem onClick={onClickPublishHistory}>
 						<SendIcon />
+						{revisionHash}
 						발행
 					</DropdownMenuItem>
 

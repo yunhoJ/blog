@@ -95,12 +95,24 @@ export async function PUT(request: NextRequest) {
 	const { userId } = result.user as { userId: string };
 	const { postHash, revisionHash, category, visibility, imageUrl } = await request.json();
 	try {
-		await updatePostPublish(revisionHash);
-		await createPostPublish(revisionHash, postHash, category, visibility, userId);
 		if (imageUrl) {
 			await updatePostMainImage(postHash, imageUrl);
 		}
-		return NextResponse.json({ success: true, message: '게시글 발행 성공' });
+		const [_, __, postMetadata] = await Promise.all([
+			updatePostPublish(revisionHash),
+			createPostPublish(revisionHash, postHash, category, visibility, userId),
+			selectPostMetadata(postHash),
+		]);
+		return NextResponse.json({
+			success: true,
+			message: '포스트 발행 성공했습니다.',
+			responseData: {
+				revisionHash: revisionHash as string,
+				postCommentGitId: postMetadata?.postCommentGitId,
+				postCommentGitnumber: postMetadata?.postCommentGitnumber,
+				postHash: postMetadata?.postHash,
+			},
+		});
 	} catch (error) {
 		return NextResponse.json(
 			{ success: false, message: error instanceof Error ? error.message : '오류가 발생했습니다.' },

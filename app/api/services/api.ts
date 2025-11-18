@@ -293,7 +293,7 @@ export const postApi = {
 		);
 		return response.data;
 	},
-	// GitHub Discussion title 업데이트
+	// GitHub Discussion title, content 업데이트
 	updateDiscussionTitle: async (id: string, revisionHash: string) => {
 		const response = await axiosInstance.patch(
 			`${axiosInstance.defaults.baseURL}/api/graphql/discussion`,

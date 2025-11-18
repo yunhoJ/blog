@@ -1,6 +1,6 @@
 import { postApi } from '@/app/api/services/api';
 
-import { toastError, toastSuccess } from '@/lib/toasttError';
+import { handleAxiosError, toastError, toastSuccess } from '@/lib/toasttError';
 import PublishModal from './PublishModal';
 import { useCallback, useState } from 'react';
 import { userId } from '@/app/api/constant/const';
@@ -27,16 +27,34 @@ export default function PostPublishModal({
 	const handlePublish = useCallback(
 		async (category: string | null, imageUrl: string | null) => {
 			try {
-				await postApi.updatePostPublish({
+				const postPublishData = await postApi.updatePostPublish({
 					postHash: postInfo.postHash,
 					revisionHash: postInfo.revisionHash,
 					category: category as string,
 					visibility: visibility,
 					imageUrl: imageUrl as string,
 				});
+				console.log('postPublishData', postPublishData);
 				toastSuccess('발행 되었습니다.');
 				onPublishSuccess();
 				setPostPublishModalOpen(false);
+				if (
+					postPublishData.success &&
+					postPublishData.responseData.postCommentGitId &&
+					postPublishData.responseData.revisionHash
+				) {
+					postApi
+						.updateDiscussionTitle(
+							postPublishData.responseData.postCommentGitId as string,
+							postPublishData.responseData.revisionHash as string
+						)
+						.then(() => {
+							toastSuccess('GitHub Discussion 제목 업데이트 되었습니다.');
+						})
+						.catch((error) => {
+							handleAxiosError(error, 'GitHub Discussion 제목 업데이트 중 오류가 발생했습니다.');
+						});
+				}
 			} catch (error) {
 				toastError(new Error('발행 중 오류가 발생했습니다.'));
 			}
