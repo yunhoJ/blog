@@ -1,5 +1,5 @@
 'use client';
-import { CodeIcon, FileTextIcon, GitCommit } from 'lucide-react';
+import { CodeIcon, FileTextIcon, GitCommit, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import VersionTimeLine from './versionTimeLine';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ export default function History({ params }: BlogPostProps) {
 	const [notFound, setNotFound] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isHtmlview, setIsHtmlview] = useState(true);
+	const [isTimelineExpanded, setIsTimelineExpanded] = useState(true);
 	const [versionTimeLine, setversionTimeLine] = useState<PostVersionData[]>([]);
 	const [versionDetail, setversionDetail] = useState<SelectedVersionData>({
 		revisionHash: '',
@@ -62,10 +63,18 @@ export default function History({ params }: BlogPostProps) {
 			<div className="mx-auto max-w-[1600px] p-4">
 				{versionTimeLine.length > 0 && (
 					<div className="mb-4 flex items-center justify-between">
-						<h2 className="flex items-center gap-2 text-lg font-semibold">
+						<button
+							onClick={() => setIsTimelineExpanded(!isTimelineExpanded)}
+							className="flex items-center gap-2 text-lg font-semibold"
+						>
 							<GitCommit className="h-5 w-5" />
 							버전 타임라인
-						</h2>
+							{isTimelineExpanded ? (
+								<PanelLeftClose className="h-4 w-4" />
+							) : (
+								<PanelLeftOpen className="h-4 w-4" />
+							)}
+						</button>
 						<div className="flex gap-2">
 							<Button
 								size="sm"
@@ -102,7 +111,9 @@ export default function History({ params }: BlogPostProps) {
 					</div>
 				)}
 
-				<div className="grid grid-cols-[300px_1fr] gap-8">
+				<div
+					className={`grid gap-8 ${isTimelineExpanded ? 'grid-cols-[300px_1fr]' : 'grid-cols-[50px_1fr]'}`}
+				>
 					{/* 타임라인 사이드바 */}
 					<aside className="space-y-4">
 						<div className="relative">
@@ -118,6 +129,7 @@ export default function History({ params }: BlogPostProps) {
 									selectedVersion={versionDetail.revisionHash}
 									postHash={postHash as string}
 									onSuccess={fetchversionTimeLine}
+									isTimelineExpanded={isTimelineExpanded}
 								/>
 							</div>
 						</div>

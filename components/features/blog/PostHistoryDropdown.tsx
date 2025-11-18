@@ -113,7 +113,6 @@ export default function PostHistoryDropdown({
 					*/}
 					<DropdownMenuItem onClick={onClickPublishHistory}>
 						<SendIcon />
-						{revisionHash}
 						발행
 					</DropdownMenuItem>
 

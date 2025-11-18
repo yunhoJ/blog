@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, Plus, Minus, Equal } from 'lucide-react';
+import { Clock, Plus, Minus, Equal, FileCode, FileCode2Icon, FileCodeIcon } from 'lucide-react';
 import { formatDate } from '@/lib/date';
 import { PostVersionData } from '@/types/versionHistory';
 import PostHistoryDropdown from '@/components/features/blog/PostHistoryDropdown';
@@ -13,6 +13,7 @@ interface VersionTimeLineProps {
 	onVersionChange: (revisionHash: string, previousRevisionHash: string) => void;
 	selectedVersion: string;
 	onSuccess: () => void;
+	isTimelineExpanded: boolean;
 }
 export default function VersionTimeLine({
 	versionTimeLine,
@@ -20,6 +21,7 @@ export default function VersionTimeLine({
 	onVersionChange,
 	selectedVersion,
 	onSuccess,
+	isTimelineExpanded,
 }: VersionTimeLineProps) {
 	const [isContainDraft, setIsContainDraft] = useState(false);
 
@@ -27,26 +29,39 @@ export default function VersionTimeLine({
 		const hasDraft = versionTimeLine.some((version) => version.postDraft);
 		setIsContainDraft(hasDraft);
 	}, [versionTimeLine]);
-
-	return versionTimeLine.map((version: PostVersionData) => (
-		<div key={version.revisionHash} className="relative">
+	const handleVersionClick = (revisionHash: string, previousRevisionHash: string) => {
+		onVersionChange(revisionHash, previousRevisionHash);
+	};
+	return versionTimeLine.map((version: PostVersionData, index: number) => (
+		<div key={version.revisionHash} className="relative min-h-[126px]">
 			{/* 타임라인 점 */}
 			<div
-				className={`absolute left-1 h-3 w-3 rounded-full border-2 ${
+				className={`absolute left-0.5 h-4 w-4 cursor-pointer rounded-full border-2 ${
 					version.blogPostPublish ? 'bg-primary border-primary' : 'bg-background border-border'
-				}`}
+				} ${selectedVersion === version.revisionHash ? 'ring-primary border-primary dark:ring-offset-background ring-2 ring-offset-2' : ''}`}
+				onClick={() => handleVersionClick(version.revisionHash, version.previousRevisionHash)}
 			></div>
+			{!isTimelineExpanded && (
+				<button
+					className="absolute -top-1 left-6"
+					onClick={() => handleVersionClick(version.revisionHash, version.previousRevisionHash)}
+				>
+					<span
+						className={`${selectedVersion === version.revisionHash ? 'text-primary' : 'text-muted-foreground'} text-sm`}
+					>
+						v.{versionTimeLine.length - index}
+					</span>
+				</button>
+			)}
 
 			{/* 버전 카드 */}
 			<Card
-				className={`hover:shadow-m ml-8 cursor-pointer gap-2 transition-all duration-200 ${
+				className={`hover:shadow-m ml-8 cursor-pointer gap-2 transition-all duration-200 ${isTimelineExpanded ? 'block' : 'hidden'} ${
 					selectedVersion === version.revisionHash ? 'ring-primary bg-primary/10 ring-2' : ''
 				}`}
-				onClick={() => {
-					onVersionChange(version.revisionHash, version.previousRevisionHash);
-				}}
+				onClick={() => handleVersionClick(version.revisionHash, version.previousRevisionHash)}
 			>
-				<CardHeader className="gap-0 pb-0">
+				<CardHeader className="gap-0 pr-3.5 pb-0">
 					{version.postDraft && (
 						<Badge
 							variant={'outline'}
@@ -79,27 +94,33 @@ export default function VersionTimeLine({
 					<div className="text-muted-foreground flex flex-col gap-1 text-xs">
 						<div className="grid grid-cols-3 items-center">
 							{version.diffLine.added > 0 && (
-								<div className="col-start-1 flex items-center gap-1 text-green-600 dark:text-green-600">
+								<div className="col-start-1 flex items-center gap-1 justify-self-start text-green-600 dark:text-green-600">
 									<Plus className="h-3 w-3" />
 									<span>{version.diffLine.added} line</span>
 								</div>
 							)}
 							{version.diffLine.removed > 0 && (
-								<div className="col-start-2 flex items-center gap-1 text-red-600 dark:text-red-600">
+								<div className="col-start-2 flex items-center gap-1 justify-self-center text-red-600 dark:text-red-600">
 									<Minus className="h-3 w-3" />
 									<span>{version.diffLine.removed} line</span>
 								</div>
 							)}
 							{version.diffLine.unchanged > 0 && (
-								<div className="col-start-3 flex items-center gap-1">
+								<div className="col-start-3 flex items-center gap-1 justify-self-end">
 									<Equal className="h-3 w-3" />
 									<span>{version.diffLine.unchanged} line</span>
 								</div>
 							)}
 						</div>
-						<div className="flex items-center gap-1">
-							<Clock className="h-3 w-3" />
-							<span>{formatDate(version.postCreatedAt)}</span>
+						<div className="flex items-center justify-between">
+							<div className="flex items-center gap-1">
+								<Clock className="h-3 w-3" />
+								<span>{formatDate(version.postCreatedAt)}</span>
+							</div>
+							<div className="flex items-center gap-1">
+								<FileCode2Icon className="h-3 w-3" />
+								<span>v.{versionTimeLine.length - index}</span>
+							</div>
 						</div>
 					</div>
 				</CardContent>
