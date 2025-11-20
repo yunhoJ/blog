@@ -22,3 +22,8 @@ export interface VersionComparison {
 	previousVersionChangeContent?: string;
 	currentVersionChangeContent?: string;
 }
+
+export interface SelectedVersion {
+	revisionHash: string;
+	historyVersion: string;
+}

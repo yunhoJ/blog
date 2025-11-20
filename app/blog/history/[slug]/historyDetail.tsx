@@ -1,32 +1,45 @@
 'use client';
 import { postApi } from '@/app/api/services/api';
-import { SelectedVersionData } from '@/types/versionHistory';
+import { SelectedVersion, SelectedVersionData } from '@/types/versionHistory';
 import { useEffect, useState } from 'react';
 import { VersionComparison } from '@/types/versionHistory';
 import MdxClient from './viewerMdx';
-import { CodeIcon, FileTextIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import SelectBox from '@/components/modal/selectbox';
+import { ArrowBigRight, ChevronRight } from 'lucide-react';
+
 export default function HistoryDetail({
 	versionDetail,
 	isHtmlview,
+	selectedVersion,
 }: {
 	versionDetail: SelectedVersionData;
 	isHtmlview: boolean;
+	selectedVersion: SelectedVersion[];
 }) {
 	const [versionDetailData, setVersionDetailData] = useState<VersionComparison>({});
-
+	const [selectPreviousVersion, setSelectPreviousVersion] = useState<string>(
+		versionDetail.previousRevisionHash
+	);
+	const [selectCurrentVersion, setSelectCurrentVersion] = useState<string>(
+		versionDetail.revisionHash
+	);
+	console.log(selectPreviousVersion, selectCurrentVersion);
+	useEffect(() => {
+		setSelectCurrentVersion(versionDetail.revisionHash);
+		setSelectPreviousVersion(versionDetail.previousRevisionHash);
+	}, [versionDetail]);
 	useEffect(() => {
 		const fetchVersionDetailData = async () => {
 			const response = await postApi.getVersionDetailData(
-				versionDetail.revisionHash,
-				versionDetail.previousRevisionHash
+				selectCurrentVersion,
+				selectPreviousVersion
 			);
 			if (response.success) {
 				setVersionDetailData(response.data);
 			}
 		};
 		fetchVersionDetailData();
-	}, [versionDetail]);
+	}, [versionDetail, selectPreviousVersion, selectCurrentVersion]);
 	return (
 		<div className="space-y-4">
 			<style
@@ -69,9 +82,26 @@ export default function HistoryDetail({
 				`,
 				}}
 			/>
-			<div className="grid grid-cols-2 gap-4">
+			<div className="grid grid-cols-2 gap-4 md:grid-cols-[1fr_30px_1fr] md:gap-2">
 				<div className="space-y-2">
-					<h4 className="font-medium">제목 : {versionDetailData.previousVersion?.postTitle}</h4>
+					<div className="flex items-center justify-between">
+						<h4 className="font-medium">제목 : {versionDetailData.previousVersion?.postTitle} </h4>
+						<SelectBox
+							options={
+								selectedVersion.length > 0
+									? selectedVersion.map((version) => ({
+											value: version.revisionHash,
+											label: version.historyVersion,
+										}))
+									: []
+							}
+							value={selectPreviousVersion}
+							placeholder="버전 선택"
+							onChange={(value) => {
+								setSelectPreviousVersion(value);
+							}}
+						/>
+					</div>
 					<div className="mdx-viewer">
 						{isHtmlview ? (
 							<MdxClient source={versionDetailData.previousVersion?.postContent || ''} />
@@ -85,8 +115,29 @@ export default function HistoryDetail({
 						)}
 					</div>
 				</div>
+
+				<div className="hidden md:block">
+					<ChevronRight className="text-muted-foreground h-full w-full" />
+				</div>
 				<div className="space-y-2">
-					<h4 className="font-medium">제목 : {versionDetailData.currentVersion?.postTitle}</h4>
+					<div className="flex items-center justify-between">
+						<h4 className="font-medium">제목 : {versionDetailData.currentVersion?.postTitle}</h4>
+						<SelectBox
+							options={
+								selectedVersion.length > 0
+									? selectedVersion.map((version) => ({
+											value: version.revisionHash,
+											label: version.historyVersion,
+										}))
+									: []
+							}
+							value={selectCurrentVersion}
+							placeholder="버전 선택"
+							onChange={(value) => {
+								setSelectCurrentVersion(value);
+							}}
+						/>
+					</div>
 					<div className="mdx-viewer">
 						{isHtmlview ? (
 							<MdxClient source={versionDetailData.currentVersion?.postContent || ''} />

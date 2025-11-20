@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { postApi } from '@/app/api/services/api';
 import { handleAxiosError } from '@/lib/toasttError';
-import { PostVersionData, SelectedVersionData } from '@/types/versionHistory';
+import { PostVersionData, SelectedVersion, SelectedVersionData } from '@/types/versionHistory';
 import NotFound from '@/app/not-found';
 import HistoryDetail from './historyDetail';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,7 @@ export default function History({ params }: BlogPostProps) {
 	const [isHtmlview, setIsHtmlview] = useState(true);
 	const [isTimelineExpanded, setIsTimelineExpanded] = useState(true);
 	const [versionTimeLine, setversionTimeLine] = useState<PostVersionData[]>([]);
+	const [selectedVersion, setSelectedVersion] = useState<SelectedVersion[]>([]);
 	const [versionDetail, setversionDetail] = useState<SelectedVersionData>({
 		revisionHash: '',
 		previousRevisionHash: '',
@@ -37,6 +38,14 @@ export default function History({ params }: BlogPostProps) {
 						revisionHash: versionTimeLineResponse.data[0].revisionHash,
 						previousRevisionHash: versionTimeLineResponse.data[0].previousRevisionHash,
 					});
+					// selectedVersion 배열을 한 번에 생성
+					const selectedVersions = versionTimeLineResponse.data.map(
+						(version: PostVersionData, index: number) => ({
+							revisionHash: version.revisionHash,
+							historyVersion: `v.${versionTimeLineResponse.data.length - index}`,
+						})
+					);
+					setSelectedVersion(selectedVersions);
 				}
 			}
 			setIsLoading(false);
@@ -137,7 +146,11 @@ export default function History({ params }: BlogPostProps) {
 
 					{/* 메인 컨텐츠 영역 */}
 					<main>
-						<HistoryDetail versionDetail={versionDetail} isHtmlview={isHtmlview} />
+						<HistoryDetail
+							versionDetail={versionDetail}
+							isHtmlview={isHtmlview}
+							selectedVersion={selectedVersion}
+						/>
 					</main>
 				</div>
 			</div>
