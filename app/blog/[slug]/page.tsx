@@ -21,6 +21,8 @@ import ViewCountIncrementer from '@/components/features/blog/ViewCountIncremente
 import type { Root } from 'hast';
 import { extractMdxJsxFromP } from '@/lib/replaceContent';
 import { notFound } from 'next/navigation';
+import remarkBreaks from 'remark-breaks';
+
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
 }
@@ -174,12 +176,12 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
 					{/* 본문 */}
 					<div className="flex-1">
-						<main className="prose dark:prose-invert prose-headings:scroll-mt-[var(--header-height)]">
+						<main className="mdx-viewer prose dark:prose-invert prose-headings:scroll-mt-[var(--header-height)]">
 							<MDXRemote
 								source={post.postContent}
 								options={{
 									mdxOptions: {
-										remarkPlugins: [remarkGfm],
+										remarkPlugins: [remarkGfm, remarkBreaks],
 										rehypePlugins: [
 											rehypeSlug,
 											rehypeAllowBrJsx, // JSX <br /> 변환 먼저 실행

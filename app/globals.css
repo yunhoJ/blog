@@ -145,3 +145,8 @@
 		animation: spin-slow 3s ease-in-out infinite;
 	}
 }
+
+.mdx-viewer p {
+	margin: 10px 0 !important;
+	word-wrap: break-word !important;
+}

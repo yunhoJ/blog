@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
-import { visit } from 'unist-util-visit';
 
+import rehypeFormat from 'rehype-format';
 // remark / rehype 플러그인
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
@@ -12,6 +12,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import { Root } from 'hast';
 import { extractMdxJsxFromP } from '@/lib/replaceContent';
+import remarkBreaks from 'remark-breaks';
 export default function MdxClient({ source }: { source: string }) {
 	const rehypeAllowBrJsx = () => {
 		return (tree: Root) => {
@@ -24,6 +25,7 @@ export default function MdxClient({ source }: { source: string }) {
 		attributes: {
 			...defaultSchema.attributes,
 			span: ['style', 'class'],
+			div: ['class', 'className', 'style', 'id'], // div 속성 추가
 		},
 	};
 	// console.log(schema);
@@ -33,7 +35,7 @@ export default function MdxClient({ source }: { source: string }) {
 		const process = async () => {
 			const result = await serialize(source, {
 				mdxOptions: {
-					remarkPlugins: [remarkGfm],
+					remarkPlugins: [remarkGfm, remarkBreaks],
 					rehypePlugins: [
 						rehypeSlug,
 						rehypeAllowBrJsx, // JSX <br /> 변환 먼저 실행
@@ -42,6 +44,7 @@ export default function MdxClient({ source }: { source: string }) {
 					],
 				},
 			});
+
 			setMdx(result);
 		};
 
@@ -79,10 +82,6 @@ export default function MdxClient({ source }: { source: string }) {
 					.mdx-viewer li {
 						display: list-item !important;
 						margin: 0.25rem 0 !important;
-					}
-                    .mdx-viewer p {
-						white-space: pre-wrap !important;
-						word-wrap: break-word !important;
 					}
 
 				`,
