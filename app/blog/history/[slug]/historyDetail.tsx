@@ -23,11 +23,12 @@ export default function HistoryDetail({
 	const [selectCurrentVersion, setSelectCurrentVersion] = useState<string>(
 		versionDetail.revisionHash
 	);
-	console.log(selectPreviousVersion, selectCurrentVersion);
+
 	useEffect(() => {
 		setSelectCurrentVersion(versionDetail.revisionHash);
 		setSelectPreviousVersion(versionDetail.previousRevisionHash);
 	}, [versionDetail]);
+
 	useEffect(() => {
 		const fetchVersionDetailData = async () => {
 			const response = await postApi.getVersionDetailData(
@@ -39,7 +40,7 @@ export default function HistoryDetail({
 			}
 		};
 		fetchVersionDetailData();
-	}, [versionDetail, selectPreviousVersion, selectCurrentVersion]);
+	}, [selectPreviousVersion, selectCurrentVersion]);
 	return (
 		<div className="space-y-4">
 			<style

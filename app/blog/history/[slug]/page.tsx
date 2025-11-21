@@ -59,6 +59,21 @@ export default function History({ params }: BlogPostProps) {
 	useEffect(() => {
 		fetchversionTimeLine();
 	}, [fetchversionTimeLine]);
+
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth <= 1024 && isTimelineExpanded) {
+				setIsTimelineExpanded(false);
+			}
+			if (window.innerWidth >= 1024 && !isTimelineExpanded) {
+				setIsTimelineExpanded(true);
+			}
+		};
+
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, [isTimelineExpanded]);
+
 	if (notFound) {
 		return <NotFound />;
 	}
