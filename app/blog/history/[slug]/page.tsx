@@ -18,7 +18,12 @@ export default function History({ params }: BlogPostProps) {
 	const [notFound, setNotFound] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isHtmlview, setIsHtmlview] = useState(true);
-	const [isTimelineExpanded, setIsTimelineExpanded] = useState(true);
+	const [isTimelineExpanded, setIsTimelineExpanded] = useState(() => {
+		if (typeof window !== 'undefined') {
+			return window.innerWidth > 1024;
+		}
+		return true;
+	});
 	const [versionTimeLine, setversionTimeLine] = useState<PostVersionData[]>([]);
 	const [selectedVersion, setSelectedVersion] = useState<SelectedVersion[]>([]);
 	const [versionDetail, setversionDetail] = useState<SelectedVersionData>({
@@ -62,17 +67,22 @@ export default function History({ params }: BlogPostProps) {
 
 	useEffect(() => {
 		const handleResize = () => {
-			if (window.innerWidth <= 1024 && isTimelineExpanded) {
-				setIsTimelineExpanded(false);
-			}
-			if (window.innerWidth >= 1024 && !isTimelineExpanded) {
-				setIsTimelineExpanded(true);
-			}
+			const shouldExpand = window.innerWidth > 1024;
+			setIsTimelineExpanded((prev) => {
+				// 상태가 변경이 필요한 경우에만 업데이트
+				if (shouldExpand !== prev) {
+					return shouldExpand;
+				}
+				return prev;
+			});
 		};
+
+		// 초기 마운트 시 화면 크기 체크
+		handleResize();
 
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
-	}, [isTimelineExpanded]);
+	}, []);
 
 	if (notFound) {
 		return <NotFound />;

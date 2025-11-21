@@ -37,12 +37,13 @@ export default function HistoryDetail({
 			);
 			if (response.success) {
 				setVersionDetailData(response.data);
+				console.log(response.data);
 			}
 		};
 		fetchVersionDetailData();
 	}, [selectPreviousVersion, selectCurrentVersion]);
 	return (
-		<div className="space-y-4">
+		<div className="hidden space-y-4 md:block">
 			<style
 				dangerouslySetInnerHTML={{
 					__html: `
@@ -83,8 +84,8 @@ export default function HistoryDetail({
 				`,
 				}}
 			/>
-			<div className="grid grid-cols-2 gap-4 md:grid-cols-[1fr_30px_1fr] md:gap-2">
-				<div className="space-y-2">
+			<div className="grid w-full grid-cols-2 gap-4 md:grid-cols-[1fr_30px_1fr] md:gap-2">
+				<div className="min-w-0 space-y-2">
 					<div className="flex items-center justify-between">
 						<h4 className="font-medium">제목 : {versionDetailData.previousVersion?.postTitle} </h4>
 						<SelectBox
@@ -120,7 +121,7 @@ export default function HistoryDetail({
 				<div className="hidden md:block">
 					<ChevronRight className="text-muted-foreground h-full w-full" />
 				</div>
-				<div className="space-y-2">
+				<div className="min-w-0 space-y-2">
 					<div className="flex items-center justify-between">
 						<h4 className="font-medium">제목 : {versionDetailData.currentVersion?.postTitle}</h4>
 						<SelectBox
