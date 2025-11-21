@@ -175,6 +175,8 @@ export default function History({ params }: BlogPostProps) {
 							versionDetail={versionDetail}
 							isHtmlview={isHtmlview}
 							selectedVersion={selectedVersion}
+							isTimelineExpanded={isTimelineExpanded}
+							setIsTimelineExpanded={setIsTimelineExpanded}
 						/>
 					</main>
 				</div>

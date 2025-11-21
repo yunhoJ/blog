@@ -5,16 +5,21 @@ import { useEffect, useState } from 'react';
 import { VersionComparison } from '@/types/versionHistory';
 import MdxClient from './viewerMdx';
 import SelectBox from '@/components/modal/selectbox';
-import { ArrowBigRight, ChevronRight } from 'lucide-react';
+import { ArrowBigRight, ChevronDown, ChevronRight } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 export default function HistoryDetail({
 	versionDetail,
 	isHtmlview,
 	selectedVersion,
+	isTimelineExpanded,
+	setIsTimelineExpanded,
 }: {
 	versionDetail: SelectedVersionData;
 	isHtmlview: boolean;
 	selectedVersion: SelectedVersion[];
+	isTimelineExpanded: boolean;
+	setIsTimelineExpanded: (isTimelineExpanded: boolean) => void;
 }) {
 	const [versionDetailData, setVersionDetailData] = useState<VersionComparison>({});
 	const [selectPreviousVersion, setSelectPreviousVersion] = useState<string>(
@@ -27,6 +32,9 @@ export default function HistoryDetail({
 	useEffect(() => {
 		setSelectCurrentVersion(versionDetail.revisionHash);
 		setSelectPreviousVersion(versionDetail.previousRevisionHash);
+		if (window.innerWidth < 768) {
+			setIsTimelineExpanded(false);
+		}
 	}, [versionDetail]);
 
 	useEffect(() => {
@@ -43,7 +51,7 @@ export default function HistoryDetail({
 		fetchVersionDetailData();
 	}, [selectPreviousVersion, selectCurrentVersion]);
 	return (
-		<div className="hidden space-y-4 md:block">
+		<div className="space-y-4">
 			<style
 				dangerouslySetInnerHTML={{
 					__html: `
@@ -84,10 +92,11 @@ export default function HistoryDetail({
 				`,
 				}}
 			/>
-			<div className="grid w-full grid-cols-2 gap-4 md:grid-cols-[1fr_30px_1fr] md:gap-2">
+
+			<div className="hidden w-full grid-cols-2 gap-4 md:grid md:grid-cols-[1fr_30px_1fr] md:gap-2">
 				<div className="min-w-0 space-y-2">
 					<div className="flex items-center justify-between">
-						<h4 className="font-medium">제목 : {versionDetailData.previousVersion?.postTitle} </h4>
+						<h4 className="font-semibold">제목 : {versionDetailData.previousVersion?.postTitle}</h4>
 						<SelectBox
 							options={
 								selectedVersion.length > 0
@@ -104,14 +113,18 @@ export default function HistoryDetail({
 							}}
 						/>
 					</div>
+					<Separator className="my-4" />
 					<div className="mdx-viewer">
 						{isHtmlview ? (
-							<MdxClient source={versionDetailData.previousVersion?.postContent || ''} />
+							<MdxClient source={versionDetailData.previousVersionChangeContent || ''} />
 						) : (
 							<div
 								className="text-sm break-words whitespace-pre-wrap"
 								dangerouslySetInnerHTML={{
-									__html: versionDetailData.previousVersionChangeContent || '',
+									__html:
+										`${versionDetailData.previousVersionChangeContent
+											?.replace(/<div class="diff-(removed|added)">\n/g, '<div class="diff-$1">') // <div> 태그 뒤 \n 제거
+											.replace(/\n<\/div>\n/g, '</div>')}` || '',
 								}}
 							/>
 						)}
@@ -123,7 +136,7 @@ export default function HistoryDetail({
 				</div>
 				<div className="min-w-0 space-y-2">
 					<div className="flex items-center justify-between">
-						<h4 className="font-medium">제목 : {versionDetailData.currentVersion?.postTitle}</h4>
+						<h4 className="font-semibold">제목 : {versionDetailData.currentVersion?.postTitle}</h4>
 						<SelectBox
 							options={
 								selectedVersion.length > 0
@@ -140,20 +153,85 @@ export default function HistoryDetail({
 							}}
 						/>
 					</div>
+					<Separator className="my-4" />
 					<div className="mdx-viewer">
 						{isHtmlview ? (
-							<MdxClient source={versionDetailData.currentVersion?.postContent || ''} />
+							<MdxClient source={versionDetailData.currentVersionChangeContent || ''} />
 						) : (
 							<div
 								className="text-sm break-words whitespace-pre-wrap"
 								dangerouslySetInnerHTML={{
-									__html: versionDetailData.currentVersionChangeContent || '',
+									__html:
+										`${versionDetailData.currentVersionChangeContent
+											?.replace(/<div class="diff-(removed|added)">\n/g, '<div class="diff-$1">') // <div> 태그 뒤 \n 제거
+											.replace(/\n<\/div>\n/g, '</div>')}` || '',
 								}}
 							/>
 						)}
 					</div>
 				</div>
 			</div>
+			{!isTimelineExpanded && (
+				<div className="grid grid-cols-1 md:hidden">
+					<div className="flex min-w-0 items-center justify-between">
+						<h4 className="font-semibold">제목 : {versionDetailData.previousVersion?.postTitle}</h4>
+						<SelectBox
+							options={
+								selectedVersion.length > 0
+									? selectedVersion.map((version) => ({
+											value: version.revisionHash,
+											label: version.historyVersion,
+										}))
+									: []
+							}
+							value={selectPreviousVersion}
+							placeholder="버전 선택"
+							onChange={(value) => {
+								setSelectPreviousVersion(value);
+							}}
+						/>
+					</div>
+					<div className="flex items-center justify-center md:hidden">
+						<ChevronDown className="text-muted-foreground h-6 w-6" />
+					</div>
+					<div className="flex min-w-0 items-center justify-between">
+						<h4 className="font-semibold">제목 : {versionDetailData.currentVersion?.postTitle}</h4>
+						<SelectBox
+							options={
+								selectedVersion.length > 0
+									? selectedVersion.map((version) => ({
+											value: version.revisionHash,
+											label: version.historyVersion,
+										}))
+									: []
+							}
+							value={selectCurrentVersion}
+							placeholder="버전 선택"
+							onChange={(value) => {
+								setSelectCurrentVersion(value);
+							}}
+						/>
+					</div>
+
+					<Separator className="my-4" />
+
+					<div className="mdx-viewer">
+						{isHtmlview ? (
+							<MdxClient source={versionDetailData.totalVersionChangeContent || ''} />
+						) : (
+							<div
+								className="text-sm break-words whitespace-pre-wrap"
+								dangerouslySetInnerHTML={{
+									__html:
+										`${versionDetailData.totalVersionChangeContent
+											?.replace(/<div class="diff-(removed|added)">\n/g, '<div class="diff-$1">') // <div> 태그 뒤 \n 제거
+											.replace(/\n<\/div>\n/g, '</div>')}` || '',
+								}}
+							/>
+						)}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
