@@ -41,11 +41,44 @@ export function extractMdxJsxFromP(ast: Root) {
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					(attr: any) => attr.type === 'mdxJsxAttribute' && attr.name === 'style'
 				);
+				// children도 재귀적으로 처리
+				const processedChildren = node.children
+					? node.children.map(extractFromNode)
+					: node.children;
+
 				return {
 					type: 'element',
 					tagName: 'span',
 					properties: { style: styleAttr?.value as string },
-					children: node.children,
+					children: processedChildren,
+				};
+			}
+			if (node.name === 'div') {
+				// 모든 속성을 properties 객체로 변환
+				const properties: Record<string, string> = {};
+
+				if (node.attributes) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					node.attributes.forEach((attr: any) => {
+						if (attr.type === 'mdxJsxAttribute') {
+							// className을 class로 변환
+							if (attr.name === 'class') {
+								properties.class = String(attr.value);
+							}
+						}
+					});
+				}
+
+				// children도 재귀적으로 처리
+				const processedChildren = node.children
+					? node.children.map(extractFromNode)
+					: node.children;
+
+				return {
+					type: 'element',
+					tagName: 'div',
+					properties,
+					children: processedChildren,
 				};
 			}
 		}

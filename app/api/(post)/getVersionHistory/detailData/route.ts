@@ -3,6 +3,7 @@ import { VersionComparison } from '@/types/versionHistory';
 import { prisma } from '@/lib/prismaSession';
 import { NextResponse } from 'next/server';
 import * as Diff from 'diff';
+
 export async function GET(request: Request) {
 	const { searchParams } = new URL(request.url);
 	const revisionHash = searchParams.get('revisionHash') || '';
@@ -32,12 +33,13 @@ export async function GET(request: Request) {
 			detailDataWithVersion.currentVersion = value;
 		}
 	});
-	const { diffPreviousContent, diffCurrentContent } = diffContent(
+	const { diffPreviousContent, diffCurrentContent, diffTotalContent } = await diffContent(
 		detailDataWithVersion.previousVersion?.postContent || '',
 		detailDataWithVersion.currentVersion?.postContent || ''
 	);
 	detailDataWithVersion.previousVersionChangeContent = diffPreviousContent;
 	detailDataWithVersion.currentVersionChangeContent = diffCurrentContent;
+	detailDataWithVersion.totalVersionChangeContent = diffTotalContent;
 	return NextResponse.json({ success: true, data: detailDataWithVersion });
 }
 
@@ -51,24 +53,26 @@ async function getDetailData(revisionHash: string, previousRevisionHash: string)
 	});
 	return detailData;
 }
-function diffContent(previousContent: string, currentContent: string) {
+async function diffContent(previousContent: string, currentContent: string) {
 	const diff = Diff.diffLines(previousContent, currentContent);
-	let diffPreviousContent = '';
-	let diffCurrentContent = '';
+	let diffPreviousContent = ''; // 삭제된 줄들을 모두 포함한 내용
+	let diffCurrentContent = ''; // 추가된 줄들을 모두 포함한 내용
+	let diffTotalContent = ''; // 추가된 줄들과 삭제된 줄들을 모두 포함한 내용
 
 	for (const part of diff) {
 		if (part.added) {
-			// 추가된 줄들을 한 줄씩 span으로 감싸기
-			diffCurrentContent += `<div class="diff-added">${part.value}</div>`;
+			// 추가된 줄들을 한 줄씩 div로 감싸기
+			diffCurrentContent += `<div class="diff-added">\n${part.value}\n</div>\n`;
+			diffTotalContent += `<div class="diff-added">\n${part.value}\n</div>\n`;
 		} else if (part.removed) {
-			// 삭제된 줄들을 한 줄씩 span으로 감싸기
-
-			diffPreviousContent += `<div class="diff-removed">${part.value}</div>`;
+			// 삭제된 줄들을 한 줄씩 div로 감싸기
+			diffPreviousContent += `<div class="diff-removed">\n${part.value}\n</div>\n`;
+			diffTotalContent += `<div class="diff-removed">\n${part.value}\n</div>\n`;
 		} else {
 			diffPreviousContent += part.value;
 			diffCurrentContent += part.value;
+			diffTotalContent += part.value;
 		}
 	}
-	// console.log(diffPreviousContent, diffCurrentContent);
-	return { diffPreviousContent, diffCurrentContent };
+	return { diffPreviousContent, diffCurrentContent, diffTotalContent };
 }

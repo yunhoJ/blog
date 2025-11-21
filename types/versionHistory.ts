@@ -21,6 +21,7 @@ export interface VersionComparison {
 	currentVersion?: BlogPost;
 	previousVersionChangeContent?: string;
 	currentVersionChangeContent?: string;
+	totalVersionChangeContent?: string;
 }
 
 export interface SelectedVersion {
