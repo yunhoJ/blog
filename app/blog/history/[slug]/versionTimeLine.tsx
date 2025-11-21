@@ -31,6 +31,7 @@ export default function VersionTimeLine({
 	}, [versionTimeLine]);
 	const handleVersionClick = (revisionHash: string, previousRevisionHash: string) => {
 		onVersionChange(revisionHash, previousRevisionHash);
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
 	return versionTimeLine.map((version: PostVersionData, index: number) => (
 		<div key={version.revisionHash} className="relative min-h-[126px]">
