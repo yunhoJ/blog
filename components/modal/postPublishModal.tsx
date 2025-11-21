@@ -4,6 +4,7 @@ import { handleAxiosError, toastError, toastSuccess } from '@/lib/toasttError';
 import PublishModal from './PublishModal';
 import { useCallback, useState } from 'react';
 import { userId } from '@/app/api/constant/const';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface PostInfo {
 	revisionHash: string;
@@ -23,6 +24,7 @@ export default function PostPublishModal({
 	postInfo,
 	onPublishSuccess,
 }: PostPublishModalProps) {
+	const queryClient = useQueryClient();
 	const [visibility, setVisibility] = useState(true);
 	const handlePublish = useCallback(
 		async (category: string | null, imageUrl: string | null) => {
@@ -36,6 +38,8 @@ export default function PostPublishModal({
 				});
 				console.log('postPublishData', postPublishData);
 				toastSuccess('발행 되었습니다.');
+				// react query 초기화
+				queryClient.invalidateQueries({ queryKey: ['posts'] });
 				onPublishSuccess();
 				setPostPublishModalOpen(false);
 				if (
