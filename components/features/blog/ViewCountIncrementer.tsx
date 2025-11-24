@@ -17,8 +17,9 @@ interface ViewRecord {
 export default function ViewCountIncrementer({
 	postHash,
 	userId,
-	readTime = 60,
+	readTime,
 }: ViewCountIncrementerProps) {
+	console.log('readTime: ', readTime);
 	const [hasIncremented, setHasIncremented] = useState(false);
 	console.log('ViewCountIncrementer - 마운트됨');
 
@@ -69,12 +70,9 @@ export default function ViewCountIncrementer({
 
 		// 컴포넌트 마운트 시 1분 후 실행
 		if (!hasIncremented) {
-			const timer = setTimeout(
-				() => {
-					incrementViewCount();
-				},
-				readTime === 0 ? 30 * 1000 : readTime * 1000 // 읽는 시간이 0이면 30초 후 실행
-			);
+			const timer = setTimeout(() => {
+				incrementViewCount();
+			}, readTime * 500);
 
 			// 클린업 함수로 타이머 정리
 			return () => {

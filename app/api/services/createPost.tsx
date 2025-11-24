@@ -56,6 +56,8 @@ export async function createPostDraft(
 	userId: string
 ) {
 	const post = await checkPostHash(postHash, userId);
+	// 30초당 180자 기준으로 계산
+	const readTimeSeconds = calculateReadTime(content) * 30;
 	if (post) {
 		await prisma.blogPost.update({
 			where: {
@@ -64,6 +66,7 @@ export async function createPostDraft(
 			data: {
 				postTitle: title,
 				postContent: content,
+				postReadTimeSeconds: readTimeSeconds,
 			},
 		});
 	} else {
@@ -75,7 +78,27 @@ export async function createPostDraft(
 				userId,
 				postTitle: title,
 				postContent: content,
+				postReadTimeSeconds: readTimeSeconds,
 			},
 		});
 	}
+}
+function calculateReadTime(content: string) {
+	// HTML/Markdown 태그 제거
+	const textOnly = content
+		.replace(/<[^>]*>/g, '') // HTML 태그 제거
+		.replace(/\[([^\]]*)\]\([^)]*\)/g, '') // 마크다운 링크
+		.replace(/!\[([^\]]*)\]\([^)]*\)/g, '') // 이미지
+		.replace(/[#*`_~]/g, '') // 마크다운 문법
+		.replace(/\s+/g, '') // 연속 공백 제거
+		.replace(/\n/g, '') // 줄바꿈 제거
+		.trim();
+
+	// 전체 문자 수 기준으로 계산 (한국어 포함)
+	// 평균 읽기 속도: 30초당 180자 (초당 약 3자)
+	const charCount = textOnly.length;
+	const readTimeSeconds = Math.round(charCount / 180);
+
+	// 최소 1분 (60초)
+	return readTimeSeconds;
 }
