@@ -99,6 +99,6 @@ function calculateReadTime(content: string) {
 	const charCount = textOnly.length;
 	const readTimeSeconds = Math.round(charCount / 180);
 
-	// 최소 1분 (60초)
-	return readTimeSeconds;
+	// 최소 1분 (30초)
+	return readTimeSeconds === 0 ? 1 : readTimeSeconds;
 }

@@ -19,7 +19,6 @@ export default function ViewCountIncrementer({
 	userId,
 	readTime,
 }: ViewCountIncrementerProps) {
-	console.log('readTime: ', readTime);
 	const [hasIncremented, setHasIncremented] = useState(false);
 	console.log('ViewCountIncrementer - 마운트됨');
 
@@ -68,7 +67,7 @@ export default function ViewCountIncrementer({
 			}
 		};
 
-		// 컴포넌트 마운트 시 1분 후 실행
+		// 컴포넌트 마운트 시 읽는 시간/2 초후 실행 최소 15초
 		if (!hasIncremented) {
 			const timer = setTimeout(() => {
 				incrementViewCount();
