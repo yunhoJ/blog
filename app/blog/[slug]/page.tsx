@@ -3,7 +3,8 @@
 import { Separator } from '@/components/ui/separator';
 // import { getPostBySlug, getPublishedPosts } from '@/lib/notion';
 import { formatDate } from '@/lib/date';
-import { CalendarIcon, UserIcon, ClockIcon } from 'lucide-react'; //, ChevronRight, ChevronLeft
+import { CalendarIcon, UserIcon, ClockIcon, Edit2Icon } from 'lucide-react'; //, ChevronRight, ChevronLeft
+import React from 'react';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
@@ -65,6 +66,26 @@ interface TocEntry {
 	depth: number;
 	id?: string;
 	children?: Array<TocEntry>;
+}
+
+// 메타 정보 아이템 헬퍼 컴포넌트
+function MetaItem({
+	icon: Icon,
+	title,
+	text,
+	className = '',
+}: {
+	icon: React.ComponentType<{ className?: string }>;
+	title?: string;
+	text: string;
+	className?: string;
+}) {
+	return (
+		<div className={`flex items-center gap-1 ${className}`} title={title}>
+			<Icon className="h-4 w-4" />
+			<span>{text}</span>
+		</div>
+	);
 }
 
 function TableOfContentsLink({ item }: { item: TocEntry }) {
@@ -140,18 +161,30 @@ export default async function BlogPost({ params }: BlogPostProps) {
 						</div> */}
 						<h1 className="text-3xl font-bold break-words">{post.postTitle}</h1>
 						<div className="flex flex-row gap-3">
-							<div className="text-muted-foreground flex items-center gap-3 text-sm">
-								<div className="flex items-center gap-1">
-									<CalendarIcon className="h-4 w-4" />
-									<span>{formatDate(post.postCreatedAt!)}</span>
+							<div className="text-muted-foreground flex w-full items-center justify-start gap-5 text-sm">
+								{/* 왼쪽 그룹: 발행일, 수정일 */}
+								<div className="flex flex-row gap-2">
+									<MetaItem
+										icon={CalendarIcon}
+										title="게시일"
+										text={formatDate(post.blogPostMeta.firstPostPublishAt!)}
+									/>
+									<MetaItem
+										icon={Edit2Icon}
+										title="수정일"
+										text={formatDate(post.postUpdatedAt!)}
+										className="hidden md:flex"
+									/>
 								</div>
-								<div className="flex items-center gap-1">
-									<UserIcon className="h-4 w-4" />
-									<span>{post.user.userName}</span>
-								</div>
-								<div className="flex items-center gap-1">
-									<ClockIcon className="h-4 w-4" />
-									<span>{post.postReadTimeSeconds / 60}분 읽기</span>
+
+								{/* 오른쪽 그룹: 작성자, 읽기 시간 */}
+								<div className="flex flex-row gap-2">
+									<MetaItem icon={UserIcon} title="작성자" text={post.user.userName} />
+									<MetaItem
+										icon={ClockIcon}
+										title="읽기 시간"
+										text={`${post.postReadTimeSeconds / 60}분 읽기`}
+									/>
 								</div>
 							</div>
 						</div>

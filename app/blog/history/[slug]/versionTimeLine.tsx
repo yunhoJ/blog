@@ -114,11 +114,11 @@ export default function VersionTimeLine({
 							)}
 						</div>
 						<div className="flex items-center justify-between">
-							<div className="flex items-center gap-1">
+							<div className="flex items-center gap-1" title="생성일">
 								<Clock className="h-3 w-3" />
 								<span>{formatDate(version.postCreatedAt)}</span>
 							</div>
-							<div className="flex items-center gap-1">
+							<div className="flex items-center gap-1" title="버전">
 								<FileCode2Icon className="h-3 w-3" />
 								<span>v.{versionTimeLine.length - index}</span>
 							</div>
