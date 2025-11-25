@@ -73,9 +73,13 @@ async function getDrafts(userId: string) {
 		select: {
 			postHash: true,
 			postTitle: true,
-			postPublished: true,
 			postCreatedAt: true,
 			postUpdatedAt: true,
+			blogPostMeta: {
+				select: {
+					firstPostPublishAt: true,
+				},
+			},
 		},
 	});
 	return drafts;
@@ -98,6 +102,12 @@ async function deletePostDraft(postHash: string, userId: string) {
 	});
 
 	if (draft_count === 0) {
+		// 초안 삭제시 태그 먼저 삭제
+		await prisma.blogPostTag.deleteMany({
+			where: {
+				postHash,
+			},
+		});
 		await prisma.blogPostMeta.delete({
 			where: {
 				postHash,

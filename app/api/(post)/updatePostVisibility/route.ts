@@ -67,7 +67,7 @@ const updatePostVisibilityPrivate = async (revisionHash: string, visibility: boo
 				revisionHash,
 			},
 			data: {
-				postPublished: new Date(),
+				postUpdatedAt: new Date(),
 			},
 		});
 		const [publishPost] = await Promise.all([publishPostPromise, postUpdatePromise]);

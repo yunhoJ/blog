@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
 			description: post.postContent.slice(0, 100),
 			url: `/blog/${post.revisionHash}`,
 			type: 'article',
-			publishedTime: post.postPublished?.toISOString() || '',
+			publishedTime: post.blogPostMeta.firstPostPublishAt?.toISOString() || '',
 			modifiedTime: post.postUpdatedAt.toISOString() || '',
 			authors: post.user.userName || 'yunho',
 			// tags: post.tags,

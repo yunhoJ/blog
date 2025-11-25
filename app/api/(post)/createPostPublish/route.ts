@@ -132,7 +132,6 @@ const getPublishedPosts = async (postHash: string, userId: string) => {
 			},
 			data: {
 				postDraft: false,
-				postPublished: new Date(),
 			},
 		});
 		if (post.length === 1) {
@@ -151,7 +150,6 @@ const updatePostPublish = async (revisionHash: string) => {
 		},
 		data: {
 			postDraft: false,
-			postPublished: new Date(),
 		},
 	});
 
@@ -230,6 +228,16 @@ const createPostPublish = async (
 				[visibility ? 'publicCount' : 'privateCount']: {
 					increment: 1,
 				},
+			},
+		});
+
+		// 포스트 메타 첫 발행 시간 업데이트
+		await prisma.blogPostMeta.update({
+			where: {
+				postHash,
+			},
+			data: {
+				firstPostPublishAt: new Date(),
 			},
 		});
 	}

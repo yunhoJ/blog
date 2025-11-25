@@ -30,8 +30,8 @@ export interface BlogPostUser {
 
 export interface BlogPostData {
 	postTitle: string;
-	postPublished: Date | null;
 	postReadTimeSeconds: number;
+	postUpdatedAt: Date;
 	user: BlogPostUser;
 }
 
@@ -55,7 +55,8 @@ export interface BlogPostMeta {
 	postViewCount: number;
 	postLikeCount: number;
 	postCommentCount: number;
-	postMainImageUrl?: string;
+	postMainImageUrl: string | null; // optional이면서 null도 허용
+	firstPostPublishAt: Date | null;
 	blogPostTag: {
 		tagName: string;
 	}[];
@@ -65,7 +66,6 @@ export interface BlogPostMeta {
 export interface DraftItem {
 	postHash: string;
 	postTitle: string;
-	postPublished: boolean;
 	postCreatedAt: string;
 	postUpdatedAt: string;
 }

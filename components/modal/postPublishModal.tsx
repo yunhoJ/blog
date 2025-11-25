@@ -36,7 +36,6 @@ export default function PostPublishModal({
 					visibility: visibility,
 					imageUrl: imageUrl as string,
 				});
-				console.log('postPublishData', postPublishData);
 				toastSuccess('발행 되었습니다.');
 				// react query 초기화
 				queryClient.invalidateQueries({ queryKey: ['posts'] });

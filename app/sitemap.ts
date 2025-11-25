@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	// 블로그 게시물 URL 생성
 	const blogPosts = posts.map((post) => ({
 		url: `${baseUrl}/blog/${post.revisionHash}`,
-		lastModified: post.blogPost.postPublished ? new Date(post.blogPost.postPublished) : new Date(),
+		lastModified: post.blogPost.postUpdatedAt ? new Date(post.blogPost.postUpdatedAt) : new Date(),
 		changeFrequency: 'weekly' as const,
 		priority: 0.7,
 	}));

@@ -5231,6 +5231,7 @@ export namespace Prisma {
     postCommentCount: number | null
     postCommentGitnumber: number | null
     postCommentGitId: string | null
+    firstPostPublishAt: Date | null
     postMainImageUrl: string | null
   }
 
@@ -5243,6 +5244,7 @@ export namespace Prisma {
     postCommentCount: number | null
     postCommentGitnumber: number | null
     postCommentGitId: string | null
+    firstPostPublishAt: Date | null
     postMainImageUrl: string | null
   }
 
@@ -5255,6 +5257,7 @@ export namespace Prisma {
     postCommentCount: number
     postCommentGitnumber: number
     postCommentGitId: number
+    firstPostPublishAt: number
     postMainImageUrl: number
     _all: number
   }
@@ -5283,6 +5286,7 @@ export namespace Prisma {
     postCommentCount?: true
     postCommentGitnumber?: true
     postCommentGitId?: true
+    firstPostPublishAt?: true
     postMainImageUrl?: true
   }
 
@@ -5295,6 +5299,7 @@ export namespace Prisma {
     postCommentCount?: true
     postCommentGitnumber?: true
     postCommentGitId?: true
+    firstPostPublishAt?: true
     postMainImageUrl?: true
   }
 
@@ -5307,6 +5312,7 @@ export namespace Prisma {
     postCommentCount?: true
     postCommentGitnumber?: true
     postCommentGitId?: true
+    firstPostPublishAt?: true
     postMainImageUrl?: true
     _all?: true
   }
@@ -5406,6 +5412,7 @@ export namespace Prisma {
     postCommentCount: number
     postCommentGitnumber: number | null
     postCommentGitId: string | null
+    firstPostPublishAt: Date | null
     postMainImageUrl: string | null
     _count: BlogPostMetaCountAggregateOutputType | null
     _avg: BlogPostMetaAvgAggregateOutputType | null
@@ -5437,6 +5444,7 @@ export namespace Prisma {
     postCommentCount?: boolean
     postCommentGitnumber?: boolean
     postCommentGitId?: boolean
+    firstPostPublishAt?: boolean
     postMainImageUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     extraFile?: boolean | BlogPostMeta$extraFileArgs<ExtArgs>
@@ -5454,6 +5462,7 @@ export namespace Prisma {
     postCommentCount?: boolean
     postCommentGitnumber?: boolean
     postCommentGitId?: boolean
+    firstPostPublishAt?: boolean
     postMainImageUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["blogPostMeta"]>
@@ -5467,6 +5476,7 @@ export namespace Prisma {
     postCommentCount?: boolean
     postCommentGitnumber?: boolean
     postCommentGitId?: boolean
+    firstPostPublishAt?: boolean
     postMainImageUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["blogPostMeta"]>
@@ -5480,10 +5490,11 @@ export namespace Prisma {
     postCommentCount?: boolean
     postCommentGitnumber?: boolean
     postCommentGitId?: boolean
+    firstPostPublishAt?: boolean
     postMainImageUrl?: boolean
   }
 
-  export type BlogPostMetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"postHash" | "userId" | "postDelete" | "postViewCount" | "postLikeCount" | "postCommentCount" | "postCommentGitnumber" | "postCommentGitId" | "postMainImageUrl", ExtArgs["result"]["blogPostMeta"]>
+  export type BlogPostMetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"postHash" | "userId" | "postDelete" | "postViewCount" | "postLikeCount" | "postCommentCount" | "postCommentGitnumber" | "postCommentGitId" | "firstPostPublishAt" | "postMainImageUrl", ExtArgs["result"]["blogPostMeta"]>
   export type BlogPostMetaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     extraFile?: boolean | BlogPostMeta$extraFileArgs<ExtArgs>
@@ -5515,6 +5526,7 @@ export namespace Prisma {
       postCommentCount: number
       postCommentGitnumber: number | null
       postCommentGitId: string | null
+      firstPostPublishAt: Date | null
       postMainImageUrl: string | null
     }, ExtArgs["result"]["blogPostMeta"]>
     composites: {}
@@ -5951,6 +5963,7 @@ export namespace Prisma {
     readonly postCommentCount: FieldRef<"BlogPostMeta", 'Int'>
     readonly postCommentGitnumber: FieldRef<"BlogPostMeta", 'Int'>
     readonly postCommentGitId: FieldRef<"BlogPostMeta", 'String'>
+    readonly firstPostPublishAt: FieldRef<"BlogPostMeta", 'DateTime'>
     readonly postMainImageUrl: FieldRef<"BlogPostMeta", 'String'>
   }
     
@@ -8615,7 +8628,6 @@ export namespace Prisma {
     postDraft: boolean | null
     postCreatedAt: Date | null
     postUpdatedAt: Date | null
-    postPublished: Date | null
     postReadTimeSeconds: number | null
   }
 
@@ -8628,7 +8640,6 @@ export namespace Prisma {
     postDraft: boolean | null
     postCreatedAt: Date | null
     postUpdatedAt: Date | null
-    postPublished: Date | null
     postReadTimeSeconds: number | null
   }
 
@@ -8641,7 +8652,6 @@ export namespace Prisma {
     postDraft: number
     postCreatedAt: number
     postUpdatedAt: number
-    postPublished: number
     postReadTimeSeconds: number
     _all: number
   }
@@ -8664,7 +8674,6 @@ export namespace Prisma {
     postDraft?: true
     postCreatedAt?: true
     postUpdatedAt?: true
-    postPublished?: true
     postReadTimeSeconds?: true
   }
 
@@ -8677,7 +8686,6 @@ export namespace Prisma {
     postDraft?: true
     postCreatedAt?: true
     postUpdatedAt?: true
-    postPublished?: true
     postReadTimeSeconds?: true
   }
 
@@ -8690,7 +8698,6 @@ export namespace Prisma {
     postDraft?: true
     postCreatedAt?: true
     postUpdatedAt?: true
-    postPublished?: true
     postReadTimeSeconds?: true
     _all?: true
   }
@@ -8790,7 +8797,6 @@ export namespace Prisma {
     postDraft: boolean
     postCreatedAt: Date
     postUpdatedAt: Date
-    postPublished: Date | null
     postReadTimeSeconds: number
     _count: BlogPostCountAggregateOutputType | null
     _avg: BlogPostAvgAggregateOutputType | null
@@ -8822,7 +8828,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: boolean
     postUpdatedAt?: boolean
-    postPublished?: boolean
     postReadTimeSeconds?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     blogPostMeta?: boolean | BlogPostMetaDefaultArgs<ExtArgs>
@@ -8838,7 +8843,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: boolean
     postUpdatedAt?: boolean
-    postPublished?: boolean
     postReadTimeSeconds?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     blogPostMeta?: boolean | BlogPostMetaDefaultArgs<ExtArgs>
@@ -8853,7 +8857,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: boolean
     postUpdatedAt?: boolean
-    postPublished?: boolean
     postReadTimeSeconds?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     blogPostMeta?: boolean | BlogPostMetaDefaultArgs<ExtArgs>
@@ -8868,11 +8871,10 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: boolean
     postUpdatedAt?: boolean
-    postPublished?: boolean
     postReadTimeSeconds?: boolean
   }
 
-  export type BlogPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"revisionHash" | "postHash" | "userId" | "postTitle" | "postContent" | "postDraft" | "postCreatedAt" | "postUpdatedAt" | "postPublished" | "postReadTimeSeconds", ExtArgs["result"]["blogPost"]>
+  export type BlogPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"revisionHash" | "postHash" | "userId" | "postTitle" | "postContent" | "postDraft" | "postCreatedAt" | "postUpdatedAt" | "postReadTimeSeconds", ExtArgs["result"]["blogPost"]>
   export type BlogPostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     blogPostMeta?: boolean | BlogPostMetaDefaultArgs<ExtArgs>
@@ -8903,7 +8905,6 @@ export namespace Prisma {
       postDraft: boolean
       postCreatedAt: Date
       postUpdatedAt: Date
-      postPublished: Date | null
       postReadTimeSeconds: number
     }, ExtArgs["result"]["blogPost"]>
     composites: {}
@@ -9339,7 +9340,6 @@ export namespace Prisma {
     readonly postDraft: FieldRef<"BlogPost", 'Boolean'>
     readonly postCreatedAt: FieldRef<"BlogPost", 'DateTime'>
     readonly postUpdatedAt: FieldRef<"BlogPost", 'DateTime'>
-    readonly postPublished: FieldRef<"BlogPost", 'DateTime'>
     readonly postReadTimeSeconds: FieldRef<"BlogPost", 'Int'>
   }
     
@@ -10895,6 +10895,7 @@ export namespace Prisma {
     postCommentCount: 'postCommentCount',
     postCommentGitnumber: 'postCommentGitnumber',
     postCommentGitId: 'postCommentGitId',
+    firstPostPublishAt: 'firstPostPublishAt',
     postMainImageUrl: 'postMainImageUrl'
   };
 
@@ -10930,7 +10931,6 @@ export namespace Prisma {
     postDraft: 'postDraft',
     postCreatedAt: 'postCreatedAt',
     postUpdatedAt: 'postUpdatedAt',
-    postPublished: 'postPublished',
     postReadTimeSeconds: 'postReadTimeSeconds'
   };
 
@@ -11261,6 +11261,7 @@ export namespace Prisma {
     postCommentCount?: IntFilter<"BlogPostMeta"> | number
     postCommentGitnumber?: IntNullableFilter<"BlogPostMeta"> | number | null
     postCommentGitId?: StringNullableFilter<"BlogPostMeta"> | string | null
+    firstPostPublishAt?: DateTimeNullableFilter<"BlogPostMeta"> | Date | string | null
     postMainImageUrl?: StringNullableFilter<"BlogPostMeta"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     extraFile?: BlogExtraFileListRelationFilter
@@ -11277,6 +11278,7 @@ export namespace Prisma {
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrderInput | SortOrder
     postCommentGitId?: SortOrderInput | SortOrder
+    firstPostPublishAt?: SortOrderInput | SortOrder
     postMainImageUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     extraFile?: BlogExtraFileOrderByRelationAggregateInput
@@ -11296,6 +11298,7 @@ export namespace Prisma {
     postViewCount?: IntFilter<"BlogPostMeta"> | number
     postLikeCount?: IntFilter<"BlogPostMeta"> | number
     postCommentCount?: IntFilter<"BlogPostMeta"> | number
+    firstPostPublishAt?: DateTimeNullableFilter<"BlogPostMeta"> | Date | string | null
     postMainImageUrl?: StringNullableFilter<"BlogPostMeta"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     extraFile?: BlogExtraFileListRelationFilter
@@ -11312,6 +11315,7 @@ export namespace Prisma {
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrderInput | SortOrder
     postCommentGitId?: SortOrderInput | SortOrder
+    firstPostPublishAt?: SortOrderInput | SortOrder
     postMainImageUrl?: SortOrderInput | SortOrder
     _count?: BlogPostMetaCountOrderByAggregateInput
     _avg?: BlogPostMetaAvgOrderByAggregateInput
@@ -11332,6 +11336,7 @@ export namespace Prisma {
     postCommentCount?: IntWithAggregatesFilter<"BlogPostMeta"> | number
     postCommentGitnumber?: IntNullableWithAggregatesFilter<"BlogPostMeta"> | number | null
     postCommentGitId?: StringNullableWithAggregatesFilter<"BlogPostMeta"> | string | null
+    firstPostPublishAt?: DateTimeNullableWithAggregatesFilter<"BlogPostMeta"> | Date | string | null
     postMainImageUrl?: StringNullableWithAggregatesFilter<"BlogPostMeta"> | string | null
   }
 
@@ -11459,7 +11464,6 @@ export namespace Prisma {
     postDraft?: BoolFilter<"BlogPost"> | boolean
     postCreatedAt?: DateTimeFilter<"BlogPost"> | Date | string
     postUpdatedAt?: DateTimeFilter<"BlogPost"> | Date | string
-    postPublished?: DateTimeNullableFilter<"BlogPost"> | Date | string | null
     postReadTimeSeconds?: IntFilter<"BlogPost"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     blogPostMeta?: XOR<BlogPostMetaScalarRelationFilter, BlogPostMetaWhereInput>
@@ -11475,7 +11479,6 @@ export namespace Prisma {
     postDraft?: SortOrder
     postCreatedAt?: SortOrder
     postUpdatedAt?: SortOrder
-    postPublished?: SortOrderInput | SortOrder
     postReadTimeSeconds?: SortOrder
     user?: UserOrderByWithRelationInput
     blogPostMeta?: BlogPostMetaOrderByWithRelationInput
@@ -11495,7 +11498,6 @@ export namespace Prisma {
     postDraft?: BoolFilter<"BlogPost"> | boolean
     postCreatedAt?: DateTimeFilter<"BlogPost"> | Date | string
     postUpdatedAt?: DateTimeFilter<"BlogPost"> | Date | string
-    postPublished?: DateTimeNullableFilter<"BlogPost"> | Date | string | null
     postReadTimeSeconds?: IntFilter<"BlogPost"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     blogPostMeta?: XOR<BlogPostMetaScalarRelationFilter, BlogPostMetaWhereInput>
@@ -11511,7 +11513,6 @@ export namespace Prisma {
     postDraft?: SortOrder
     postCreatedAt?: SortOrder
     postUpdatedAt?: SortOrder
-    postPublished?: SortOrderInput | SortOrder
     postReadTimeSeconds?: SortOrder
     _count?: BlogPostCountOrderByAggregateInput
     _avg?: BlogPostAvgOrderByAggregateInput
@@ -11532,7 +11533,6 @@ export namespace Prisma {
     postDraft?: BoolWithAggregatesFilter<"BlogPost"> | boolean
     postCreatedAt?: DateTimeWithAggregatesFilter<"BlogPost"> | Date | string
     postUpdatedAt?: DateTimeWithAggregatesFilter<"BlogPost"> | Date | string
-    postPublished?: DateTimeNullableWithAggregatesFilter<"BlogPost"> | Date | string | null
     postReadTimeSeconds?: IntWithAggregatesFilter<"BlogPost"> | number
   }
 
@@ -11797,6 +11797,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     user: UserCreateNestedOneWithoutBlogPostMetaInput
     extraFile?: BlogExtraFileCreateNestedManyWithoutBlogPostMetaInput
@@ -11813,6 +11814,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -11827,6 +11829,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBlogPostMetaNestedInput
     extraFile?: BlogExtraFileUpdateManyWithoutBlogPostMetaNestedInput
@@ -11843,6 +11846,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -11858,6 +11862,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
   }
 
@@ -11869,6 +11874,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -11881,6 +11887,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -11982,7 +11989,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
     user: UserCreateNestedOneWithoutBlogPostInput
     blogPostMeta: BlogPostMetaCreateNestedOneWithoutBlogPostInput
@@ -11998,7 +12004,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
     blogPostPublish?: BlogPostPublishUncheckedCreateNestedOneWithoutBlogPostInput
   }
@@ -12010,7 +12015,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutBlogPostNestedInput
     blogPostMeta?: BlogPostMetaUpdateOneRequiredWithoutBlogPostNestedInput
@@ -12026,7 +12030,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
     blogPostPublish?: BlogPostPublishUncheckedUpdateOneWithoutBlogPostNestedInput
   }
@@ -12040,7 +12043,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
   }
 
@@ -12051,7 +12053,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
   }
 
@@ -12064,7 +12065,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
   }
 
@@ -12456,6 +12456,17 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type BlogPostMetaCountOrderByAggregateInput = {
     postHash?: SortOrder
     userId?: SortOrder
@@ -12465,6 +12476,7 @@ export namespace Prisma {
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrder
     postCommentGitId?: SortOrder
+    firstPostPublishAt?: SortOrder
     postMainImageUrl?: SortOrder
   }
 
@@ -12484,6 +12496,7 @@ export namespace Prisma {
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrder
     postCommentGitId?: SortOrder
+    firstPostPublishAt?: SortOrder
     postMainImageUrl?: SortOrder
   }
 
@@ -12496,6 +12509,7 @@ export namespace Prisma {
     postCommentCount?: SortOrder
     postCommentGitnumber?: SortOrder
     postCommentGitId?: SortOrder
+    firstPostPublishAt?: SortOrder
     postMainImageUrl?: SortOrder
   }
 
@@ -12528,6 +12542,20 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type BlogPostMetaScalarRelationFilter = {
@@ -12595,17 +12623,6 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type BlogPostPublishNullableScalarRelationFilter = {
     is?: BlogPostPublishWhereInput | null
     isNot?: BlogPostPublishWhereInput | null
@@ -12626,7 +12643,6 @@ export namespace Prisma {
     postDraft?: SortOrder
     postCreatedAt?: SortOrder
     postUpdatedAt?: SortOrder
-    postPublished?: SortOrder
     postReadTimeSeconds?: SortOrder
   }
 
@@ -12643,7 +12659,6 @@ export namespace Prisma {
     postDraft?: SortOrder
     postCreatedAt?: SortOrder
     postUpdatedAt?: SortOrder
-    postPublished?: SortOrder
     postReadTimeSeconds?: SortOrder
   }
 
@@ -12656,26 +12671,11 @@ export namespace Prisma {
     postDraft?: SortOrder
     postCreatedAt?: SortOrder
     postUpdatedAt?: SortOrder
-    postPublished?: SortOrder
     postReadTimeSeconds?: SortOrder
   }
 
   export type BlogPostSumOrderByAggregateInput = {
     postReadTimeSeconds?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type BlogPostScalarRelationFilter = {
@@ -13228,6 +13228,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type UserUpdateOneRequiredWithoutBlogPostMetaNestedInput = {
     create?: XOR<UserCreateWithoutBlogPostMetaInput, UserUncheckedCreateWithoutBlogPostMetaInput>
     connectOrCreate?: UserCreateOrConnectWithoutBlogPostMetaInput
@@ -13412,10 +13416,6 @@ export namespace Prisma {
     create?: XOR<BlogPostPublishCreateWithoutBlogPostInput, BlogPostPublishUncheckedCreateWithoutBlogPostInput>
     connectOrCreate?: BlogPostPublishCreateOrConnectWithoutBlogPostInput
     connect?: BlogPostPublishWhereUniqueInput
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type UserUpdateOneRequiredWithoutBlogPostNestedInput = {
@@ -13650,6 +13650,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -13683,17 +13694,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13768,6 +13768,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileCreateNestedManyWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagCreateNestedManyWithoutBlogPostMetaInput
@@ -13782,6 +13783,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -13848,7 +13850,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
     blogPostMeta: BlogPostMetaCreateNestedOneWithoutBlogPostInput
     blogPostPublish?: BlogPostPublishCreateNestedOneWithoutBlogPostInput
@@ -13862,7 +13863,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
     blogPostPublish?: BlogPostPublishUncheckedCreateNestedOneWithoutBlogPostInput
   }
@@ -13957,6 +13957,7 @@ export namespace Prisma {
     postCommentCount?: IntFilter<"BlogPostMeta"> | number
     postCommentGitnumber?: IntNullableFilter<"BlogPostMeta"> | number | null
     postCommentGitId?: StringNullableFilter<"BlogPostMeta"> | string | null
+    firstPostPublishAt?: DateTimeNullableFilter<"BlogPostMeta"> | Date | string | null
     postMainImageUrl?: StringNullableFilter<"BlogPostMeta"> | string | null
   }
 
@@ -14040,7 +14041,6 @@ export namespace Prisma {
     postDraft?: BoolFilter<"BlogPost"> | boolean
     postCreatedAt?: DateTimeFilter<"BlogPost"> | Date | string
     postUpdatedAt?: DateTimeFilter<"BlogPost"> | Date | string
-    postPublished?: DateTimeNullableFilter<"BlogPost"> | Date | string | null
     postReadTimeSeconds?: IntFilter<"BlogPost"> | number
   }
 
@@ -14457,7 +14457,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
     user: UserCreateNestedOneWithoutBlogPostInput
     blogPostPublish?: BlogPostPublishCreateNestedOneWithoutBlogPostInput
@@ -14471,7 +14470,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
     blogPostPublish?: BlogPostPublishUncheckedCreateNestedOneWithoutBlogPostInput
   }
@@ -14581,6 +14579,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     user: UserCreateNestedOneWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagCreateNestedManyWithoutBlogPostMetaInput
@@ -14596,6 +14595,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPost?: BlogPostUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -14658,6 +14658,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUpdateManyWithoutBlogPostMetaNestedInput
@@ -14673,6 +14674,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPost?: BlogPostUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -14740,6 +14742,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     user: UserCreateNestedOneWithoutBlogPostMetaInput
     extraFile?: BlogExtraFileCreateNestedManyWithoutBlogPostMetaInput
@@ -14755,6 +14758,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPost?: BlogPostUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -14838,6 +14842,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBlogPostMetaNestedInput
     extraFile?: BlogExtraFileUpdateManyWithoutBlogPostMetaNestedInput
@@ -14853,6 +14858,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPost?: BlogPostUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -14938,6 +14944,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     user: UserCreateNestedOneWithoutBlogPostMetaInput
     extraFile?: BlogExtraFileCreateNestedManyWithoutBlogPostMetaInput
@@ -14953,6 +14960,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
     extraFile?: BlogExtraFileUncheckedCreateNestedManyWithoutBlogPostMetaInput
     blogPostTag?: BlogPostTagUncheckedCreateNestedManyWithoutBlogPostMetaInput
@@ -15036,6 +15044,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutBlogPostMetaNestedInput
     extraFile?: BlogExtraFileUpdateManyWithoutBlogPostMetaNestedInput
@@ -15051,6 +15060,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -15084,7 +15094,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
     user: UserCreateNestedOneWithoutBlogPostInput
     blogPostMeta: BlogPostMetaCreateNestedOneWithoutBlogPostInput
@@ -15099,7 +15108,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
   }
 
@@ -15151,7 +15159,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutBlogPostNestedInput
     blogPostMeta?: BlogPostMetaUpdateOneRequiredWithoutBlogPostNestedInput
@@ -15166,7 +15173,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
   }
 
@@ -15221,6 +15227,7 @@ export namespace Prisma {
     postCommentCount?: number
     postCommentGitnumber?: number | null
     postCommentGitId?: string | null
+    firstPostPublishAt?: Date | string | null
     postMainImageUrl?: string | null
   }
 
@@ -15244,7 +15251,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
   }
 
@@ -15298,6 +15304,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUpdateManyWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUpdateManyWithoutBlogPostMetaNestedInput
@@ -15312,6 +15319,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extraFile?: BlogExtraFileUncheckedUpdateManyWithoutBlogPostMetaNestedInput
     blogPostTag?: BlogPostTagUncheckedUpdateManyWithoutBlogPostMetaNestedInput
@@ -15326,6 +15334,7 @@ export namespace Prisma {
     postCommentCount?: IntFieldUpdateOperationsInput | number
     postCommentGitnumber?: NullableIntFieldUpdateOperationsInput | number | null
     postCommentGitId?: NullableStringFieldUpdateOperationsInput | string | null
+    firstPostPublishAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postMainImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -15371,7 +15380,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
     blogPostMeta?: BlogPostMetaUpdateOneRequiredWithoutBlogPostNestedInput
     blogPostPublish?: BlogPostPublishUpdateOneWithoutBlogPostNestedInput
@@ -15385,7 +15393,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
     blogPostPublish?: BlogPostPublishUncheckedUpdateOneWithoutBlogPostNestedInput
   }
@@ -15398,7 +15405,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
   }
 
@@ -15501,7 +15507,6 @@ export namespace Prisma {
     postDraft?: boolean
     postCreatedAt?: Date | string
     postUpdatedAt?: Date | string
-    postPublished?: Date | string | null
     postReadTimeSeconds?: number
   }
 
@@ -15547,7 +15552,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutBlogPostNestedInput
     blogPostPublish?: BlogPostPublishUpdateOneWithoutBlogPostNestedInput
@@ -15561,7 +15565,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
     blogPostPublish?: BlogPostPublishUncheckedUpdateOneWithoutBlogPostNestedInput
   }
@@ -15574,7 +15577,6 @@ export namespace Prisma {
     postDraft?: BoolFieldUpdateOperationsInput | boolean
     postCreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     postUpdatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    postPublished?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     postReadTimeSeconds?: IntFieldUpdateOperationsInput | number
   }
 

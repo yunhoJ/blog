@@ -62,6 +62,7 @@ model BlogPostMeta {
   postCommentCount     Int             @default(0)
   postCommentGitnumber Int?            @unique
   postCommentGitId     String?         @unique
+  firstPostPublishAt   DateTime?       @db.Timestamptz(6)
   postMainImageUrl     String?
   user                 User            @relation(fields: [userId], references: [userId])
   extraFile            BlogExtraFile[]
@@ -94,16 +95,15 @@ model BlogPostTag {
 }
 
 model BlogPost {
-  revisionHash        String    @id
+  revisionHash        String   @id
   postHash            String
   userId              String
   postTitle           String
   postContent         String
-  postDraft           Boolean   @default(true)
-  postCreatedAt       DateTime  @default(now()) @db.Timestamptz(6)
-  postUpdatedAt       DateTime  @updatedAt @db.Timestamptz(6)
-  postPublished       DateTime? @db.Timestamptz(6)
-  postReadTimeSeconds Int       @default(0) @db.SmallInt
+  postDraft           Boolean  @default(true)
+  postCreatedAt       DateTime @default(now()) @db.Timestamptz(6)
+  postUpdatedAt       DateTime @updatedAt @db.Timestamptz(6)
+  postReadTimeSeconds Int      @default(0) @db.SmallInt
 
   user            User             @relation(fields: [userId], references: [userId])
   blogPostMeta    BlogPostMeta     @relation(fields: [postHash], references: [postHash])

@@ -28,6 +28,7 @@ export async function getPost(revisionHash: string) {
 			},
 			blogPostMeta: {
 				select: {
+					firstPostPublishAt: true,
 					postLikeCount: true,
 				},
 			},
@@ -131,12 +132,12 @@ export const getPostPublishData = async (
 	if (sort === 'viewCount') {
 		orderBy = [
 			{ blogPost: { blogPostMeta: { postViewCount: 'desc' } } },
-			{ blogPost: { postPublished: 'asc' } },
+			{ blogPost: { blogPostMeta: { firstPostPublishAt: 'asc' } } },
 		];
 	} else if (sort === 'latest') {
-		orderBy = { blogPost: { postPublished: 'desc' } };
+		orderBy = { blogPost: { blogPostMeta: { firstPostPublishAt: 'desc' } } };
 	} else if (sort === 'oldest') {
-		orderBy = { blogPost: { postPublished: 'asc' } };
+		orderBy = { blogPost: { blogPostMeta: { firstPostPublishAt: 'asc' } } };
 	}
 
 	const paginationData = pagination(totalCount, pageSize, page);
@@ -146,8 +147,8 @@ export const getPostPublishData = async (
 			blogPost: {
 				select: {
 					postTitle: true,
-					postPublished: true,
 					postReadTimeSeconds: true,
+					postUpdatedAt: true,
 					user: {
 						select: {
 							userName: true,
@@ -155,6 +156,7 @@ export const getPostPublishData = async (
 					},
 					blogPostMeta: {
 						select: {
+							firstPostPublishAt: true,
 							postMainImageUrl: true,
 							postViewCount: true,
 							postLikeCount: true,

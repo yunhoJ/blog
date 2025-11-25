@@ -129,13 +129,15 @@ export default function PostCard({
 								<span>{params.user.userName}</span>
 							</span>
 						)}
-						{params.postPublished && (
+						{postMeta.firstPostPublishAt && (
 							<span className="flex items-center gap-1 sm:gap-1.5">
 								<Calendar className="h-4 w-4" />
 								<time className="mobile:hidden block">
-									{formatDateWithoutTime(params.postPublished)}
+									{formatDateWithoutTime(postMeta.firstPostPublishAt)}
 								</time>
-								<time className="mobile:block hidden">{formatDate(params.postPublished)}</time>
+								<time className="mobile:block hidden">
+									{formatDate(postMeta.firstPostPublishAt)}
+								</time>
 							</span>
 						)}
 					</div>

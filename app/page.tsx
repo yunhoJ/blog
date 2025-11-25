@@ -43,26 +43,6 @@ interface HomeProps {
 	}>;
 }
 
-// const contactItems = [
-// 	{
-// 		icon: Github,
-// 		title: 'GitHub',
-// 		description: 'GitHub 저장소',
-// 		mailto: {
-// 			href: 'https://github.com/yunhoJ',
-// 		},
-// 	},
-// 	{
-// 		icon: Mail,
-// 		title: '기타 문의',
-// 		// description: '채용, 인터뷰, 기타 협업 제안',
-// 		mailto: {
-// 			email: 'wjse213@gmail.com',
-// 			subject: '[기타] 문의',
-// 			body: '문의 종류:\n문의 내용:',
-// 		},
-// 	},
-// ];
 export default async function Home({ searchParams }: HomeProps) {
 	// 카테고리 목록 조회
 	const categories = getCategories(userId);
@@ -101,6 +81,7 @@ export default async function Home({ searchParams }: HomeProps) {
 			</Suspense>
 		</aside>
 	);
+
 	// 메인 컨텐츠
 	const MainContentComponent = () => (
 		<div className="space-y-4">
