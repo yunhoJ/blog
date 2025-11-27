@@ -69,3 +69,14 @@ export interface DraftItem {
 	postCreatedAt: string;
 	postUpdatedAt: string;
 }
+// 다른 포스트 이동 타입
+export interface MovePost {
+	postHash: string;
+	revisionHash: string;
+	blogPost: {
+		postTitle: string;
+		blogPostMeta: {
+			firstPostPublishAt: Date;
+		};
+	};
+}

@@ -30,9 +30,7 @@ import type { Root } from 'hast';
 import { extractMdxJsxFromP } from '@/lib/replaceContent';
 import { notFound } from 'next/navigation';
 import remarkBreaks from 'remark-breaks';
-import { Button } from '@/components/ui/button';
-import PostOtherContnet from '@/components/features/blog/postOtherContent';
-import PostOtherContent from '@/components/features/blog/postOtherContent';
+import PostOtherContent from '@/components/features/blog/PostOtherContent';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
