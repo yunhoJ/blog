@@ -3,7 +3,14 @@
 import { Separator } from '@/components/ui/separator';
 // import { getPostBySlug, getPublishedPosts } from '@/lib/notion';
 import { formatDate } from '@/lib/date';
-import { CalendarIcon, UserIcon, ClockIcon, Edit2Icon } from 'lucide-react'; //, ChevronRight, ChevronLeft
+import {
+	CalendarIcon,
+	UserIcon,
+	ClockIcon,
+	Edit2Icon,
+	ChevronLeft,
+	ChevronRight,
+} from 'lucide-react'; //, ChevronRight, ChevronLeft
 import React from 'react';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
@@ -23,6 +30,9 @@ import type { Root } from 'hast';
 import { extractMdxJsxFromP } from '@/lib/replaceContent';
 import { notFound } from 'next/navigation';
 import remarkBreaks from 'remark-breaks';
+import { Button } from '@/components/ui/button';
+import PostOtherContnet from '@/components/features/blog/postOtherContent';
+import PostOtherContent from '@/components/features/blog/postOtherContent';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
@@ -120,6 +130,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 			extractMdxJsxFromP(tree);
 		};
 	};
+
 	const schema = {
 		...defaultSchema,
 		tagNames: [...(defaultSchema.tagNames || []), 'br'],
@@ -169,12 +180,12 @@ export default async function BlogPost({ params }: BlogPostProps) {
 										title="게시일"
 										text={formatDate(post.blogPostMeta.firstPostPublishAt!)}
 									/>
-									<MetaItem
+									{/* <MetaItem
 										icon={Edit2Icon}
 										title="수정일"
 										text={formatDate(post.postUpdatedAt!)}
 										className="hidden md:flex"
-									/>
+									/> */}
 								</div>
 
 								{/* 오른쪽 그룹: 작성자, 읽기 시간 */}
@@ -227,43 +238,13 @@ export default async function BlogPost({ params }: BlogPostProps) {
 							/>
 						</main>
 					</div>
-					<Separator className="" id="bottom" />
+					<Separator className="scroll-mt-[var(--header-height)]" id="bottom" />
+					<PostOtherContent
+						firstPostPublishAt={post.blogPostMeta.firstPostPublishAt!}
+						postPublish={post.blogPostPublish!}
+						userId={post.userId}
+					/>
 
-					{/* 다음화면 */}
-					{/* <div className="flex h-30 gap-5" id="bottom">
-						<Link href="/blog/3" className="w-1/2">
-							<Button className="hover:bg-muted/50 flex h-full flex-col items-start gap-4 overflow-hidden border-2 bg-transparent text-black">
-								<div className="flex flex-row items-center gap-2 font-bold">
-									<ChevronLeft className="h-4 w-4" />
-									<div>이전화면</div>
-								</div>
-								<div className="line-clamp-2 w-full text-xs break-words text-ellipsis whitespace-normal text-gray-500">
-									화면 샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전
-									화면 샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전
-									화면 샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전 화면 샘플내용 입니다. 화면
-									샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전 화면
-									샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전 화면
-									샘플내용 입니다. 이전 화면 샘플내용 입니다. 이전 화면 샘플내용 입니다.
-								</div>
-							</Button>
-						</Link>
-						<Link href="/blog/2" className="w-1/2">
-							<Button className="hover:bg-muted/50 flex h-full flex-col items-end gap-4 overflow-hidden border-2 bg-transparent text-ellipsis text-black">
-								<div className="flex flex-row items-center gap-2">
-									<div className="font-bold">다음화면</div>
-									<ChevronRight className="h-4 w-4" />
-								</div>
-								<div className="line-clamp-2 w-full text-end text-xs break-words text-ellipsis whitespace-normal text-gray-500">
-									부모 요소의 높이 제한 버튼(Button)에 h-20(고정 높이)이 적용되어 있어, 내부
-									텍스트가 두 줄로 늘어나도 공간이 부족하면 줄바꿈이 일어나지 않을 수 있습니다.
-									flex와 min-w-0 조합 flex 컨테이너에서 자식 요소가 min-w-0이 아니면 줄바꿈이 안 될
-									수 있지만, 이미 min-w-0을 적용했습니다. Tailwind 플러그인 미설치 line-clamp
-									유틸리티는 Tailwind CSS의 공식 플러그인(@tailwindcss/line-clamp)이 설치되어 있어야
-									동작합니다. tailwind.config.js의 plugins에 require가 포함되어 있어야 합니다.
-								</div>
-							</Button>
-						</Link>
-					</div> */}
 					<GiscusComments
 						postHash={post.postHash}
 						postReactionCount={post.blogPostMeta.postLikeCount}

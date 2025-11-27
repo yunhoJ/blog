@@ -301,4 +301,17 @@ export const postApi = {
 		);
 		return response.data;
 	},
+	// 다른 포스트 이동 조회
+	getMovePost: async (
+		firstPostPublishAt: string,
+		categoryName: string,
+		postVisibility: boolean,
+		userId: string,
+		scope: 'all' | 'category'
+	) => {
+		const response = await axiosInstance.get(
+			`${axiosInstance.defaults.baseURL}/api/getMovePost?firstPostPublishAt=${firstPostPublishAt}&categoryName=${categoryName}&postVisibility=${postVisibility}&userId=${userId}&scope=${scope}`
+		);
+		return response.data;
+	},
 };
