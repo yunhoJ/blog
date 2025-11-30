@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { postApi } from '@/app/api/services/api';
 import { MovePost } from '@/types/blog';
 import PostCard from './PostOtherCard';
+import { Badge } from '@/components/ui/badge';
+import { Folder } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 interface PostOtherContentProps {
 	firstPostPublishAt: Date;
 	postPublish: PostPublish;
@@ -49,33 +52,43 @@ export default function PostOtherContent({
 	return (
 		<>
 			<div className="dark:bg-background rounded-xl border bg-white p-4">
-				<div className="mb-4 flex items-center justify-end gap-2">
-					<span className="text-muted-foreground text-sm">범위:</span>
-					<div className="bg-muted inline-flex gap-2 rounded-md border p-1">
-						<Button
-							variant={scope === 'all' ? 'secondary' : 'ghost'}
-							size="sm"
-							onClick={() => setScope('all')}
-							className={`text-sm font-medium transition-all ${
-								scope === 'all'
-									? 'bg-background hover:bg-background shadow-sm'
-									: 'text-muted-foreground hover:text-foreground'
-							}`}
-						>
-							전체
-						</Button>
-						<Button
-							variant={scope === 'category' ? 'secondary' : 'ghost'}
-							size="sm"
-							onClick={() => setScope('category')}
-							className={`text-sm font-medium transition-all ${
-								scope === 'category'
-									? 'bg-background hover:bg-background shadow-sm'
-									: 'text-muted-foreground hover:text-foreground'
-							}`}
-						>
-							카테고리
-						</Button>
+				<div className="mb-4 flex items-center justify-between">
+					<div className="flex items-center gap-2">
+						<span className="text-muted-foreground text-sm font-medium">현재 카테고리</span>
+						<Badge variant="outline" className="border-primary gap-1.5">
+							<Folder className="h-3 w-3" />
+							{postPublish.categoryName}
+						</Badge>
+					</div>
+
+					<div className="flex items-center gap-2">
+						<span className="text-muted-foreground text-sm">범위:</span>
+						<div className="bg-muted inline-flex gap-2 rounded-md border p-1">
+							<Button
+								variant={scope === 'all' ? 'secondary' : 'ghost'}
+								size="sm"
+								onClick={() => setScope('all')}
+								className={`text-sm font-medium transition-all ${
+									scope === 'all'
+										? 'bg-background hover:bg-background shadow-sm'
+										: 'text-muted-foreground hover:text-foreground'
+								}`}
+							>
+								전체
+							</Button>
+							<Button
+								variant={scope === 'category' ? 'secondary' : 'ghost'}
+								size="sm"
+								onClick={() => setScope('category')}
+								className={`text-sm font-medium transition-all ${
+									scope === 'category'
+										? 'bg-background hover:bg-background shadow-sm'
+										: 'text-muted-foreground hover:text-foreground'
+								}`}
+							>
+								카테고리
+							</Button>
+						</div>
 					</div>
 				</div>
 				{/* 데스크탑 뷰 */}

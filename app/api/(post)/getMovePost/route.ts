@@ -66,6 +66,7 @@ async function getMovePost(
 ) {
 	const getPreviousPost = await prisma.blogPostPublish.findFirst({
 		select: {
+			categoryName: true,
 			postHash: true,
 			revisionHash: true,
 			blogPost: {

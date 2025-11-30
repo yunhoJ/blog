@@ -73,6 +73,7 @@ export interface DraftItem {
 export interface MovePost {
 	postHash: string;
 	revisionHash: string;
+	categoryName: string;
 	blogPost: {
 		postTitle: string;
 		blogPostMeta: {
