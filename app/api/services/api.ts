@@ -99,6 +99,13 @@ export const postApi = {
 		});
 		return response.data;
 	},
+	// 카테고리 삭제
+	deleteCategory: async (categoryName: string) => {
+		const response = await axiosInstance.delete(`${axiosInstance.defaults.baseURL}/api/category`, {
+			data: { categoryName },
+		});
+		return response.data;
+	},
 	// 조회수 증가
 	incrementViewCount: async (postHash: string, userId: string) => {
 		const response = await axiosInstance.post(

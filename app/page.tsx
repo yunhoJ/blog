@@ -104,7 +104,7 @@ export default async function Home({ searchParams }: HomeProps) {
 	return (
 		<div className="container py-8">
 			{/* 데스크톱: 3컬럼 레이아웃 */}
-			<div className="hidden gap-6 lg:grid lg:grid-cols-[200px_1fr_220px]">
+			<div className="hidden gap-6 lg:grid lg:grid-cols-[240px_1fr_200px]">
 				<CategorySectionComponent />
 				<MainContentComponent />
 				<SidebarComponent />

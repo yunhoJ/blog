@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prismaSession';
 import { getCategories } from '../../services/getCategory';
+import { checkLogin } from '../../services/loginService';
 
 export async function GET(request: NextRequest) {
 	const { searchParams } = new URL(request.url);
@@ -19,6 +20,43 @@ export async function POST(request: Request) {
 	console.log('category:tt ', category);
 	return NextResponse.json({ data: category });
 }
+export async function DELETE(request: Request) {
+	const result = await checkLogin();
+	if (!result.success) {
+		return NextResponse.json(
+			{ success: false, message: result.message },
+			{ status: result.status }
+		);
+	}
+	const userId = result.user?.userId as string;
+	const { categoryName } = await request.json();
+
+	if (!categoryName || !userId) {
+		return NextResponse.json(
+			{ success: false, message: 'categoryName 또는 userId가 없습니다.' },
+			{ status: 400 }
+		);
+	}
+	try {
+		const isEmptyCategory = await checkEmptyCategory(userId, categoryName);
+		if (!isEmptyCategory) {
+			return NextResponse.json(
+				{ success: false, message: '카테고리에 포스트가 있어 삭제할 수 없습니다.' },
+				{ status: 400 }
+			);
+		}
+
+		await deleteCategory(userId, categoryName);
+
+		return NextResponse.json({ success: true, message: '카테고리 삭제 성공' });
+	} catch (error) {
+		console.log('error deleteCategory: ', error);
+		return NextResponse.json(
+			{ success: false, message: '삭제 중 오류가 발생했습니다.' },
+			{ status: 500 }
+		);
+	}
+}
 
 const createCategory = async (userId: string, categoryName: string) => {
 	const category = await prisma.blogCategory.create({
@@ -33,4 +71,24 @@ const createCategory = async (userId: string, categoryName: string) => {
 		privateCount: Number(category.privateCount),
 		publicCount: Number(category.publicCount),
 	};
+};
+
+const checkEmptyCategory = async (userId: string, categoryName: string) => {
+	const category = await prisma.blogPostPublish.findFirst({
+		where: {
+			categoryName,
+			userId,
+		},
+	});
+	// 카테고리에 포스트가 있으면 false 반환
+	return category ? false : true;
+};
+const deleteCategory = async (userId: string, categoryName: string) => {
+	const category = await prisma.blogCategory.delete({
+		where: {
+			userId,
+			categoryName,
+		},
+	});
+	return category;
 };

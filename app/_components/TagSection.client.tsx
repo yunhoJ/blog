@@ -5,6 +5,9 @@ import { Category } from '@/types/blog';
 import { cn } from '@/lib/utils';
 import { use, useState } from 'react';
 import { ChevronDown, ChevronUp, Folder, Hash } from 'lucide-react';
+import { useAuthStore } from '@/lib/store/useAuthStore';
+
+import CategoryDropdown from '@/components/features/blog/CategoryDropdown';
 
 interface CategorySectionProps {
 	categories: Promise<Category[]>;
@@ -19,6 +22,7 @@ export default function CategorySection({
 	tags,
 }: CategorySectionProps) {
 	const allCategories = use(categories);
+	const { isAuthenticated } = useAuthStore();
 	const allTags = use(tags);
 	const [isOpen, setIsOpen] = useState(false);
 	const [activeTab, setActiveTab] = useState(selectedTag ? 'tags' : 'categories');
@@ -55,20 +59,37 @@ export default function CategorySection({
 
 				<CardContent className="flex flex-col gap-2 text-sm">
 					{activeTab === 'categories' ? (
-						displayList.map((category) => (
-							<Link href={`?category=${category.categoryName}`} key={category.categoryName}>
-								<div
+						displayList.map((category) => {
+							const isAllCategory = category.categoryName === '전체';
+							return (
+								<Link
+									key={category.categoryName}
+									href={`?category=${category.categoryName}`}
 									className={cn(
-										'hover:bg-muted-foreground/10 text-muted-foreground flex items-center justify-between rounded-md p-1.5 text-sm transition-colors',
+										'hover:bg-muted-foreground/10 text-muted-foreground flex items-center justify-between gap-2 rounded-md p-1.5 text-sm transition-colors',
 										selectedCategory === category.categoryName &&
 											'bg-muted-foreground/10 text-foreground font-medium'
 									)}
 								>
-									<span>{category.categoryName}</span>
-									<span className="text-muted-foreground/50 text-sm">{category.publicCount}</span>
-								</div>
-							</Link>
-						))
+									<div className="flex flex-1 items-center justify-between">
+										<span>{category.categoryName}</span>
+										<span className="text-muted-foreground/50 text-sm">{category.publicCount}</span>
+									</div>
+									{isAuthenticated &&
+										(!isAllCategory ? (
+											<div className="flex items-center" onClick={(e) => e.stopPropagation()}>
+												<CategoryDropdown
+													categoryName={category.categoryName}
+													categoryCount={category.publicCount}
+												/>
+											</div>
+										) : (
+											// 전체 카테고리인 경우 빈 공간 추가
+											<div className="w-4" />
+										))}
+								</Link>
+							);
+						})
 					) : (
 						<div className="flex flex-col gap-2">
 							{Object.entries(allTags).map(([tagName, count]) => (
@@ -140,24 +161,40 @@ export default function CategorySection({
 				{isOpen && (
 					<CardContent className="flex flex-col gap-2 text-sm">
 						{activeTab === 'categories' ? (
-							displayList.map((category) => (
-								<Link
-									href={`?category=${category.categoryName}`}
-									key={category.categoryName}
-									onClick={() => setIsOpen(!isOpen)}
-								>
-									<div
+							displayList.map((category) => {
+								const isAllCategory = category.categoryName === '전체';
+								return (
+									<Link
+										key={category.categoryName}
+										href={`?category=${category.categoryName}`}
+										onClick={() => setIsOpen(!isOpen)}
 										className={cn(
-											'hover:bg-muted-foreground/10 text-muted-foreground flex items-center justify-between rounded-md p-1.5 text-sm transition-colors',
+											'hover:bg-muted-foreground/10 text-muted-foreground flex items-center justify-between gap-2 rounded-md p-1.5 text-sm transition-colors',
 											selectedCategory === category.categoryName &&
 												'bg-muted-foreground/10 text-foreground font-medium'
 										)}
 									>
-										<span>{category.categoryName}</span>
-										<span className="text-muted-foreground/50 text-sm">{category.publicCount}</span>
-									</div>
-								</Link>
-							))
+										<div className="flex flex-1 items-center justify-between">
+											<span>{category.categoryName}</span>
+											<span className="text-muted-foreground/50 text-sm">
+												{category.publicCount}
+											</span>
+										</div>
+										{isAuthenticated &&
+											(!isAllCategory ? (
+												<div className="flex items-center" onClick={(e) => e.stopPropagation()}>
+													<CategoryDropdown
+														categoryName={category.categoryName}
+														categoryCount={category.publicCount}
+													/>
+												</div>
+											) : (
+												// 전체 카테고리인 경우 빈 공간 추가
+												<div className="w-4" />
+											))}
+									</Link>
+								);
+							})
 						) : (
 							<div className="flex flex-col gap-2">
 								{Object.entries(allTags).map(([tagName, count]) => (
