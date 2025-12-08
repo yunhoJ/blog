@@ -7,10 +7,11 @@ import type { NextRequest } from 'next/server';
 const protectedPaths = ['/api/createPostDraft', '/api/createPostPublish'];
 
 // 인증이 필요한 페이지 경로
-const protectedPagePaths = ['/blog/write'];
+const protectedPagePaths = ['/blog/write', '/blog/history'];
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
 	const { pathname } = req.nextUrl;
+	console.log('pathname: ', pathname);
 	const accessToken = req.cookies.get('accessToken')?.value;
 	const refreshToken = req.cookies.get('refreshToken')?.value;
 
@@ -47,5 +48,5 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
 	//api 경로만 체크
-	matcher: ['/api:path*', '/blog/write'],
+	matcher: ['/api:path*', '/blog/write', '/blog/history/:path*'],
 };
