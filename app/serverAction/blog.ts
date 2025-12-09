@@ -50,7 +50,7 @@ export async function createPostAction(prevState: PostFormState, formData: FormD
 			content: content,
 		});
 		// revalidatePath('/'); // 등록 후 캐시 무효화
-		revalidateTag('posts'); //태그를 통한 캐시 무효화
+		revalidateTag('posts', { expire: 60 * 60 * 24 }); //태그를 통한 캐시 무효화 24시간
 		return {
 			success: true,
 			message: '블로그 포스트가 성공적으로 생성되었습니다.',
