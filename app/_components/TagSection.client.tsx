@@ -190,7 +190,7 @@ export default function CategorySection({
 												</div>
 											) : (
 												// 전체 카테고리인 경우 빈 공간 추가
-												<div className="w-4" />
+												<div className="w-8" />
 											))}
 									</Link>
 								);

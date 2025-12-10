@@ -45,7 +45,7 @@ export default function CategoryDropdown({ categoryName, categoryCount }: Catego
 						e.stopPropagation();
 					}}
 				>
-					<MoreVertical className="text-muted-foreground hover:text-primary hover:bg-primary/10 h-4 w-4 transition-all duration-200 hover:scale-110" />
+					<MoreVertical className="text-muted-foreground hover:text-primary hover:bg-primary/10 h-5 w-8 transition-all duration-200 hover:scale-110 lg:h-4 lg:w-4" />
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end" className="w-20 min-w-20">
 					<DropdownMenuItem
