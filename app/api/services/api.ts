@@ -106,6 +106,14 @@ export const postApi = {
 		});
 		return response.data;
 	},
+	// 카테고리 변경
+	updateCategory: async (originalCategoryName: string, changedCategoryName: string) => {
+		const response = await axiosInstance.put(`${axiosInstance.defaults.baseURL}/api/category`, {
+			originalCategoryName,
+			changedCategoryName,
+		});
+		return response.data;
+	},
 	// 조회수 증가
 	incrementViewCount: async (postHash: string, userId: string) => {
 		const response = await axiosInstance.post(

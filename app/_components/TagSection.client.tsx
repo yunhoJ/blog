@@ -3,11 +3,16 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Category } from '@/types/blog';
 import { cn } from '@/lib/utils';
-import { use, useState } from 'react';
-import { ChevronDown, ChevronUp, Folder, Hash } from 'lucide-react';
+import { use, useEffect, useState } from 'react';
+import { CheckIcon, ChevronDown, ChevronUp, Folder, Hash, XIcon } from 'lucide-react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 
 import CategoryDropdown from '@/components/features/blog/CategoryDropdown';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { toastError } from '@/lib/toasttError';
+import { postApi } from '../api/services/api';
+import { useRouter } from 'next/navigation';
 
 interface CategorySectionProps {
 	categories: Promise<Category[]>;
@@ -21,14 +26,63 @@ export default function CategorySection({
 	selectedTag,
 	tags,
 }: CategorySectionProps) {
+	const router = useRouter();
 	const allCategories = use(categories);
 	const { isAuthenticated } = useAuthStore();
 	const allTags = use(tags);
 	const [isOpen, setIsOpen] = useState(false);
+	const [editingCategoryName, setEditingCategoryName] = useState<string | null>(null);
+	const [editingCategoryValue, setEditingCategoryValue] = useState<string>('');
 	const [activeTab, setActiveTab] = useState(selectedTag ? 'tags' : 'categories');
 	// 전체 public 포스트 개수 계산
 	const totalPublicCount = allCategories.reduce((acc, category) => acc + category.publicCount, 0);
 	const displayList = [{ categoryName: '전체', publicCount: totalPublicCount }, ...allCategories];
+
+	// selectedCategory가 변경되면 수정 모드 종료
+	useEffect(() => {
+		setEditingCategoryName(null);
+		setEditingCategoryValue('');
+	}, [selectedCategory]);
+	// 수정 모드중 스크롤 또는 리사이즈 시 수정 모드 종료
+	useEffect(() => {
+		if (!editingCategoryName) return;
+
+		const handleResize = () => {
+			setEditingCategoryName(null);
+		};
+
+		const handleScroll = () => {
+			setEditingCategoryName(null);
+		};
+
+		window.addEventListener('scroll', handleScroll);
+		window.addEventListener('resize', handleResize);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('resize', handleResize);
+		};
+	}, [editingCategoryName]);
+
+	// Link 클릭 방지 헬퍼 함수
+	const preventLinkClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+	};
+	//카테고리 변경 함수
+	const handleCategoryChange = async (
+		originalCategoryName: string,
+		changedCategoryName: string
+	) => {
+		if (originalCategoryName === changedCategoryName.trim()) return;
+		if (changedCategoryName.trim() === '') toastError(new Error('카테고리 이름을 입력해 주세요.'));
+
+		try {
+			await postApi.updateCategory(originalCategoryName, changedCategoryName);
+			router.push('/?category=' + changedCategoryName);
+		} catch (error) {
+			toastError(new Error('카테고리 변경 중 오류가 발생했습니다.'));
+		}
+	};
 
 	return (
 		<>
@@ -72,17 +126,74 @@ export default function CategorySection({
 									)}
 								>
 									<div className="flex flex-1 items-center justify-between">
-										<span>{category.categoryName}</span>
-										<span className="text-muted-foreground/50 text-sm">{category.publicCount}</span>
+										{editingCategoryName === category.categoryName ? (
+											<Input
+												className="border-primary"
+												type="text"
+												value={editingCategoryValue}
+												onClick={preventLinkClick}
+												onChange={(e) => {
+													setEditingCategoryValue(e.target.value);
+												}}
+												onKeyDown={(e) => {
+													if (e.key === 'Enter') {
+														handleCategoryChange(editingCategoryName, editingCategoryValue);
+													}
+													if (e.key === 'Escape') {
+														setEditingCategoryName(null);
+														setEditingCategoryValue('');
+													}
+												}}
+												autoFocus
+											/>
+										) : (
+											<>
+												<span>{category.categoryName}</span>
+												<span className="text-muted-foreground/50 text-sm">
+													{category.publicCount}
+												</span>
+											</>
+										)}
 									</div>
 									{isAuthenticated &&
 										(!isAllCategory ? (
-											<div className="flex items-center" onClick={(e) => e.stopPropagation()}>
-												<CategoryDropdown
-													categoryName={category.categoryName}
-													categoryCount={category.publicCount}
-												/>
-											</div>
+											editingCategoryName === category.categoryName ? (
+												<div className="flex items-center gap-1">
+													<Button
+														size="icon"
+														variant="ghost"
+														className="hover:bg-destructive/10 h-7 w-7 rounded-md transition-colors"
+														onClick={(e) => {
+															preventLinkClick(e);
+															setEditingCategoryName(null);
+															setEditingCategoryValue('');
+														}}
+													>
+														<XIcon className="text-destructive h-3.5 w-3.5" />
+													</Button>
+
+													<Button
+														size="icon"
+														variant="ghost"
+														className="hover:bg-primary/10 h-7 w-7 rounded-md transition-colors"
+														onClick={(e) => {
+															preventLinkClick(e);
+															handleCategoryChange(editingCategoryName, editingCategoryValue);
+														}}
+													>
+														<CheckIcon className="text-primary h-3.5 w-3.5" />
+													</Button>
+												</div>
+											) : (
+												<div className="flex items-center" onClick={(e) => e.stopPropagation()}>
+													<CategoryDropdown
+														categoryName={category.categoryName}
+														categoryCount={category.publicCount}
+														setEditingCategoryName={setEditingCategoryName}
+														setEditingCategoryValue={setEditingCategoryValue}
+													/>
+												</div>
+											)
 										) : (
 											// 전체 카테고리인 경우 빈 공간 추가
 											<div className="w-4" />
@@ -175,19 +286,74 @@ export default function CategorySection({
 										)}
 									>
 										<div className="flex flex-1 items-center justify-between">
-											<span>{category.categoryName}</span>
-											<span className="text-muted-foreground/50 text-sm">
-												{category.publicCount}
-											</span>
+											{editingCategoryName === category.categoryName ? (
+												<Input
+													className="border-primary mr-4"
+													type="text"
+													value={editingCategoryValue}
+													onClick={preventLinkClick}
+													onChange={(e) => {
+														setEditingCategoryValue(e.target.value);
+													}}
+													onKeyDown={(e) => {
+														if (e.key === 'Enter') {
+															handleCategoryChange(editingCategoryName, editingCategoryValue);
+														}
+														if (e.key === 'Escape') {
+															setEditingCategoryName(null);
+															setEditingCategoryValue('');
+														}
+													}}
+													autoFocus
+												/>
+											) : (
+												<>
+													<span>{category.categoryName}</span>
+													<span className="text-muted-foreground/50 text-sm">
+														{category.publicCount}
+													</span>
+												</>
+											)}
 										</div>
 										{isAuthenticated &&
 											(!isAllCategory ? (
-												<div className="flex items-center" onClick={(e) => e.stopPropagation()}>
-													<CategoryDropdown
-														categoryName={category.categoryName}
-														categoryCount={category.publicCount}
-													/>
-												</div>
+												editingCategoryName === category.categoryName ? (
+													<div className="flex items-center gap-1">
+														<Button
+															size="icon"
+															variant="ghost"
+															className="hover:bg-destructive/10 h-7 w-7 rounded-md transition-colors"
+															onClick={(e) => {
+																preventLinkClick(e);
+																setEditingCategoryName(null);
+																setEditingCategoryValue('');
+															}}
+														>
+															<XIcon className="text-destructive h-3.5 w-3.5" />
+														</Button>
+
+														<Button
+															size="icon"
+															variant="ghost"
+															className="hover:bg-primary/10 h-7 w-7 rounded-md transition-colors"
+															onClick={(e) => {
+																preventLinkClick(e);
+																setEditingCategoryName(null);
+															}}
+														>
+															<CheckIcon className="text-primary h-3.5 w-3.5" />
+														</Button>
+													</div>
+												) : (
+													<div className="flex items-center" onClick={(e) => e.stopPropagation()}>
+														<CategoryDropdown
+															categoryName={category.categoryName}
+															categoryCount={category.publicCount}
+															setEditingCategoryName={setEditingCategoryName}
+															setEditingCategoryValue={setEditingCategoryValue}
+														/>
+													</div>
+												)
 											) : (
 												// 전체 카테고리인 경우 빈 공간 추가
 												<div className="w-8" />

@@ -12,9 +12,16 @@ import { useEffect, useState } from 'react';
 interface CategoryDropdownProps {
 	categoryName: string;
 	categoryCount: number;
+	setEditingCategoryName: (categoryName: string | null) => void;
+	setEditingCategoryValue: (categoryValue: string) => void;
 }
 
-export default function CategoryDropdown({ categoryName, categoryCount }: CategoryDropdownProps) {
+export default function CategoryDropdown({
+	categoryName,
+	categoryCount,
+	setEditingCategoryName,
+	setEditingCategoryValue,
+}: CategoryDropdownProps) {
 	const [open, setOpen] = useState(false);
 	const [categoryDeleteModalOpen, setCategoryDeleteModalOpen] = useState(false);
 	// 스크롤 시 드롭다운 닫기
@@ -51,8 +58,8 @@ export default function CategoryDropdown({ categoryName, categoryCount }: Catego
 					<DropdownMenuItem
 						className="text-primary"
 						onClick={() => {
-							// TODO: 카테고리 수정 기능 구현
-							console.log('수정:', categoryName);
+							setEditingCategoryName(categoryName);
+							setEditingCategoryValue(categoryName);
 						}}
 					>
 						<Pencil className="text-primary h-4 w-4" />
