@@ -55,8 +55,8 @@ export default function CategorySection({
 		const handleScroll = () => {
 			setEditingCategoryName(null);
 		};
-
-		const isMobile = window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(hover: hover)').matches;
+		//lg 사이즈 이하는 모바일 판단 및 scroll event제거 
+		const isMobile = window.innerWidth < 1024;
 		window.addEventListener('scroll', handleScroll);
 		if (!isMobile) {
 			window.addEventListener('resize', handleResize);
