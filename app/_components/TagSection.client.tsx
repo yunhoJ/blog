@@ -47,6 +47,7 @@ export default function CategorySection({
 	useEffect(() => {
 		if (!editingCategoryName) return;
 
+		
 		const handleResize = () => {
 			setEditingCategoryName(null);
 		};
@@ -55,11 +56,17 @@ export default function CategorySection({
 			setEditingCategoryName(null);
 		};
 
+		const isMobile = window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(hover: hover)').matches;
 		window.addEventListener('scroll', handleScroll);
-		window.addEventListener('resize', handleResize);
+		if (!isMobile) {
+			window.addEventListener('resize', handleResize);
+		}
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
-			window.removeEventListener('resize', handleResize);
+			if (!isMobile) {
+				window.removeEventListener('resize', handleResize);
+			}
+			// window.removeEventListener('resize', handleResize);
 		};
 	}, [editingCategoryName]);
 
