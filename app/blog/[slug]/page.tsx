@@ -156,8 +156,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 				userId={post.userId}
 				readTime={post.postReadTimeSeconds}
 			/>
-			<div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_220px] md:gap-8 lg:grid-cols-[200px_1fr_220px]">
-				<aside className="hidden lg:block">{/* 왼쪽 사이드바  작은 화면일떄 숨김 */}</aside>
+			<div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_220px] md:gap-8 lg:grid-cols-[1fr_220px]">
 				<div className="flex h-full flex-col gap-2 space-y-4 overflow-hidden px-4">
 					{/* 헤더 */}
 					<div className="flex flex-col gap-2">
@@ -217,25 +216,24 @@ export default async function BlogPost({ params }: BlogPostProps) {
 					</div>
 
 					{/* 본문 */}
-					<div className="flex-1">
-						<main className="mdx-viewer prose dark:prose-invert prose-headings:scroll-mt-[var(--header-height)]">
-							<MDXRemote
-								source={post.postContent}
-								options={{
-									mdxOptions: {
-										remarkPlugins: [remarkGfm, remarkBreaks],
-										rehypePlugins: [
-											rehypeSlug,
-											rehypeAllowBrJsx, // JSX <br /> 변환 먼저 실행
-											[rehypeSanitize, schema],
-											// rehypeSanitize, br 허용
-											rehypePrettyCode,
-										],
-									},
-								}}
-							/>
-						</main>
-					</div>
+
+					<main className="mdx-viewer prose dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] w-full">
+						<MDXRemote
+							source={post.postContent}
+							options={{
+								mdxOptions: {
+									remarkPlugins: [remarkGfm, remarkBreaks],
+									rehypePlugins: [
+										rehypeSlug,
+										rehypeAllowBrJsx, // JSX <br /> 변환 먼저 실행
+										[rehypeSanitize, schema],
+										// rehypeSanitize, br 허용
+										rehypePrettyCode,
+									],
+								},
+							}}
+						/>
+					</main>
 					<Separator className="scroll-mt-[var(--header-height)]" id="bottom" />
 					<PostOtherContent
 						firstPostPublishAt={post.blogPostMeta.firstPostPublishAt!}
