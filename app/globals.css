@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
-
+@config "../tailwind.config.js";
 @theme inline {
 	--breakpoint-mobile: 380px;
 	--radius-sm: calc(var(--radius) - 4px);
@@ -146,7 +146,7 @@
 	}
 }
 
-.mdx-viewer p {
+/* .mdx-viewer p {
 	margin: 10px 0 !important;
 	word-wrap: break-word !important;
-}
+} */
