@@ -52,16 +52,18 @@ export default function PostOtherContent({
 	return (
 		<>
 			<div className="dark:bg-background rounded-xl border bg-white p-4">
-				<div className="mb-4 flex items-center justify-between">
-					<div className="flex items-center gap-2">
-						<span className="text-muted-foreground text-sm font-medium">현재 카테고리</span>
-						<Badge variant="outline" className="border-primary gap-1.5">
-							<Folder className="h-3 w-3" />
-							{postPublish.categoryName}
+				<div className="mb-4 flex items-center justify-between gap-2">
+					<div className="flex min-w-0 flex-col gap-2 md:flex-row md:items-center">
+						<span className="text-muted-foreground shrink-0 text-sm font-medium">
+							현재 카테고리:
+						</span>
+						<Badge variant="outline" className="border-primary max-w-full shrink gap-1.5">
+							<Folder className="h-3 w-3 shrink-0" />
+							<span className="truncate">{postPublish.categoryName}</span>
 						</Badge>
 					</div>
 
-					<div className="flex items-center gap-2">
+					<div className="flex shrink-0 items-center gap-2">
 						<span className="text-muted-foreground text-sm">범위:</span>
 						<div className="bg-muted inline-flex gap-2 rounded-md border p-1">
 							<Button
