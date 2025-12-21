@@ -10,6 +10,8 @@ import {
 	Edit2Icon,
 	ChevronLeft,
 	ChevronRight,
+	ChevronDown,
+	ChevronUp,
 } from 'lucide-react'; //, ChevronRight, ChevronLeft
 import React from 'react';
 import Link from 'next/link';
@@ -28,6 +30,7 @@ import { getPost } from '@/app/api/services/getPost';
 import ViewCountIncrementer from '@/components/features/blog/ViewCountIncrementer';
 import type { Root } from 'hast';
 import { extractMdxJsxFromP } from '@/lib/replaceContent';
+import { transformCalloutIcons } from '@/lib/transform-callout-icons';
 import { notFound } from 'next/navigation';
 import remarkBreaks from 'remark-breaks';
 import PostOtherContent from '@/components/features/blog/PostOtherContent';
@@ -107,7 +110,7 @@ function TableOfContentsLink({ item }: { item: TocEntry }) {
 				{item.value}
 			</Link>
 			{item.children && item.children.length > 0 && (
-				<div className="space-y-2 pl-4">
+				<div className="border-muted-foreground/25 space-y-2 border-l-2 pl-4">
 					{item.children.map((subItem) => (
 						<TableOfContentsLink key={subItem.id} item={subItem} />
 					))}
@@ -208,8 +211,14 @@ export default async function BlogPost({ params }: BlogPostProps) {
 									<TableOfContentsLink key={item.id} item={item} />
 								))}
 								<div className="space-y-2 border-t pt-5">
-									<TableOfContentsLink item={{ id: 'top', value: '맨위로', depth: 2 }} />
-									<TableOfContentsLink item={{ id: 'bottom', value: '맨아래로', depth: 2 }} />
+									<div className="hover:text-foreground text-muted-foreground flex items-center gap-2">
+										<ChevronUp className="h-4 w-4" />
+										<TableOfContentsLink item={{ id: 'top', value: '맨위로', depth: 2 }} />
+									</div>
+									<div className="hover:text-foreground text-muted-foreground flex items-center gap-2">
+										<ChevronDown className="h-4 w-4" />
+										<TableOfContentsLink item={{ id: 'bottom', value: '맨아래로', depth: 2 }} />
+									</div>
 								</div>
 							</nav>
 						</details>
@@ -219,7 +228,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
 					<main className="mdx-viewer prose dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] w-full">
 						<MDXRemote
-							source={post.postContent}
+							source={transformCalloutIcons(post.postContent)}
 							options={{
 								mdxOptions: {
 									remarkPlugins: [remarkGfm, remarkBreaks],
@@ -254,8 +263,14 @@ export default async function BlogPost({ params }: BlogPostProps) {
 								<TableOfContentsLink key={item.id} item={item} />
 							))}
 							<div className="space-y-2 border-t pt-5">
-								<TableOfContentsLink item={{ id: 'top', value: '맨위로', depth: 2 }} />
-								<TableOfContentsLink item={{ id: 'bottom', value: '맨아래로', depth: 2 }} />
+								<div className="hover:text-foreground text-muted-foreground flex items-center gap-2">
+									<ChevronUp className="h-4 w-4" />
+									<TableOfContentsLink item={{ id: 'top', value: '맨위로', depth: 2 }} />
+								</div>
+								<div className="hover:text-foreground text-muted-foreground flex items-center gap-2">
+									<ChevronDown className="h-4 w-4" />
+									<TableOfContentsLink item={{ id: 'bottom', value: '맨아래로', depth: 2 }} />
+								</div>
 							</div>
 						</nav>
 					</div>

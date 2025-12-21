@@ -19,7 +19,7 @@ const tailwindConfig = {
 						'--tw-prose-bullets': 'var(--color-purple-800)',
 						// '--tw-prose-hr': 'var(--color-pink-300)',
 						// '--tw-prose-quotes': 'var(--color-pink-900)',
-						'--tw-prose-quote-borders': 'var(--color-purple-800)',
+						// '--tw-prose-quote-borders': 'var(--color-purple-800)',
 						// '--tw-prose-captions': 'var(--color-pink-700)',
 						// '--tw-prose-code': 'var(--color-pink-900)',
 						// '--tw-prose-pre-code': 'var(--color-pink-100)',
@@ -97,8 +97,95 @@ const tailwindConfig = {
 							margin: '0.3rem 0',
 							wordWrap: 'break-word',
 						},
+
+						// [!important] 등을 아이콘으로 교체하는 CSS 방법
+						'p::before': {
+							content: '""',
+							marginRight: '0.25rem',
+						},
+
+						blockquote: {
+							borderRadius: theme('borderRadius.xl'),
+							backgroundColor: 'var(--color-purple-50)',
+							padding: '1rem 2rem',
+							borderLeft: '4px solid',
+							borderColor: 'var(--color-purple-800)',
+						},
 						img: {
-							borderRadius: theme('borderRadius.3xl'),
+							borderRadius: theme('borderRadius.xl'),
+						},
+						pre: {
+							paddingTop: '2rem',
+							position: 'relative',
+							overflowX: 'scroll',
+						},
+						'pre::-webkit-scrollbar': {
+							height: '8px',
+							display: 'block',
+						},
+						'pre::-webkit-scrollbar-thumb': {
+							background: 'var(--color-neutral-500)',
+							borderRadius: '4px',
+						},
+
+						// 언어별 아이콘 - 공통 스타일
+						'pre[data-language]::before': {
+							content: '""',
+							position: 'absolute',
+							top: '0.5rem',
+							right: '0.5rem',
+							zIndex: '10',
+							display: 'inline-block',
+							width: '1.25rem',
+							height: '1.25rem',
+						},
+
+						// JavaScript
+						'pre[data-language="js"]::before, pre[data-language="javascript"]::before': {
+							content: '""',
+							backgroundImage: 'url("/icons/Javascript.svg")',
+						},
+
+						// TypeScript
+						'pre[data-language="ts"], pre[data-language="typescript"]::before': {
+							content: '""',
+
+							backgroundImage: 'url("/icons/Typescript.svg")',
+						},
+
+						// React
+						'pre[data-language="jsx"], pre[data-language="tsx"]::before': {
+							content: '""',
+							backgroundImage: 'url("/icons/React.svg")',
+						},
+
+						// Python
+						'pre[data-language="py"], pre[data-language="python"]::before': {
+							content: '""',
+							backgroundImage: 'url("/icons/Python.svg")',
+						},
+						// Java
+						'pre[data-language="java"]::before': {
+							content: '""',
+							backgroundImage: 'url("/icons/Java.svg")',
+						},
+						// yaml
+						'pre[data-language="yml"]::before, pre[data-language="yaml"]::before': {
+							content: '""',
+							backgroundImage: 'url("/icons/Yaml.svg")',
+							backgroundColor: 'var(--color-muted)',
+						},
+						// json
+						'pre[data-language="json"]::before': {
+							content: '"json"',
+							marginRight: '1.25rem',
+							fontSize: '0.8rem',
+						},
+						// sh
+						'pre[data-language="sh"]::before, pre[data-language="bash"]::before': {
+							content: '"shell"',
+							marginRight: '1.25rem',
+							fontSize: '0.8rem',
 						},
 					},
 				},
@@ -111,6 +198,10 @@ const tailwindConfig = {
 						h4: { color: '#f0ca8d' },
 						h5: { color: '#ff7b7b' },
 						h6: { color: '#a0a0a0' },
+						blockquote: {
+							backgroundColor: 'var(--color-muted)',
+							borderColor: 'var(--color-purple-400)',
+						},
 					},
 				},
 			}),

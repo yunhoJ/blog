@@ -150,3 +150,9 @@
 	margin: 10px 0 !important;
 	word-wrap: break-word !important;
 } */
+
+/* 코드 블록 스크롤바 스타일 */
+
+.prose pre::-webkit-scrollbar-thumb:hover {
+	background: var(--color-neutral-400) !important;
+}
