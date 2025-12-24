@@ -19,6 +19,7 @@ import ToastBoundary from '@/components/features/ToastBoundary';
 
 import { getPostPublishData } from './api/services/getPost';
 import { Metadata } from 'next';
+import ChristmasTree from '@/components/events/ChristmasTree';
 
 export const metadata: Metadata = {
 	verification: {
@@ -97,7 +98,7 @@ export default async function Home({ searchParams }: HomeProps) {
 	const SidebarComponent = () => (
 		<aside className="flex flex-col gap-4">
 			<ProfileSection socialLinks={socialLinks} />
-			{/* <ContactSection contactItems={contactItems} /> */}
+			<ChristmasTree />
 		</aside>
 	);
 
