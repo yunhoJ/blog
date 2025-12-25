@@ -115,15 +115,20 @@ const tailwindConfig = {
 							borderRadius: theme('borderRadius.xl'),
 						},
 						pre: {
-							paddingTop: '2rem',
+							padding: '2rem 0 0 0',
 							position: 'relative',
-							overflowX: 'scroll',
 						},
-						'pre::-webkit-scrollbar': {
+						'pre code': {
+							overflowX: 'auto', // code 요소가 스크롤
+							display: 'block',
+							width: '100%',
+							padding: '0 1rem 1rem 1rem',
+						},
+						'pre code::-webkit-scrollbar': {
 							height: '8px',
 							display: 'block',
 						},
-						'pre::-webkit-scrollbar-thumb': {
+						'pre code::-webkit-scrollbar-thumb': {
 							background: 'var(--color-neutral-500)',
 							borderRadius: '4px',
 						},
@@ -143,14 +148,14 @@ const tailwindConfig = {
 						// JavaScript
 						'pre[data-language="js"]::before, pre[data-language="javascript"]::before': {
 							content: '""',
-							backgroundImage: 'url("/icons/Javascript.svg")',
+							backgroundImage: 'url("/icons/JavaScript.svg")',
 						},
 
 						// TypeScript
 						'pre[data-language="ts"], pre[data-language="typescript"]::before': {
 							content: '""',
 
-							backgroundImage: 'url("/icons/Typescript.svg")',
+							backgroundImage: 'url("/icons/TypeScript.svg")',
 						},
 
 						// React

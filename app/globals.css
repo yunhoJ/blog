@@ -153,6 +153,6 @@
 
 /* 코드 블록 스크롤바 스타일 */
 
-.prose pre::-webkit-scrollbar-thumb:hover {
+.prose pre code::-webkit-scrollbar-thumb:hover {
 	background: var(--color-neutral-400) !important;
 }
