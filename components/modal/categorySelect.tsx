@@ -53,7 +53,7 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
 
 	const handleCreate = async () => {
 		if (input && !filtered.includes(input)) {
-			const category = await postApi.createCategory(userId, input);
+			const category = await postApi.createCategory(input);
 			setSelected(category.data.categoryName);
 			setAllCategories([...allCategories, category.data.categoryName]);
 			onSelect(category.data.categoryName);

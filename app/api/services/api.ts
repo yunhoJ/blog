@@ -92,9 +92,8 @@ export const postApi = {
 	},
 
 	// 카테고리 생성
-	createCategory: async (userId: string, categoryName: string) => {
+	createCategory: async (categoryName: string) => {
 		const response = await axiosInstance.post(`${axiosInstance.defaults.baseURL}/api/category`, {
-			userId,
 			categoryName,
 		});
 		return response.data;
