@@ -98,7 +98,7 @@ export default async function Home({ searchParams }: HomeProps) {
 	const SidebarComponent = () => (
 		<aside className="flex flex-col gap-4">
 			<ProfileSection socialLinks={socialLinks} />
-			<ChristmasTree />
+			{/* <ChristmasTree /> */}
 		</aside>
 	);
 

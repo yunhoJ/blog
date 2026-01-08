@@ -15,9 +15,19 @@ export async function GET(request: NextRequest) {
 	return NextResponse.json({ data: categories });
 }
 export async function POST(request: Request) {
-	const { userId, categoryName } = await request.json();
+	const { categoryName } = await request.json();
+	// 로그인 체크
+	const result = await checkLogin();
+	if (!result.success) {
+		return NextResponse.json(
+			{ success: false, message: result.message },
+			{ status: result.status }
+		);
+	}
+	const userId = result.user?.userId as string;
+
 	const category = await createCategory(userId, categoryName);
-	console.log('category:tt ', category);
+
 	return NextResponse.json({ data: category });
 }
 export async function DELETE(request: Request) {
@@ -40,8 +50,12 @@ export async function DELETE(request: Request) {
 	try {
 		const isEmptyCategory = await checkEmptyCategory(userId, categoryName);
 		if (!isEmptyCategory) {
+			const { publicCount, privateCount } = await countPublishPost(userId, categoryName);
 			return NextResponse.json(
-				{ success: false, message: '카테고리에 포스트가 있어 삭제할 수 없습니다.' },
+				{
+					success: false,
+					message: `카테고리에 포스트가 있어 삭제할 수 없습니다. \n(공개 포스트: ${publicCount}개, 비공개 포스트: ${privateCount}개)`,
+				},
 				{ status: 400 }
 			);
 		}
@@ -50,7 +64,6 @@ export async function DELETE(request: Request) {
 
 		return NextResponse.json({ success: true, message: '카테고리 삭제 성공' });
 	} catch (error) {
-		console.log('error deleteCategory: ', error);
 		return NextResponse.json(
 			{ success: false, message: '삭제 중 오류가 발생했습니다.' },
 			{ status: 500 }
@@ -130,6 +143,7 @@ const checkEmptyCategory = async (userId: string, categoryName: string) => {
 			userId,
 		},
 	});
+	console.log('category: ', category);
 	// 카테고리에 포스트가 있으면 false 반환
 	return category ? false : true;
 };
@@ -141,4 +155,28 @@ const deleteCategory = async (userId: string, categoryName: string) => {
 		},
 	});
 	return category;
+};
+
+const countPublishPost = async (userId: string, categoryName: string) => {
+	const [publicCount, privateCount] = await Promise.all([
+		prisma.blogPostPublish.count({
+			where: {
+				categoryName,
+				userId,
+				postVisibility: true,
+			},
+		}),
+		prisma.blogPostPublish.count({
+			where: {
+				categoryName,
+				userId,
+				postVisibility: false,
+			},
+		}),
+	]);
+
+	return {
+		publicCount,
+		privateCount,
+	};
 };

@@ -7,6 +7,7 @@ export function toastError(error: unknown, fallbackMessage: string = 'Error load
 		typeof error === 'object' && error && 'message' in error
 			? (error as { message: string }).message
 			: fallbackMessage;
+
 	toast.error(message, {
 		duration: 3000,
 		style: {
@@ -14,6 +15,7 @@ export function toastError(error: unknown, fallbackMessage: string = 'Error load
 			color: '#b00020', // 진한 붉은 텍스트
 			border: '1px solid #f5b5b5',
 			borderRadius: '8px',
+			whiteSpace: 'pre-line', // \n을 줄바꿈으로 표시
 		},
 	});
 }
@@ -25,6 +27,7 @@ export function toastSuccess(message: string) {
 			color: '#00b000', // 진한 초록 텍스트
 			border: '1px solid #b5f5b5',
 			borderRadius: '8px',
+			whiteSpace: 'pre-line', // \n을 줄바꿈으로 표시
 		},
 	});
 }

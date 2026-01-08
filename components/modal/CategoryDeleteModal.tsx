@@ -10,7 +10,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { toastError, toastSuccess } from '@/lib/toasttError';
+import { handleAxiosError, toastError, toastSuccess } from '@/lib/toasttError';
 import { useRouter } from 'next/navigation';
 
 interface CategoryDeleteModalProps {
@@ -29,11 +29,10 @@ export default function CategoryDeleteModal({
 		try {
 			await postApi.deleteCategory(categoryName);
 			toastSuccess('카테고리가 삭제 되었습니다.');
-
 			// 서버 컴포넌트 데이터를 다시 가져와서 부모 컴포넌트 리프레시
 			router.refresh();
 		} catch (error) {
-			toastError(new Error('삭제 중 오류가 발생했습니다.'));
+			handleAxiosError(error, '삭제 중 오류가 발생했습니다.');
 		}
 	};
 
