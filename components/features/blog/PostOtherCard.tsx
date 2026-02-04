@@ -15,7 +15,7 @@ export default function PostOtherCard({ post, direction, isMobile = false }: Pos
 	const isPrevious = direction === 'previous';
 	const hasPost = post !== null;
 	const title = hasPost ? post.blogPost.postTitle : `${isPrevious ? '이전' : '다음'}글이 없습니다`;
-	const href = hasPost ? `/blog/${post.revisionHash}` : undefined;
+	const href = hasPost ? `/blog/${post.postHash}` : undefined;
 
 	if (isMobile) {
 		const Icon = isPrevious ? ChevronDown : ChevronUp;

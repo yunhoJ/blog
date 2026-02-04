@@ -44,11 +44,13 @@ export default function PostPublishModal({
 				if (
 					postPublishData.success &&
 					postPublishData.responseData.postCommentGitId &&
+					postPublishData.responseData.postHash &&
 					postPublishData.responseData.revisionHash
 				) {
 					postApi
 						.updateDiscussionTitle(
 							postPublishData.responseData.postCommentGitId as string,
+							postPublishData.responseData.postHash as string,
 							postPublishData.responseData.revisionHash as string
 						)
 						.then(() => {

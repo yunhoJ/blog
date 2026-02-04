@@ -11,10 +11,10 @@ export async function getPublishPost(revisionHash: string) {
 	return post;
 }
 
-export async function getPost(revisionHash: string) {
-	const post = await prisma.blogPost.findUnique({
+export async function getPost(postHash: string) {
+	const post = await prisma.blogPost.findFirst({
 		where: {
-			revisionHash,
+			postHash,
 			blogPostPublish: {
 				postVisibility: true,
 			},
@@ -41,6 +41,7 @@ export async function getPost(revisionHash: string) {
 	});
 	return post;
 }
+
 export async function existVersionHistory(postHash: string) {
 	try {
 		await prisma.blogPost.findFirstOrThrow({

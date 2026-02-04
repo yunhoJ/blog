@@ -12,19 +12,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			url: baseUrl,
 			lastModified: new Date(),
 			changeFrequency: 'daily',
-			priority: 1,
+			priority: 0.9,
 		},
 		{
 			url: `${baseUrl}/about`,
 			lastModified: new Date(),
 			changeFrequency: 'weekly',
-			priority: 0.8,
+			priority: 0.5,
 		},
 		{
 			url: `${baseUrl}/blog`,
 			lastModified: new Date(),
 			changeFrequency: 'daily',
-			priority: 0.9,
+			priority: 1,
 		},
 	] as const;
 
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const { posts } = await getPostPublishData(userId, '전체', 'latest');
 	// 블로그 게시물 URL 생성
 	const blogPosts = posts.map((post) => ({
-		url: `${baseUrl}/blog/${post.revisionHash}`,
+		url: `${baseUrl}/blog/${post.postHash}`,
 		lastModified: post.blogPost.postUpdatedAt ? new Date(post.blogPost.postUpdatedAt) : new Date(),
 		changeFrequency: 'weekly' as const,
 		priority: 0.7,

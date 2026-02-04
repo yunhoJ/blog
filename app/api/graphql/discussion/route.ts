@@ -14,9 +14,9 @@ import { BLOG_BASE_URL, BLOG_PATH_PREFIX } from '../../constant/const';
  * @param postContent - 포스트 본문 내용
  * @returns 포맷팅된 Discussion content
  */
-function formatDiscussionContent(revisionHash: string, postContent: string): string {
-	const blogTitle = `# ${BLOG_PATH_PREFIX}/${revisionHash}`;
-	const blogUrl = `${BLOG_BASE_URL}/${BLOG_PATH_PREFIX}/${revisionHash}`;
+function formatDiscussionContent(postHash: string, postContent: string): string {
+	const blogTitle = `# ${BLOG_PATH_PREFIX}/${postHash}`;
+	const blogUrl = `${BLOG_BASE_URL}/${BLOG_PATH_PREFIX}/${postHash}`;
 	const content = postContent;
 
 	return `${blogTitle}\n\n${content}\n\n${blogUrl}`;
@@ -50,20 +50,20 @@ export async function DELETE(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
 	try {
-		const { id, revisionHash } = await request.json();
-		if (!id || !revisionHash) {
+		const { id, postHash, revisionHash } = await request.json();
+		if (!id || !postHash || !revisionHash) {
 			return NextResponse.json(
-				{ success: false, message: 'Discussion ID 또는 revisionHash가 필요합니다.' },
+				{ success: false, message: 'Discussion ID 또는 postHash, revisionHash가 필요합니다.' },
 				{ status: 400 }
 			);
 		}
 
 		const postContent = await selectDiscussionContent(revisionHash);
-		const formattedContent = formatDiscussionContent(revisionHash, postContent?.postContent || '');
+		const formattedContent = formatDiscussionContent(postHash, postContent?.postContent || '');
 
 		const result = await executeGitHubGraphQL(UPDATE_DISCUSSION_TITLE_MUTATION, {
 			discussionId: id,
-			title: `${BLOG_PATH_PREFIX}/${revisionHash}`,
+			title: `${BLOG_PATH_PREFIX}/${postHash}`,
 			body: formattedContent,
 		});
 		return NextResponse.json({ success: true, data: result });

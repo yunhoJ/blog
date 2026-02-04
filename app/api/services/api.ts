@@ -182,7 +182,6 @@ export const postApi = {
 	},
 	// 블로그 태그 생성
 	createBlogTag: async (userId: string, tagList: string[], postHash: string) => {
-		console.log('test', userId, tagList, postHash);
 		const response = await axiosInstance.post(
 			`${axiosInstance.defaults.baseURL}/api/createPostTag`,
 			{ userId, tagList, postHash }
@@ -308,10 +307,10 @@ export const postApi = {
 		return response.data;
 	},
 	// GitHub Discussion title, content 업데이트
-	updateDiscussionTitle: async (id: string, revisionHash: string) => {
+	updateDiscussionTitle: async (id: string, postHash: string, revisionHash: string) => {
 		const response = await axiosInstance.patch(
 			`${axiosInstance.defaults.baseURL}/api/graphql/discussion`,
-			{ id, revisionHash }
+			{ id, postHash, revisionHash }
 		);
 		return response.data;
 	},

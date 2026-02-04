@@ -122,6 +122,7 @@ function TableOfContentsLink({ item }: { item: TocEntry }) {
 
 export default async function BlogPost({ params }: BlogPostProps) {
 	const slug = (await params).slug;
+
 	const post = await getPost(slug);
 	if (!post) {
 		notFound();

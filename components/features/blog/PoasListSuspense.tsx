@@ -76,7 +76,7 @@ export default function PostListSuspense({ postsList }: PostListProps) {
 					.flatMap((page) => page.posts)
 					.map((post) => {
 						return (
-							<Link href={`/blog/${post.revisionHash}`} key={post.revisionHash} className="min-w-0">
+							<Link href={`/blog/${post.postHash}`} key={post.postHash} className="min-w-0">
 								<PostCard
 									params={post.blogPost}
 									category={post.categoryName}

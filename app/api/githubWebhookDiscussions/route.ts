@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
 
 	const payload = JSON.parse(body);
 
-	const revisionHash = payload.discussion.title.split('/')[1];
-	if (!revisionHash) {
+	const postHash = payload.discussion.title.split('/')[1];
+	if (!postHash) {
 		return NextResponse.json(
 			{ success: false, message: '리비전 해시가 없습니다.' },
 			{ status: 401 }
@@ -46,29 +46,29 @@ export async function POST(request: NextRequest) {
 	try {
 		switch (event) {
 			case 'discussion_comment':
-				await updatePostCommentCount(revisionHash, payload.discussion.comments);
+				await updatePostCommentCount(postHash, payload.discussion.comments);
 				break;
 			case 'discussion':
 				await updateDiscussionGitnumber(
-					revisionHash,
+					postHash,
 					payload.discussion.number,
 					payload.discussion.node_id
 				);
 				break;
 		}
-		await updatePostCommentCount(revisionHash, payload.discussion.comments);
+		await updatePostCommentCount(postHash, payload.discussion.comments);
 		return NextResponse.json({ success: true, message: '웹훅 처리 성공' }, { status: 200 });
 	} catch (error) {
 		console.error('웹훅 처리 실패:', error);
 		return NextResponse.json({ success: false, message: '웹훅 처리 실패' }, { status: 500 });
 	}
 }
-const updatePostCommentCount = async (revisionHash: string, commentCount: number) => {
+const updatePostCommentCount = async (postHash: string, commentCount: number) => {
 	if (typeof commentCount !== 'number' || commentCount < 0) {
 		throw new Error(`유효하지 않은 댓글 수입니다: ${commentCount}`);
 	}
-	const post = await prisma.blogPostPublish.findUnique({
-		where: { revisionHash },
+	const post = await prisma.blogPostMeta.findUnique({
+		where: { postHash },
 		select: { postHash: true },
 	});
 	if (!post) {
@@ -81,7 +81,7 @@ const updatePostCommentCount = async (revisionHash: string, commentCount: number
 };
 
 const updateDiscussionGitnumber = async (
-	revisionHash: string,
+	postHash: string,
 	gitnumber: number,
 	gitNodeId: string
 ) => {
@@ -91,8 +91,8 @@ const updateDiscussionGitnumber = async (
 	if (typeof gitNodeId !== 'string' || gitNodeId.length === 0) {
 		throw new Error(`유효하지 않은 디스커션 노드 ID입니다: ${gitNodeId}`);
 	}
-	const post = await prisma.blogPostPublish.findUnique({
-		where: { revisionHash },
+	const post = await prisma.blogPostMeta.findUnique({
+		where: { postHash },
 		select: { postHash: true },
 	});
 	if (!post) {
