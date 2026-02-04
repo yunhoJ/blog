@@ -49,6 +49,10 @@ export async function POST(request: NextRequest) {
 				await updatePostCommentCount(postHash, payload.discussion.comments);
 				break;
 			case 'discussion':
+				// 엑션이 deleted일경우 return 
+				if (payload.action === 'deleted') {
+					return NextResponse.json({ success: true, message: '웹훅 처리 성공' }, { status: 200 });
+				}
 				await updateDiscussionGitnumber(
 					postHash,
 					payload.discussion.number,
@@ -85,6 +89,7 @@ const updateDiscussionGitnumber = async (
 	gitnumber: number,
 	gitNodeId: string
 ) => {
+	console.log(postHash, gitnumber, gitNodeId)
 	if (typeof gitnumber !== 'number' || gitnumber < 0) {
 		throw new Error(`유효하지 않은 디스커션 번호입니다: ${gitnumber}`);
 	}

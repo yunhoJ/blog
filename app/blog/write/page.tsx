@@ -110,10 +110,10 @@ export default function Write() {
 							postPublishData.responseData.revisionHash as string
 						)
 						.then(() => {
-							toastSuccess('GitHub Discussion 제목 업데이트 되었습니다.');
+							toastSuccess('GitHub Discussion 내용이 업데이트 되었습니다.');
 						})
 						.catch((error) => {
-							handleAxiosError(error, 'GitHub Discussion 제목 업데이트 중 오류가 발생했습니다.');
+							handleAxiosError(error, 'GitHub Discussion 내용이 업데이트 중 오류가 발생했습니다.');
 						});
 				}
 			} catch (error) {
