@@ -29,7 +29,7 @@ function getCompressionQuality(fileSize: number): number {
 	return 0.9; // 50kb 이하 → 거의 무압축
 }
 
-async function resizeImageBlob(
+export async function resizeImageBlob(
 	blob: Blob,
 	maxWidth: number = 1024,
 	maxHeight: number = 1024
