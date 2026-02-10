@@ -34,6 +34,7 @@ import { transformCalloutIcons } from '@/lib/transform-callout-icons';
 import { notFound } from 'next/navigation';
 import remarkBreaks from 'remark-breaks';
 import PostOtherContent from '@/components/features/blog/PostOtherContent';
+import CodeBlockCopyButton from '@/components/features/blog/CodeBlockCopyButton';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
@@ -228,6 +229,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 					{/* 본문 */}
 
 					<main className="mdx-viewer prose dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] w-full">
+						<CodeBlockCopyButton /> {/* 코드 복사 버튼 */}
 						<MDXRemote
 							source={transformCalloutIcons(post.postContent)}
 							options={{

@@ -132,6 +132,43 @@ const tailwindConfig = {
 							background: 'var(--color-neutral-500)',
 							borderRadius: '4px',
 						},
+						// 복사 버튼 스타일
+						'.code-copy-button': {
+							position: 'absolute',
+							top: '0.5rem',
+							left: '0.5rem',
+							zIndex: '10',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							width: '1.25rem',
+							height: '1.25rem',
+							backgroundColor: 'var(--color-foreground-muted)',
+							cursor: 'pointer',
+						},
+						'.code-copy-button::before': {
+							content: '""',
+							position: 'absolute',
+							width: '95%',
+							height: '95%',
+							maskImage: `url("/icons/copy.png")`,
+							maskSize: 'contain',
+							maskRepeat: 'no-repeat',
+							maskPosition: 'center',
+							backgroundColor: 'var(--color-border)',
+							opacity: '0.8',
+						},
+						'.code-copy-button:hover::before': {
+							backgroundColor: 'var(--color-primary)',
+						},
+						'.code-copy-button.copied::before': {
+							maskImage: `url("/icons/check.svg")`,
+							maskSize: 'contain',
+							maskRepeat: 'no-repeat',
+							maskPosition: 'center',
+							backgroundColor: 'var(--color-border)',
+							opacity: '0.8',
+						},
 
 						// 언어별 아이콘 - 공통 스타일
 						'pre[data-language]::before': {
@@ -206,6 +243,15 @@ const tailwindConfig = {
 						blockquote: {
 							backgroundColor: 'var(--color-muted)',
 							borderColor: 'var(--color-purple-400)',
+						},
+						'.code-copy-button::before': {
+							backgroundColor: 'var(--color-muted-foreground)',
+						},
+						'.code-copy-button:hover::before': {
+							backgroundColor: 'var(--color-foreground)',
+						},
+						'.code-copy-button.copied::before': {
+							backgroundColor: 'var(--color-muted-foreground)',
 						},
 					},
 				},
