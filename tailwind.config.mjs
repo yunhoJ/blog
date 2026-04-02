@@ -1,4 +1,4 @@
-// tailwind.config.js
+// tailwind.config.mjs
 import typography from '@tailwindcss/typography';
 
 const tailwindConfig = {

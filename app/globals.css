@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
-@config "../tailwind.config.js";
+@config "../tailwind.config.mjs";
 @theme inline {
 	--breakpoint-mobile: 380px;
 	--radius-sm: calc(var(--radius) - 4px);
@@ -143,6 +143,13 @@
 @layer utilities {
 	.animate-spin-slow {
 		animation: spin-slow 3s ease-in-out infinite;
+	}
+}
+
+/* 이력서 출력 시 헤더 숨기기 */
+@media print {
+	body.printing-resume header {
+		display: none !important;
 	}
 }
 
