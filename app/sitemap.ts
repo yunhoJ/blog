@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next';
 import { getPostPublishData } from './api/services/getPost';
 import { userId } from './api/constant/const';
 
-// 게시글 업데이트가 sitemap에 반영되도록 주기적으로 재검증
-export const revalidate = 600;
+// ISR(revalidate)와 force-dynamic은 함께 쓰지 않음 — 동적 생성만 사용
+export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	// 기본 URL
