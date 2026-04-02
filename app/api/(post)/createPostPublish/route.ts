@@ -4,6 +4,7 @@ import { getPostPublishData } from '../../services/getPost';
 import { userId, defaultPageSize } from '../../constant/const';
 import { checkLogin } from '../../services/loginService';
 import supabase from '@/app/api/services/imageStorage';
+import { revalidatePath } from 'next/cache';
 export async function POST(request: NextRequest) {
 	const result = await checkLogin();
 	if (!result.success) {
@@ -24,6 +25,9 @@ export async function POST(request: NextRequest) {
 			createPostPublish(postData.revisionHash, postHash, category, visibility, userId),
 			selectPostMetadata(postHash),
 		]);
+
+		// sitemap.xml 재검증
+		revalidatePath('/sitemap.xml');
 		return NextResponse.json({
 			success: true,
 			message: '포스트 발행 성공했습니다.',
@@ -59,6 +63,8 @@ export async function DELETE(request: NextRequest) {
 			postHash,
 			result.user?.userId as string
 		);
+		// sitemap.xml 재검증
+		revalidatePath('/sitemap.xml');
 		return NextResponse.json({ success: true, message: '게시글 삭제 성공', postMatadata });
 	} catch (error) {
 		console.log(error);
@@ -103,6 +109,8 @@ export async function PUT(request: NextRequest) {
 			createPostPublish(revisionHash, postHash, category, visibility, userId),
 			selectPostMetadata(postHash),
 		]);
+		// sitemap.xml 재검증
+		revalidatePath('/sitemap.xml');
 		return NextResponse.json({
 			success: true,
 			message: '포스트 발행 성공했습니다.',
