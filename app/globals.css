@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
-@config "../tailwind.config.js";
+@config "../tailwind.config.mjs";
 @theme inline {
 	--breakpoint-mobile: 380px;
 	--radius-sm: calc(var(--radius) - 4px);
