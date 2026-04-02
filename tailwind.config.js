@@ -214,7 +214,7 @@ const tailwindConfig = {
 						// yaml
 						'pre[data-language="yml"]::before, pre[data-language="yaml"]::before': {
 							content: '""',
-							backgroundImage: 'url("/icons/Yaml.svg")',
+							backgroundImage: 'url("/icons/YAML.svg")',
 							backgroundColor: 'var(--color-muted)',
 						},
 						// json
