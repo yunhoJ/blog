@@ -17,10 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		posts
 			.map((p) => {
 				const updated = p.blogPost.postUpdatedAt ? new Date(p.blogPost.postUpdatedAt).getTime() : 0;
-				const published = p.blogPost.blogPostMeta?.firstPostPublishAt
-					? new Date(p.blogPost.blogPostMeta.firstPostPublishAt).getTime()
-					: 0;
-				return Math.max(updated, published);
+				return updated;
 			})
 			.reduce((acc, cur) => Math.max(acc, cur), 0) || Date.now();
 
