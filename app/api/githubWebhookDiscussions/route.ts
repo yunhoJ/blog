@@ -46,10 +46,10 @@ export async function POST(request: NextRequest) {
 	try {
 		switch (event) {
 			case 'discussion_comment':
-				await updatePostCommentCount(postHash, payload.discussion.comments);
+				await updatePostCommentCount(postHash, payload.discussion.comments, payload.action);
 				break;
 			case 'discussion':
-				// 엑션이 deleted일경우 return 
+				// 엑션이 deleted일경우 return
 				if (payload.action === 'deleted') {
 					return NextResponse.json({ success: true, message: '웹훅 처리 성공' }, { status: 200 });
 				}
@@ -60,14 +60,17 @@ export async function POST(request: NextRequest) {
 				);
 				break;
 		}
-		await updatePostCommentCount(postHash, payload.discussion.comments);
+		await updatePostCommentCount(postHash, payload.discussion.comments, payload.action);
 		return NextResponse.json({ success: true, message: '웹훅 처리 성공' }, { status: 200 });
 	} catch (error) {
 		console.error('웹훅 처리 실패:', error);
 		return NextResponse.json({ success: false, message: '웹훅 처리 실패' }, { status: 500 });
 	}
 }
-const updatePostCommentCount = async (postHash: string, commentCount: number) => {
+const updatePostCommentCount = async (postHash: string, commentCount: number, action: string) => {
+	if (action == 'deleted') {
+		commentCount = commentCount - 1;
+	}
 	if (typeof commentCount !== 'number' || commentCount < 0) {
 		throw new Error(`유효하지 않은 댓글 수입니다: ${commentCount}`);
 	}
@@ -89,7 +92,7 @@ const updateDiscussionGitnumber = async (
 	gitnumber: number,
 	gitNodeId: string
 ) => {
-	console.log(postHash, gitnumber, gitNodeId)
+	console.log(postHash, gitnumber, gitNodeId);
 	if (typeof gitnumber !== 'number' || gitnumber < 0) {
 		throw new Error(`유효하지 않은 디스커션 번호입니다: ${gitnumber}`);
 	}
