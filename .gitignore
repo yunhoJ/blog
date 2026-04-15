@@ -44,3 +44,5 @@ next-env.d.ts
 
 # /lib/generated/prisma
 /prisma/migrations
+me.txt
+career_summary.md

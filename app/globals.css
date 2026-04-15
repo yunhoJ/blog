@@ -146,10 +146,15 @@
 	}
 }
 
-/* 이력서 출력 시 헤더 숨기기 */
+/* 이력서 출력: 헤더 숨김, 핵심 성과는 2페이지부터 */
 @media print {
 	body.printing-resume header {
 		display: none !important;
+	}
+
+	body.printing-resume .resume-section-highlights {
+		break-before: page;
+		page-break-before: always;
 	}
 }
 
