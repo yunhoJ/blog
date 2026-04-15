@@ -52,9 +52,9 @@ export default function HamburgerMenu() {
 					<DropdownMenuItem asChild>
 						<Link href="/">홈</Link>
 					</DropdownMenuItem>
-					<DropdownMenuItem asChild>
+					{/* <DropdownMenuItem asChild>
 						<Link href="/blog">블로그</Link>
-					</DropdownMenuItem>
+					</DropdownMenuItem> */}
 					<DropdownMenuItem asChild>
 						<Link href="/about">소개</Link>
 					</DropdownMenuItem>
