@@ -89,17 +89,17 @@ export const aboutProfile: AboutProfile = {
 				'사내 DevOps 아키텍처를 설계 및 구축하고 개발, 테스트, 운영 서버 환경의 자동화를 구성',
 		},
 		{
-			title: '기술분석 및 점검 확장 개발을 리드',
+			title: '점검 범위 확장을 위한 기술 분석 및 개발 리드',
 			detail:
-				'점검 확장을 위해 기술 분석을 수행하고 ELF, PE, RPM 등 바이너리 포맷 점검 기능 확장 개발을 리드',
+				"ELF, PE, RPM 등 다양한 바이너리 기술 분석을 통해 점검 범위를 확장하고 관련 기능 개발을 리드",
 		},
 		{
-			title: '누락 트래픽 제거',
-			detail: 'Kafka도입으로 Nexus 웹훅에서 발생하는 누락 트래픽 제거',
+			title: '누락 트래픽 방지',
+			detail: 'Kafka 도입으로 Nexus 웹훅 이벤트 누락 방지',
 		},
 		{
-			title: '누락 로그 제거',
-			detail: '로그 유형별 분리 + 수집 프로세스 구축으로 누락 로그 제거',
+			title: '누락 로그 방지',
+			detail: '로그 유형별 분리 + 수집 프로세스 구축으로 누락 로그 방지',
 		},
 	],
 	career: [
@@ -166,7 +166,7 @@ export const aboutProfile: AboutProfile = {
 			highlights: [
 				'망연계 환경 대응 AEZIZ-RMS 아키텍처 설계',
 				'오픈소스 패키지 반입 결재 및 반입 로직 개발',
-				'Nexus 웹훅 처리를 Kafka 기반 큐로 전환해 누락 트래픽을 제거',
+				'Nexus 웹훅 처리를 Kafka 기반 큐로 전환해 누락 트래픽을 방지',
 				'Watchdog/APScheduler 기반 스케줄링 구현으로 반입 패키지 사용자 추적',
 				'Skopeo를 활용해 컨테이너 내에서 Nexus 저장소로 이미지 푸시',
 			],
