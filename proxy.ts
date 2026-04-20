@@ -11,7 +11,7 @@ const protectedPagePaths = ['/blog/write', '/blog/history'];
 
 export async function proxy(req: NextRequest) {
 	const { pathname } = req.nextUrl;
-	console.log('pathname: ', pathname);
+
 	const accessToken = req.cookies.get('accessToken')?.value;
 	const refreshToken = req.cookies.get('refreshToken')?.value;
 

@@ -79,7 +79,7 @@ export default function CategorySection({
 	}, [editingCategoryName, isAddCategory]);
 
 	// Link 클릭 방지 헬퍼 함수
-	const preventLinkClick = (e: React.MouseEvent) => {
+	const preventLinkClick = (e: React.SyntheticEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
 	};
@@ -179,7 +179,11 @@ export default function CategorySection({
 													setEditingCategoryValue(e.target.value);
 												}}
 												onKeyDown={(e) => {
+													// 한글 IME 조합 중 Enter는 조합 확정/키 이벤트가 겹칠 수 있어 중복 호출 방지
+													// (React KeyboardEvent에도 isComposing이 노출됨)
+													if (e.nativeEvent.isComposing) return;
 													if (e.key === 'Enter') {
+														preventLinkClick(e);
 														handleCategoryChange(editingCategoryName, editingCategoryValue);
 													}
 													if (e.key === 'Escape') {
@@ -390,7 +394,9 @@ export default function CategorySection({
 														setEditingCategoryValue(e.target.value);
 													}}
 													onKeyDown={(e) => {
+														if (e.nativeEvent.isComposing) return;
 														if (e.key === 'Enter') {
+															preventLinkClick(e);
 															handleCategoryChange(editingCategoryName, editingCategoryValue);
 														}
 														if (e.key === 'Escape') {
