@@ -2,7 +2,7 @@ import { AboutProfile } from '../_data/profile';
 import Image from 'next/image';
 import { formatCareerDurationKorean } from '../_utils/formatCareerDurationKorean';
 import { getSkillBadge } from '../_utils/skillBadge';
-import { Mail, MapPin, Github } from 'lucide-react';
+import { Mail, MapPin, Github, LinkIcon } from 'lucide-react';
 
 function StackBadge({ item }: { item: string }) {
 	const badge = getSkillBadge(item);
@@ -72,6 +72,15 @@ export default function AboutSidebar({ profile }: { profile: AboutProfile }) {
 								href={profile.githubUrl}
 							>
 								{profile.githubLabel}
+							</a>
+						</div>
+						<div className="hidden items-center gap-3 print:flex">
+							<LinkIcon className="text-primary h-4 w-4" aria-hidden />
+							<a
+								className="text-sm font-medium hover:text-emerald-700 dark:text-[#8b8c94]"
+								href={profile.blogUrl}
+							>
+								블로그 ({profile.blogUrl})
 							</a>
 						</div>
 						<div className="flex items-center gap-3">

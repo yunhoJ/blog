@@ -10,7 +10,7 @@ export default function HighlightsSection() {
 				{aboutProfile.highlights.map((h) => (
 					<div
 						key={`${h.title}-${h.metric ?? ''}`}
-						className="rounded-xl border border-slate-200 bg-white/70 p-4 shadow-sm dark:border-slate-700/70 dark:bg-slate-900/40"
+						className="rounded-xl border border-slate-200 bg-white/70 p-4 shadow-sm dark:border-slate-700/70 dark:bg-slate-900/40 print:shadow-none"
 					>
 						<div className="flex flex-wrap items-baseline justify-between gap-2">
 							<p className="font-semibold tracking-tight text-slate-900 dark:text-slate-50">

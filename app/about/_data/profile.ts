@@ -45,6 +45,7 @@ export type AboutProfile = {
 	githubUrl: string;
 	portraitUrl: string;
 	tagline: string;
+	blogUrl: string;
 	summary: string[];
 	highlights: Highlight[];
 	career: Career[];
@@ -61,6 +62,7 @@ export const aboutProfile: AboutProfile = {
 	roleSubtitle: 'Python 백엔드 / DevOps 엔지니어',
 	startDate: '2021-12',
 	location: '경기도 성남시',
+	blogUrl: 'https://yunhoj.com',
 	githubLabel: 'github.com/yunhoJ',
 	githubUrl: 'https://github.com/yunhoJ',
 	portraitUrl: '/images/resume.JPG',
@@ -91,7 +93,7 @@ export const aboutProfile: AboutProfile = {
 		{
 			title: '점검 범위 확장을 위한 기술 분석 및 개발 리드',
 			detail:
-				"ELF, PE, RPM 등 다양한 바이너리 기술 분석을 통해 점검 범위를 확장하고 관련 기능 개발을 리드",
+				'ELF, PE, RPM 등 다양한 바이너리 기술 분석을 통해 점검 범위를 확장하고 관련 기능 개발을 리드',
 		},
 		{
 			title: '누락 트래픽 방지',

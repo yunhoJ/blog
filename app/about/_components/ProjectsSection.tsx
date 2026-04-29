@@ -17,7 +17,7 @@ export default function ProjectsSection() {
 				{aboutProfile.projects.map((p) => (
 					<article
 						key={p.id}
-						className="rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700/70 dark:bg-slate-900/40"
+						className="rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700/70 dark:bg-slate-900/40 print:shadow-none"
 					>
 						<div className="flex flex-col gap-1">
 							<div className="flex min-w-0 items-start justify-between gap-3">
@@ -31,7 +31,9 @@ export default function ProjectsSection() {
 							{p.subtitle || p.period ? (
 								<div className="flex min-w-0 items-baseline justify-between gap-3">
 									{p.subtitle ? (
-										<p className="min-w-0 text-sm text-slate-600 dark:text-slate-300">{p.subtitle}</p>
+										<p className="min-w-0 text-sm text-slate-600 dark:text-slate-300">
+											{p.subtitle}
+										</p>
 									) : (
 										<span className="min-w-0 flex-1" aria-hidden />
 									)}
