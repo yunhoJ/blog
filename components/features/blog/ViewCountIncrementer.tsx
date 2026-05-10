@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { postApi } from '@/app/api/services/api';
+import { useAuthStore } from '@/lib/store/useAuthStore';
 
 interface ViewCountIncrementerProps {
 	postHash: string;
@@ -20,9 +21,14 @@ export default function ViewCountIncrementer({
 	readTime,
 }: ViewCountIncrementerProps) {
 	const [hasIncremented, setHasIncremented] = useState(false);
+	const { user, isAuthenticated } = useAuthStore();
 	console.log('ViewCountIncrementer - 마운트됨');
 
 	useEffect(() => {
+		if (isAuthenticated && user?.userId === userId) {
+			console.log('작성자 본인이므로 조회수를 증가시키지 않습니다.');
+			return;
+		}
 		const incrementViewCount = async () => {
 			const COOLDOWN_TIME = 12; // 12시간 쿨다운
 			const COOLDOWN_UINT = 1000 * 60 * 60; // 1시간 단위

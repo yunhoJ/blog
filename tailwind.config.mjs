@@ -114,15 +114,40 @@ const tailwindConfig = {
 						img: {
 							borderRadius: theme('borderRadius.xl'),
 						},
+						// 인라인 code 스타일 (backtick 제거 + chip 스타일)
+						'code::before': {
+							content: 'none',
+						},
+						'code::after': {
+							content: 'none',
+						},
+						code: {
+							backgroundColor: 'var(--color-purple-50)',
+							padding: '0.2rem 0.5rem',
+
+							borderRadius: theme('borderRadius.md'),
+							border: '1px solid var(--color-purple-100)',
+						},
+						// strong 안의 code는 strong 색상을 그대로 따르도록
+						'strong code': {
+							color: 'inherit',
+						},
 						pre: {
 							padding: '2rem 0 0 0',
 							position: 'relative',
 						},
+						// 코드 블록 내부의 code는 chip 스타일 제거 (코드 블록 전용 스타일 적용)
 						'pre code': {
 							overflowX: 'auto', // code 요소가 스크롤
 							display: 'block',
 							width: '100%',
 							padding: '0 1rem 1rem 1rem',
+							backgroundColor: 'transparent',
+							color: 'inherit',
+							border: 'none',
+							borderRadius: '0',
+							fontWeight: 'inherit',
+							fontSize: 'inherit',
 						},
 						'pre code::-webkit-scrollbar': {
 							height: '8px',
@@ -243,6 +268,20 @@ const tailwindConfig = {
 						blockquote: {
 							backgroundColor: 'var(--color-muted)',
 							borderColor: 'var(--color-purple-400)',
+						},
+						// 다크 모드 인라인 code
+						code: {
+							backgroundColor: 'var(--color-neutral-800)',
+							border: '1px solid var(--color-neutral-700)',
+						},
+						// strong 안의 code는 strong 색상을 그대로 따르도록
+						'strong code': {
+							color: 'inherit',
+						},
+						'pre code': {
+							backgroundColor: 'transparent',
+							color: 'inherit',
+							border: 'none',
 						},
 						'.code-copy-button::before': {
 							backgroundColor: 'var(--color-muted-foreground)',
