@@ -158,6 +158,16 @@ const BADGE_MAP_CI: Record<string, SkillBadge> = {
 		alt: 'Podman',
 		src: `https://img.shields.io/badge/Podman-892CA0?style=${SHIELDS_STYLE}&logo=podman&logoColor=white`,
 	},
+	K3S: {
+		label: 'k3s',
+		alt: 'k3s',
+		src: `https://img.shields.io/badge/k3s-FFC61C?style=${SHIELDS_STYLE}&logo=k3s&logoColor=black`,
+	},
+	HELM: {
+		label: 'Helm',
+		alt: 'Helm',
+		src: `https://img.shields.io/badge/Helm-0F1689?style=${SHIELDS_STYLE}&logo=helm&logoColor=white`,
+	},
 	NGINX: {
 		label: 'Nginx',
 		alt: 'Nginx',

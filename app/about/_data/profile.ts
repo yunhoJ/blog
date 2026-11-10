@@ -62,7 +62,7 @@ export const aboutProfile: AboutProfile = {
 	roleSubtitle: 'Python 백엔드 / DevOps 엔지니어',
 	startDate: '2021-12',
 	location: '경기도 성남시',
-	blogUrl: 'https://yunhoj.com',
+	blogUrl: 'https://www.yunhoj.com',
 	githubLabel: 'github.com/yunhoJ',
 	githubUrl: 'https://github.com/yunhoJ',
 	portraitUrl: '/images/resume.JPG',
@@ -127,7 +127,7 @@ export const aboutProfile: AboutProfile = {
 			role: '백엔드',
 			subtitle: 'Software Composition Analysis',
 			highlights: [
-				'FastAPI 기반 백엔드 API 설계/구현 (약 200개 엔드포인트)',
+				'FastAPI 기반 백엔드 API 설계/구현',
 				'결재 워크플로우(요청, 승인, 일괄승인, 검토, 반려, 재상신, 승인회수, 요청취소) 로직 구현',
 				'레디스 기반 데이터 캐시 구축으로 API 성능 개선 (10초 -> 0.1초로 단축)',
 				'WebSocket 기반 실시간 점검 상태 전송 기능 구현',
@@ -250,7 +250,7 @@ export const aboutProfile: AboutProfile = {
 		},
 		{
 			group: 'DevOps & Infra',
-			items: ['Docker', 'Podman', 'Jenkins', 'github actions', 'Nginx', 'Harbor', 'AWS', 'Vercel'],
+			items: ['Docker', 'Podman', 'k3s', 'Helm', 'Jenkins', 'github actions', 'Nginx', 'Harbor', 'AWS', 'Vercel'],
 		},
 	],
 	links: [

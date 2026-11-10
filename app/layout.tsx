@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 	metadataBase: new URL(BLOG_BASE_URL),
 	title: 'yunho blog',
 	keywords: ['yunho', 'blog', 'next.js', 'react', 'typescript'],
-	authors: [{ name: 'yunho', url: 'https://yunhoj.com' }],
+	authors: [{ name: 'yunho', url: 'https://www.yunhoj.com' }],
 	description: 'yunho blog',
 };
 

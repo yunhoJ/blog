@@ -30,6 +30,14 @@ const nextConfig: NextConfig = {
 		],
 	},
 	pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'mdx', 'md'],
+	async headers() {
+		return [
+			{
+				source: '/about/:path*',
+				headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+			},
+		];
+	},
 };
 
 const withMDX = createMDX({
