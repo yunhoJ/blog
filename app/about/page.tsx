@@ -5,6 +5,14 @@ import HighlightsSection from './_components/HighlightsSection';
 import ProjectsSection from './_components/ProjectsSection';
 import SummarySection from './_components/SummarySection';
 import { aboutProfile } from './_data/profile';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	robots: {
+		index: false,
+		follow: false,
+	},
+};
 
 export default function AboutPage() {
 	return (

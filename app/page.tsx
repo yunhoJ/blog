@@ -21,11 +21,29 @@ import { getPostPublishData } from './api/services/getPost';
 import { Metadata } from 'next';
 import ChristmasTree from '@/components/events/ChristmasTree';
 
-export const metadata: Metadata = {
-	verification: {
-		google: 'cvAjl-tYQTijFZyAnUYEWjgGYwFDRsAkmd0cpct_T80', // 이 부분이 핵심
-	},
-};
+export async function generateMetadata({ searchParams }: HomeProps): Promise<Metadata> {
+	const { category } = await searchParams;
+	const selectedCategory = category || '전체';
+	const canonicalUrl = selectedCategory === '전체' ? '/' : `/?category=${encodeURIComponent(selectedCategory)}`;
+
+	return {
+		title: '전윤호 백엔드 개발 블로그 | Python, MariaDB, 네트워크',
+		description:
+			'백엔드 개발자 전윤호의 기술 블로그입니다. Python 패키징, MariaDB와 InnoDB 설계, 네트워크 기초를 직접 테스트한 결과와 함께 정리합니다.',
+		verification: {
+			google: 'cvAjl-tYQTijFZyAnUYEWjgGYwFDRsAkmd0cpct_T80',
+		},
+		alternates: {
+			canonical: canonicalUrl,
+		},
+		openGraph: {
+			title: '전윤호 백엔드 개발 블로그 | Python, MariaDB, 네트워크',
+			description:
+				'백엔드 개발자 전윤호의 기술 블로그입니다. Python 패키징, MariaDB와 InnoDB 설계, 네트워크 기초를 직접 테스트한 결과와 함께 정리합니다.',
+			url: canonicalUrl,
+		},
+	};
+}
 // import PostListClient from '@/components/features/blog/PoasList.client';
 const socialLinks = [
 	{ icon: Github, url: 'https://github.com/yunhoJ', title: 'GitHub' },

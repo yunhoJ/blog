@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { BLOG_BASE_URL } from './api/constant/const';
 
 export default function robots(): MetadataRoute.Robots {
 	return {
@@ -9,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
 				disallow: ['/api/', '/admin/', '/about', '/_next'],
 			},
 		],
-		sitemap: 'https://www.yunhoj.com/sitemap.xml',
+		sitemap: `${BLOG_BASE_URL}/sitemap.xml`,
 	};
 }
