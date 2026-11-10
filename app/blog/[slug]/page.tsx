@@ -2,7 +2,6 @@
 // import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 // import { getPostBySlug, getPublishedPosts } from '@/lib/notion';
-import { formatDate } from '@/lib/date';
 import {
 	CalendarIcon,
 	UserIcon,
@@ -35,6 +34,7 @@ import { notFound } from 'next/navigation';
 import remarkBreaks from 'remark-breaks';
 import PostOtherContent from '@/components/features/blog/PostOtherContent';
 import CodeBlockCopyButton from '@/components/features/blog/CodeBlockCopyButton';
+import PostDate from '@/components/common/PostDate';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
@@ -58,12 +58,12 @@ export async function generateMetadata({ params }: BlogPostProps): Promise<Metad
 		authors: [{ name: post.user.userName || 'yunho' }],
 		publisher: post.user.userName || 'yunho',
 		alternates: {
-			canonical: `/blog/${post.revisionHash}`,
+			canonical: `/blog/${post.postHash}`,
 		},
 		openGraph: {
 			title: post.postTitle,
 			description: post.postContent.slice(0, 100),
-			url: `/blog/${post.revisionHash}`,
+			url: `/blog/${post.postHash}`,
 			type: 'article',
 			publishedTime: post.blogPostMeta.firstPostPublishAt?.toISOString() || '',
 			modifiedTime: post.postUpdatedAt.toISOString() || '',
@@ -89,7 +89,7 @@ function MetaItem({
 }: {
 	icon: React.ComponentType<{ className?: string }>;
 	title?: string;
-	text: string;
+	text: React.ReactNode;
 	className?: string;
 }) {
 	return (
@@ -180,7 +180,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 									<MetaItem
 										icon={CalendarIcon}
 										title="게시일"
-										text={formatDate(post.blogPostMeta.firstPostPublishAt!)}
+										text={<PostDate date={post.blogPostMeta.firstPostPublishAt!} includeTime={true} />}
 									/>
 									{/* <MetaItem
 										icon={Edit2Icon}

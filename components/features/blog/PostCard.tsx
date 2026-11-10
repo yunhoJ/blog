@@ -10,11 +10,11 @@ import {
 	Hash,
 	MessageSquareText,
 } from 'lucide-react';
-import { formatDate, formatDateWithoutTime } from '@/lib/date';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import PostDropdown from '@/components/features/blog/PostDropdown';
+import PostDate from '@/components/common/PostDate';
 
 const getCategoryColor = (category: string) => {
 	const colors = [
@@ -133,10 +133,10 @@ export default function PostCard({
 							<span className="flex items-center gap-1 sm:gap-1.5">
 								<Calendar className="h-4 w-4" />
 								<time className="mobile:hidden block">
-									{formatDateWithoutTime(postMeta.firstPostPublishAt)}
+									<PostDate date={postMeta.firstPostPublishAt} includeTime={false} />
 								</time>
 								<time className="mobile:block hidden">
-									{formatDate(postMeta.firstPostPublishAt)}
+									<PostDate date={postMeta.firstPostPublishAt} includeTime={true} />
 								</time>
 							</span>
 						)}

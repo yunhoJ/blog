@@ -1,14 +1,11 @@
 import { MetadataRoute } from 'next';
 import { getPostPublishData } from './api/services/getPost';
-import { userId } from './api/constant/const';
+import { userId, BLOG_BASE_URL } from './api/constant/const';
 
 // ISR(revalidate)와 force-dynamic은 함께 쓰지 않음 — 동적 생성만 사용
 export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	// 기본 URL
-	const baseUrl = 'https://www.yunhoj.com';
-
 	// 블로그 게시물 가져오기
 	const { posts } = await getPostPublishData(userId, '전체', 'latest');
 
@@ -24,14 +21,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	// 정적 페이지 목록
 	const staticPages = [
 		{
-			url: baseUrl,
+			url: BLOG_BASE_URL,
 			lastModified: new Date(latestPostModifiedAt),
 			changeFrequency: 'daily',
 			priority: 1,
 		},
-		// baseUrl과 동일해서 주석
+		// BLOG_BASE_URL과 동일해서 주석
 		// {
-		// 	url: `${baseUrl}/blog`,
+		// 	url: `${BLOG_BASE_URL}/blog`,
 		// 	lastModified: new Date(latestPostModifiedAt),
 		// 	changeFrequency: 'daily',
 		// 	priority: 1,
@@ -40,12 +37,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	// 블로그 게시물 URL 생성
 	const blogPosts = posts.map((post) => ({
-		url: `${baseUrl}/blog/${post.postHash}`,
+		url: `${BLOG_BASE_URL}/blog/${post.postHash}`,
 		lastModified: post.blogPost.postUpdatedAt ? new Date(post.blogPost.postUpdatedAt) : new Date(),
 		changeFrequency: 'weekly' as const,
 		priority: 0.8,
 	}));
 
-	// 정적 페이지와 블로그 게시물 결합
+	// 정적 페이지와 블로그 게시물 결합 (/about은 포함하지 않음)
 	return [...staticPages, ...blogPosts];
 }
