@@ -43,31 +43,31 @@ const tailwindConfig = {
 						// '--tw-prose-invert-th-borders': 'var(--color-pink-600)',
 						// '--tw-prose-invert-td-borders': 'var(--color-pink-700)',
 
-					h1: {
-						color: '#4589b1',
-						borderBottom: '2px solid',
-						borderColor: 'currentColor',
-					},
+						h1: {
+							color: '#4589b1',
+							borderBottom: '2px solid',
+							borderColor: 'currentColor',
+						},
 
-					h2: {
-						color: '#a51eb9',
-					},
+						h2: {
+							color: '#a51eb9',
+						},
 
-					h3: {
-						color: '#1b66d1',
-					},
+						h3: {
+							color: '#1b66d1',
+						},
 
-					h4: {
-						color: '#d6a94c',
-					},
+						h4: {
+							color: '#d6a94c',
+						},
 
-					h5: {
-						color: '#d32f2f',
-					},
+						h5: {
+							color: '#d32f2f',
+						},
 
-					h6: {
-						color: '#666666',
-					},
+						h6: {
+							color: '#666666',
+						},
 
 						// [!important] 등을 아이콘으로 교체하는 CSS 방법
 						'p::before': {
@@ -75,12 +75,12 @@ const tailwindConfig = {
 							marginRight: '0.25rem',
 						},
 
-					blockquote: {
-						borderRadius: theme('borderRadius.xl'),
-						backgroundColor: 'var(--color-purple-50)',
-						borderLeft: '4px solid',
-						borderColor: 'var(--color-purple-800)',
-					},
+						blockquote: {
+							borderRadius: theme('borderRadius.xl'),
+							backgroundColor: 'var(--color-purple-50)',
+							borderLeft: '4px solid',
+							borderColor: 'var(--color-purple-800)',
+						},
 						img: {
 							borderRadius: theme('borderRadius.xl'),
 						},
@@ -91,30 +91,30 @@ const tailwindConfig = {
 						'code::after': {
 							content: 'none',
 						},
-					code: {
-						backgroundColor: 'var(--color-purple-50)',
-						borderRadius: theme('borderRadius.md'),
-						border: '1px solid var(--color-purple-100)',
-					},
+						code: {
+							backgroundColor: 'var(--color-purple-50)',
+							borderRadius: theme('borderRadius.md'),
+							border: '1px solid var(--color-purple-100)',
+						},
 						// strong 안의 code는 strong 색상을 그대로 따르도록
 						'strong code': {
 							color: 'inherit',
 						},
-					pre: {
-						position: 'relative',
-					},
-					// 코드 블록 내부의 code는 chip 스타일 제거 (코드 블록 전용 스타일 적용)
-					'pre code': {
-						overflowX: 'auto', // code 요소가 스크롤
-						display: 'block',
-						width: '100%',
-						backgroundColor: 'transparent',
-						color: 'inherit',
-						border: 'none',
-						borderRadius: '0',
-						fontWeight: 'inherit',
-						fontSize: 'inherit',
-					},
+						pre: {
+							position: 'relative',
+						},
+						// 코드 블록 내부의 code는 chip 스타일 제거 (코드 블록 전용 스타일 적용)
+						'pre code': {
+							overflowX: 'auto', // code 요소가 스크롤
+							display: 'block',
+							width: '100%',
+							backgroundColor: 'transparent',
+							color: 'inherit',
+							border: 'none',
+							borderRadius: '0',
+							fontWeight: 'inherit',
+							fontSize: 'inherit',
+						},
 						'pre code::-webkit-scrollbar': {
 							height: '8px',
 							display: 'block',
