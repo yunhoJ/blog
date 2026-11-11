@@ -45,9 +45,23 @@
 	--color-brand-link: var(--brand-link);
 	--color-brand-link-hover: var(--brand-link-hover);
 	--color-brand-underline-active: var(--brand-underline-active);
-	--color-brand-tag-bg: var(--brand-tag-bg);
-	--color-brand-tag-text: var(--brand-tag-text);
 	--color-brand-border-strong: var(--brand-border-strong);
+	--color-brand-subtle: var(--brand-subtle);
+	--color-brand-subtle-hover: var(--brand-subtle-hover);
+	--color-brand-subtle-pressed: var(--brand-subtle-pressed);
+	--color-brand-on-subtle: var(--brand-on-subtle);
+	--color-brand-on-subtle-hover: var(--brand-on-subtle-hover);
+	--color-brand-surface-2: var(--brand-surface-2);
+	--color-brand-surface-3: var(--brand-surface-3);
+	--color-brand-surface-4: var(--brand-surface-4);
+	--color-brand-text: var(--brand-text);
+	--color-brand-text-muted: var(--brand-text-muted);
+	--color-brand-disabled-text: var(--brand-disabled-text);
+	--color-brand-btn-border: var(--brand-btn-border);
+	--color-brand-border: var(--brand-border);
+	--color-brand-focus-ring: var(--brand-focus-ring);
+	--color-brand-danger-solid: var(--brand-danger-solid);
+	--color-brand-on-danger: var(--brand-on-danger);
 }
 
 :root {
@@ -97,8 +111,8 @@
 	--card-foreground: var(--brand-text);
 	--popover: var(--brand-surface);
 	--popover-foreground: var(--brand-text);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
+	--primary: var(--brand-solid);
+	--primary-foreground: var(--brand-on-solid);
 	--secondary: var(--brand-surface-2);
 	--secondary-foreground: var(--brand-text);
 	--muted: var(--brand-surface-2);
