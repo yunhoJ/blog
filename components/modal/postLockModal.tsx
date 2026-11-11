@@ -58,7 +58,7 @@ export default function PostDeleteModal({
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>취소</AlertDialogCancel>
-					<AlertDialogAction className="bg-primary hover:bg-primary/80" onClick={handleLock}>
+					<AlertDialogAction onClick={handleLock}>
 						비공개
 					</AlertDialogAction>
 				</AlertDialogFooter>
