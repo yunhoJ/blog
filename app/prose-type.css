@@ -1,0 +1,141 @@
+/* yunhoj.com 글 본문 타이포 — 확정 초안 (2026-11-11 KST, 윤호 님 최종 승인 대기 · 저장소 미적용)
+   위치: app/prose-type.css → app/globals.css에서 @config 아래에 @import (BRAND.md 10절).
+   범위: .mdx-viewer(.prose) 안의 서체·크기·줄간격·굵기·여백·들여쓰기·줄바꿈 규칙만. 색(color, background, border-color)은 한 줄도 없음.
+   본문   17px / 1.7 (모바일 ≤640px 16px / 1.7), 문단 간격 1.5em, Enter(<br>) 뒤 +0.35em (rehype-br-gap 플러그인 필요)
+   제목   본문 h1 = h2 크기 28 / 800 + 기존 2px 밑줄 · h2 28 · h3 23 · h4 19.5 · h5 17 · h6 15
+          모바일 h1·h2 24 · h3 20 · h4 18 · h5 16 · h6 14. 글에서는 h4까지만 사용 권장 (h5·h6은 스타일만 유지)
+   페이지 제목(본문 밖, page.tsx 175행) 데스크톱 34px / 모바일 30px — 이 파일이 아니라 className으로 변경
+   기타   한글 keep-all + overflow-wrap · Pretendard Variable(코드는 기존 mono) · 표 가로 스크롤(MdxTable + CSS 대비책)
+          하위 목록 기호 현재 유지 · p::before 4px 들여쓰기 유지
+   우선순위: .mdx-viewer h2 (0,1,1) > .prose :where(h2) (0,1,0). tailwind typography 뒤에 로드.
+   이전안: type/prose-type.v2.css (제목 24/20/17, 줄 1.75, 문단 1em) — 폐기 */
+.mdx-viewer {
+	/* 서체 (D) — 글꼴 로딩은 BRAND.md 10절 참고. 코드(pre, code, kbd, samp)는 preflight의 mono 서체 그대로 */
+	--brand-prose-font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+	/* 본문 */
+	--brand-prose-size: 17px;   --brand-prose-leading: 1.7;   --brand-prose-measure: 40em;
+	--brand-prose-space: 1.5em; /* 문단·목록·블록 사이 기본 간격 (간격 C) */
+	--brand-prose-block: 28px;  /* 코드·표·인용·이미지 위아래 */
+	/* 제목 (×1.2) */
+	--brand-prose-h2: 28px;   --brand-prose-h2-lh: 1.3;  --brand-prose-h2-above: 60px; --brand-prose-h2-below: 18px;
+	--brand-prose-h3: 23px;   --brand-prose-h3-lh: 1.35; --brand-prose-h3-above: 44px; --brand-prose-h3-below: 14px;
+	--brand-prose-h4: 19.5px; --brand-prose-h4-lh: 1.4;  --brand-prose-h4-above: 36px; --brand-prose-h4-below: 10px;
+	--brand-prose-h5: 17px;   --brand-prose-h5-lh: 1.45; --brand-prose-h5-above: 30px; --brand-prose-h5-below: 8px;
+	--brand-prose-h6: 15px;   --brand-prose-h6-lh: 1.45; --brand-prose-h6-above: 26px; --brand-prose-h6-below: 6px;
+	/* 목록 */
+	--brand-prose-list-indent: 1.5em;   /* 들여쓰기(단계마다 동일) */
+	--brand-prose-list-marker-gap: 0.25em;
+	--brand-prose-li-gap: 0.375em;      /* 항목 사이 */
+	--brand-prose-nested-gap: 0.375em;  /* 하위 목록 위아래 */
+	/* 코드 */
+	--brand-prose-code: 0.875em;
+	--brand-prose-pre: 15px; --brand-prose-pre-lh: 1.6; --brand-prose-diagram-lh: 1.45;
+	--brand-prose-pre-header: 36px;     /* 복사 버튼·언어 아이콘(20px) 자리 */
+	--brand-prose-pre-pad-x: 20px; --brand-prose-pre-pad-b: 16px;
+	--brand-prose-code-title: 13px;
+	/* 표·작은 글씨 */
+	--brand-prose-small: 15px; --brand-prose-small-lh: 1.6;
+	--brand-prose-cell-y: 0.5em; --brand-prose-cell-x: 0.75em;
+	--brand-prose-footnote: 14px;
+	/* 기타 */
+	--brand-prose-hr: 56px;
+	--brand-prose-link-offset: 0.2em; --brand-prose-link-thickness: 1px;
+}
+@media (max-width: 640px) {
+	.mdx-viewer {
+		--brand-prose-size: 16px;
+		--brand-prose-block: 24px;
+		--brand-prose-h2: 24px; --brand-prose-h3: 20px; --brand-prose-h4: 18px; --brand-prose-h5: 16px; --brand-prose-h6: 14px;
+		--brand-prose-h2-above: 48px; --brand-prose-h2-below: 14px;
+		--brand-prose-h3-above: 36px; --brand-prose-h3-below: 12px;
+		--brand-prose-h4-above: 30px; --brand-prose-h4-below: 8px;
+		--brand-prose-h5-above: 26px; --brand-prose-h5-below: 6px;
+		--brand-prose-h6-above: 22px; --brand-prose-h6-below: 4px;
+		--brand-prose-list-indent: 1.25em;
+		--brand-prose-pre: 13.5px; --brand-prose-pre-pad-x: 16px;
+		--brand-prose-small: 14px; --brand-prose-cell-x: 0.6em;
+		--brand-prose-footnote: 13px; --brand-prose-hr: 40px;
+	}
+}
+
+/* 본문·문단 */
+.mdx-viewer { font-family: var(--brand-prose-font); font-size: var(--brand-prose-size); line-height: var(--brand-prose-leading); max-width: var(--brand-prose-measure); }
+.mdx-viewer p { line-height: var(--brand-prose-leading); margin: 0 0 var(--brand-prose-space); }
+/* B: Enter 한 번(remark-breaks → <br>) 뒤 +0.35em. 줄 28.9 / Enter 34.8 / 문단 54.4px (데스크톱 실측).
+   Chrome 156에서 <br> 자체에는 margin/height가 안 먹음(실측) → 개발팀 rehype 플러그인(lib/rehype-br-gap.ts)이 <br> 뒤에 <span class="br-gap" aria-hidden="true"> 삽입 (BRAND.md 10절).
+   이미지 바로 뒤 <br>, 문단 맨 앞·맨 끝 <br>에는 넣지 않음. 인용문 안은 넣음.
+   플러그인이 없으면 이 줄은 아무 효과 없음(지금과 같은 화면). 복사하면 줄바꿈 1개로 붙여짐(실측). */
+.mdx-viewer .br-gap { display: block; height: 0.35em; }
+/* C: 한글 단어 중간 줄바꿈 방지. 긴 URL·인라인 코드는 어디서든 줄바꿈 (pre 안 코드는 white-space: pre라 영향 없음) */
+.mdx-viewer :is(p, li, blockquote, h1, h2, h3, h4, h5, h6, summary, figcaption, dd, dt) { word-break: keep-all; overflow-wrap: anywhere; }
+.mdx-viewer :is(th, td) { word-break: keep-all; overflow-wrap: break-word; } /* 표는 anywhere 대신 break-word: 열이 한 글자 폭으로 찌그러지지 않게 */
+
+/* 제목 */
+.mdx-viewer h1 { font-size: var(--brand-prose-h2); line-height: var(--brand-prose-h2-lh); font-weight: 800; letter-spacing: -0.02em; margin: var(--brand-prose-h2-above) 0 var(--brand-prose-h2-below); padding-bottom: 6px; } /* A: h2 크기, 색·2px 밑줄은 tailwind 설정 그대로. 800 + 밑줄로 h2와 구분. 페이지 제목 34px(×1.21)보다 작음, 모바일 30 vs 24(×1.25) */
+.mdx-viewer h2 { font-size: var(--brand-prose-h2); line-height: var(--brand-prose-h2-lh); font-weight: 700; letter-spacing: -0.02em; margin: var(--brand-prose-h2-above) 0 var(--brand-prose-h2-below); }
+.mdx-viewer h3 { font-size: var(--brand-prose-h3); line-height: var(--brand-prose-h3-lh); font-weight: 700; letter-spacing: -0.01em; margin: var(--brand-prose-h3-above) 0 var(--brand-prose-h3-below); }
+.mdx-viewer h4 { font-size: var(--brand-prose-h4); line-height: var(--brand-prose-h4-lh); font-weight: 700; margin: var(--brand-prose-h4-above) 0 var(--brand-prose-h4-below); }
+.mdx-viewer h5 { font-size: var(--brand-prose-h5); line-height: var(--brand-prose-h5-lh); font-weight: 700; margin: var(--brand-prose-h5-above) 0 var(--brand-prose-h5-below); }
+.mdx-viewer h6 { font-size: var(--brand-prose-h6); line-height: var(--brand-prose-h6-lh); font-weight: 600; margin: var(--brand-prose-h6-above) 0 var(--brand-prose-h6-below); }
+.mdx-viewer :is(h1,h2,h3,h4,h5,h6) + * { margin-top: 0; }
+.mdx-viewer > :first-child { margin-top: 0; }
+
+/* 인라인 */
+.mdx-viewer strong { font-weight: 700; }
+.mdx-viewer del { text-decoration-thickness: 1px; }
+.mdx-viewer a { font-weight: inherit; text-decoration-line: underline; text-decoration-thickness: var(--brand-prose-link-thickness); text-underline-offset: var(--brand-prose-link-offset); }
+.mdx-viewer a:hover { text-decoration-thickness: 2px; }
+.mdx-viewer :not(pre) > code { font-size: var(--brand-prose-code); font-weight: 500; padding: 0.15em 0.4em; }
+.mdx-viewer sup { font-size: 0.75em; line-height: 0; vertical-align: super; }
+
+/* 목록 */
+.mdx-viewer :is(ul, ol) { margin: 0 0 var(--brand-prose-space); padding-left: var(--brand-prose-list-indent); }
+.mdx-viewer li { line-height: var(--brand-prose-leading); margin: var(--brand-prose-li-gap) 0; padding-left: var(--brand-prose-list-marker-gap); }
+.mdx-viewer li :is(ul, ol) { margin: var(--brand-prose-nested-gap) 0 0; }
+.mdx-viewer li > p { margin: 0 0 0.5em; }
+/* F: 하위 목록 기호는 지금처럼 — 모든 단계 •, 1. (prose 기본과 같은 값을 명시해 브라우저 기본 ○ ■ 로 바뀌지 않게). 기호 색 purple-800/400 그대로 */
+.mdx-viewer ul { list-style-type: disc; }
+.mdx-viewer ol { list-style-type: decimal; }
+/* 작업 목록 (GFM task list, rehype-sanitize가 class를 지워도 동작하도록 :has 사용) */
+.mdx-viewer li:has(> input[type="checkbox"]) { list-style: none; margin-left: calc(-1 * var(--brand-prose-list-indent)); padding-left: 0; }
+.mdx-viewer li > input[type="checkbox"] { width: 1em; height: 1em; margin: 0 0.5em 0 0; vertical-align: -0.125em; }
+
+/* 인용 · 콜아웃 ([!note] 등이 이모지로 바뀐 인용) */
+.mdx-viewer blockquote { font-style: normal; font-weight: 400; margin: var(--brand-prose-block) 0; padding: 14px 20px; }
+.mdx-viewer blockquote p { margin: 0 0 0.5em; }
+.mdx-viewer blockquote > :last-child { margin-bottom: 0; }
+
+/* 코드 블록 */
+.mdx-viewer figure[data-rehype-pretty-code-figure], .mdx-viewer > pre { margin: var(--brand-prose-block) 0; } /* 언어 있는 블록(figure)과 없는 블록(pre) 간격 통일 */
+.mdx-viewer pre { font-size: var(--brand-prose-pre); line-height: var(--brand-prose-pre-lh); padding-top: var(--brand-prose-pre-header); }
+.mdx-viewer pre code { padding: 0 var(--brand-prose-pre-pad-x) var(--brand-prose-pre-pad-b); }
+.mdx-viewer pre:not([data-language]) { line-height: var(--brand-prose-diagram-lh); font-variant-ligatures: none; } /* 언어 없는 블록 = ASCII 도식 */
+.mdx-viewer [data-rehype-pretty-code-title] { font-size: var(--brand-prose-code-title); line-height: 1.4; font-weight: 600; padding: 8px var(--brand-prose-pre-pad-x); margin: 0; }
+.mdx-viewer [data-rehype-pretty-code-title] + pre { padding-top: var(--brand-prose-pre-header); }
+.mdx-viewer [data-rehype-pretty-code-caption] { font-size: var(--brand-prose-code-title); line-height: 1.5; margin-top: 8px; }
+.mdx-viewer [data-highlighted-line] { margin: 0 calc(-1 * var(--brand-prose-pre-pad-x)); padding: 0 var(--brand-prose-pre-pad-x); }
+
+/* 표 */
+.mdx-viewer table { font-size: var(--brand-prose-small); line-height: var(--brand-prose-small-lh); margin: var(--brand-prose-block) 0; }
+.mdx-viewer :is(th, td) { padding: var(--brand-prose-cell-y) var(--brand-prose-cell-x); }
+.mdx-viewer th { font-weight: 600; vertical-align: bottom; }
+.mdx-viewer :is(th, td):first-child { padding-left: 0; }
+.mdx-viewer :is(th, td)[align="right"], .mdx-viewer :is(th, td)[style*="right"] { font-variant-numeric: tabular-nums; }
+/* E: 넓은 표 가로 스크롤 — 개발팀이 MDXRemote components로 <div class="table-scroll" role="region" tabindex="0">로 감쌈 (BRAND.md 10절) */
+.mdx-viewer .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: var(--brand-prose-block) 0; }
+.mdx-viewer .table-scroll > table { margin: 0; } /* prose 기본 width:100% 유지 → 좁은 표는 꽉 차고, 넓은 표만 스크롤 */
+.mdx-viewer .table-scroll:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+/* E 대비책: 감싸기 전(또는 감싸기가 빠진 화면)에도 모바일에서 잘리지 않게. 감싼 표에는 적용 안 됨(> table 직계만).
+   부작용: 모바일에서 좁은 표가 폭 100%로 늘어나지 않음 */
+@media (max-width: 640px) { .mdx-viewer > table { display: block; overflow-x: auto; max-width: 100%; } }
+
+/* 이미지 · 구분선 · 펼치기 · 각주 */
+.mdx-viewer img { margin: var(--brand-prose-block) 0; }
+.mdx-viewer p:has(> img:only-child) { margin: 0; }
+.mdx-viewer figcaption { font-size: var(--brand-prose-code-title); line-height: 1.5; margin-top: 8px; }
+.mdx-viewer hr { margin: var(--brand-prose-hr) 0; }
+.mdx-viewer details { margin: var(--brand-prose-space) 0; }
+.mdx-viewer summary { font-weight: 600; padding: 0.25em 0; cursor: pointer; }
+.mdx-viewer details > :not(summary) { margin-left: 1.25em; }
+.mdx-viewer section[data-footnotes] { font-size: var(--brand-prose-footnote); line-height: 1.6; margin-top: var(--brand-prose-h2-above); }
+.mdx-viewer section[data-footnotes] li { margin: 0.25em 0; }

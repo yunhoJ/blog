@@ -35,6 +35,8 @@ import remarkBreaks from 'remark-breaks';
 import PostOtherContent from '@/components/features/blog/PostOtherContent';
 import CodeBlockCopyButton from '@/components/features/blog/CodeBlockCopyButton';
 import PostDate from '@/components/common/PostDate';
+import rehypeBrGap from '@/lib/rehype-br-gap';
+import MdxTable from '@/components/features/blog/MdxTable';
 
 interface BlogPostProps {
 	params: Promise<{ slug: string }>;
@@ -172,7 +174,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 								</Badge>
 							))}
 						</div> */}
-						<h1 className="text-3xl font-bold break-words">{post.postTitle}</h1>
+						<h1 className="text-3xl md:text-[34px] md:leading-[1.2] font-bold break-words">{post.postTitle}</h1>
 						<div className="flex flex-row gap-3">
 							<div className="text-muted-foreground flex w-full items-center justify-start gap-5 text-sm">
 								{/* 왼쪽 그룹: 발행일, 수정일 */}
@@ -232,6 +234,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 						<CodeBlockCopyButton /> {/* 코드 복사 버튼 */}
 						<MDXRemote
 							source={transformCalloutIcons(post.postContent)}
+							components={{ table: MdxTable }}
 							options={{
 								mdxOptions: {
 									remarkPlugins: [remarkGfm, remarkBreaks],
@@ -239,6 +242,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 										rehypeSlug,
 										rehypeAllowBrJsx, // JSX <br /> 변환 먼저 실행
 										[rehypeSanitize, schema],
+										rehypeBrGap,
 										// rehypeSanitize, br 허용
 										rehypePrettyCode,
 									],

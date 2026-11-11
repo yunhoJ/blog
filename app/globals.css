@@ -1,9 +1,11 @@
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
 @config "../tailwind.config.mjs";
+@import './prose-type.css';
 @theme inline {
 	--breakpoint-mobile: 380px;
 	--radius-sm: calc(var(--radius) - 4px);
