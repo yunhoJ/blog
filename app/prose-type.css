@@ -1,4 +1,4 @@
-/* yunhoj.com 글 본문 타이포 — 확정 초안 (2026-11-11 KST, 윤호 님 최종 승인 대기 · 저장소 미적용)
+/* yunhoj.com 글 본문 타이포 — BRAND.md 10절 post-body typography 스펙
    위치: app/prose-type.css → app/globals.css에서 @config 아래에 @import (BRAND.md 10절).
    범위: .mdx-viewer(.prose) 안의 서체·크기·줄간격·굵기·여백·들여쓰기·줄바꿈 규칙만. 색(color, background, border-color)은 한 줄도 없음.
    본문   17px / 1.7 (모바일 ≤640px 16px / 1.7), 문단 간격 1.5em, Enter(<br>) 뒤 +0.35em (rehype-br-gap 플러그인 필요)
