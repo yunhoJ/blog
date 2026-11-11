@@ -1,0 +1,166 @@
+/* yunhoj.com 브랜드 시스템 v1.1 — 원천색 #42b883 (현재 --primary hsl(153 47% 49%)) */
+/* 범위: 글 본문(.prose / .mdx-viewer) 바깥의 UI만. 본문 스타일은 건드리지 않는다. */
+/* 모든 변수는 --brand- 접두사 — Tailwind v4 테마 변수(--color-*, --font-*, --text-*)와 충돌 없음 */
+
+:root {
+	/* 서체(선택): UI 크롬에만 적용. body·.prose에는 적용하지 않음 */
+	--brand-font-ui: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+	--brand-text-sm: 0.875rem;  --brand-leading-sm: 1.6;   /* 14px 날짜·태그·메뉴 */
+	--brand-text-base: 1rem;    --brand-leading-base: 1.7; /* 16px 목록 요약 */
+	--brand-text-lg: 1.5rem;    --brand-leading-lg: 1.4;   /* 24px 목록 글 제목 */
+
+	/* Base · green (light) */
+	--brand-green-1: #fcfdfc; /* oklch(0.993 0.002 160.4) */
+	--brand-green-2: #f7faf8; /* oklch(0.982 0.004 160.4) */
+	--brand-green-3: #e4f6ec; /* oklch(0.958 0.024 160.4) */
+	--brand-green-4: #d2f1df; /* oklch(0.930 0.040 160.4) */
+	--brand-green-5: #bee9d1; /* oklch(0.897 0.055 160.4) */
+	--brand-green-6: #a9dfc1; /* oklch(0.858 0.069 160.4) */
+	--brand-green-7: #8eceac; /* oklch(0.800 0.082 160.4) */
+	--brand-green-8: #6abd93; /* oklch(0.735 0.103 160.4) */
+	--brand-green-9: #42b883; /* oklch(0.703 0.132 160.4) */
+	--brand-green-10: #30aa76; /* oklch(0.658 0.132 160.4) */
+	--brand-green-11: #117c52; /* oklch(0.520 0.112 160.4) */
+	--brand-green-12: #113c28; /* oklch(0.320 0.059 160.4) */
+	--brand-green-pressed: #1d9e6b; /* oklch(0.620 0.132 160.4) */
+	/* Base · gray (light), hue 160 chroma 0.004 */
+	--brand-gray-1: #fbfdfc; /* oklch(0.993 0.002 160.4) */
+	--brand-gray-2: #f6f8f7; /* oklch(0.978 0.002 160.4) */
+	--brand-gray-3: #eff2f0; /* oklch(0.958 0.004 160.4) */
+	--brand-gray-4: #e7eae8; /* oklch(0.935 0.004 160.4) */
+	--brand-gray-5: #e0e3e1; /* oklch(0.912 0.004 160.4) */
+	--brand-gray-6: #d7dad8; /* oklch(0.885 0.004 160.4) */
+	--brand-gray-7: #cacdcb; /* oklch(0.845 0.004 160.4) */
+	--brand-gray-8: #b2b5b3; /* oklch(0.770 0.004 160.4) */
+	--brand-gray-9: #7a7c7b; /* oklch(0.585 0.004 160.4) */
+	--brand-gray-10: #6d6f6e; /* oklch(0.540 0.004 160.4) */
+	--brand-gray-11: #515352; /* oklch(0.440 0.004 160.4) */
+	--brand-gray-12: #1a1c1b; /* oklch(0.225 0.004 160.4) */
+	/* Base · status (light) */
+	--brand-status-success-text: #226b38; /* oklch(0.470 0.108 150.0) */
+	--brand-status-success-solid: #33854a; /* oklch(0.550 0.120 150.0) */
+	--brand-status-success-subtle: #ebf7ed; /* oklch(0.965 0.018 150.0) */
+	--brand-status-warning-text: #7e4f02; /* oklch(0.470 0.101 70.0) */
+	--brand-status-warning-solid: #9d6300; /* oklch(0.550 0.119 70.0) */
+	--brand-status-warning-subtle: #fcf2e6; /* oklch(0.965 0.019 70.0) */
+	--brand-status-danger-text: #9f2b27; /* oklch(0.470 0.153 27.0) */
+	--brand-status-danger-solid: #c13c36; /* oklch(0.550 0.170 27.0) */
+	--brand-status-danger-subtle: #fff0ed; /* oklch(0.965 0.016 27.0) */
+	--brand-status-info-text: #026190; /* oklch(0.470 0.107 240.0) */
+	--brand-status-info-solid: #1479b0; /* oklch(0.550 0.120 240.0) */
+	--brand-status-info-subtle: #e9f5ff; /* oklch(0.965 0.018 240.0) */
+
+	/* Alias (light) — 컴포넌트는 이것만 사용 */
+	--brand-bg: #ffffff;
+	--brand-surface: var(--brand-gray-2);
+	--brand-surface-2: var(--brand-gray-3);
+	--brand-text: var(--brand-gray-12);
+	--brand-text-muted: var(--brand-gray-11);
+	--brand-border: var(--brand-gray-6);
+	--brand-border-strong: var(--brand-gray-8);
+	--brand-solid: var(--brand-green-9);
+	--brand-solid-hover: var(--brand-green-10);
+	--brand-solid-pressed: var(--brand-green-pressed);
+	--brand-on-solid: var(--brand-gray-12);
+	--brand-subtle: var(--brand-green-3);
+	--brand-link: var(--brand-green-11);
+	--brand-link-hover: var(--brand-green-12);
+	--brand-focus-ring: var(--brand-green-11);
+	--brand-underline-active: var(--brand-green-11);
+	--brand-tag-bg: var(--brand-green-3);
+	--brand-tag-text: var(--brand-green-11);
+	--brand-selection-bg: var(--brand-green-5);
+	--brand-success-text: var(--brand-status-success-text);
+	--brand-success-solid: var(--brand-status-success-solid);
+	--brand-success-subtle: var(--brand-status-success-subtle);
+	--brand-warning-text: var(--brand-status-warning-text);
+	--brand-warning-solid: var(--brand-status-warning-solid);
+	--brand-warning-subtle: var(--brand-status-warning-subtle);
+	--brand-danger-text: var(--brand-status-danger-text);
+	--brand-danger-solid: var(--brand-status-danger-solid);
+	--brand-danger-subtle: var(--brand-status-danger-subtle);
+	--brand-info-text: var(--brand-status-info-text);
+	--brand-info-solid: var(--brand-status-info-solid);
+	--brand-info-subtle: var(--brand-status-info-subtle);
+	--brand-on-danger: #ffffff;
+}
+
+.dark {
+	/* Base · green (dark) */
+	--brand-green-1: #0b120f; /* oklch(0.175 0.013 160.4) */
+	--brand-green-2: #101a15; /* oklch(0.205 0.017 160.4) */
+	--brand-green-3: #12271c; /* oklch(0.250 0.033 160.4) */
+	--brand-green-4: #163224; /* oklch(0.290 0.044 160.4) */
+	--brand-green-5: #193e2c; /* oklch(0.330 0.053 160.4) */
+	--brand-green-6: #1d4b36; /* oklch(0.375 0.063 160.4) */
+	--brand-green-7: #235e43; /* oklch(0.435 0.077 160.4) */
+	--brand-green-8: #297753; /* oklch(0.510 0.095 160.4) */
+	--brand-green-9: #42b883; /* oklch(0.703 0.132 160.4) */
+	--brand-green-10: #5ac592; /* oklch(0.748 0.125 160.4) */
+	--brand-green-11: #7dd3a7; /* oklch(0.800 0.106 160.4) */
+	--brand-green-12: #c9f2db; /* oklch(0.925 0.053 160.4) */
+	--brand-green-pressed: #31aa76; /* oklch(0.660 0.132 160.4) */
+	/* Base · gray (dark), hue 160 chroma 0.004 */
+	--brand-gray-1: #0f100f; /* oklch(0.170 0.002 160.4) */
+	--brand-gray-2: #151616; /* oklch(0.200 0.002 160.4) */
+	--brand-gray-3: #1c1f1d; /* oklch(0.235 0.004 160.4) */
+	--brand-gray-4: #242624; /* oklch(0.265 0.004 160.4) */
+	--brand-gray-5: #2b2d2c; /* oklch(0.295 0.004 160.4) */
+	--brand-gray-6: #343635; /* oklch(0.330 0.004 160.4) */
+	--brand-gray-7: #414342; /* oklch(0.380 0.004 160.4) */
+	--brand-gray-8: #565957; /* oklch(0.460 0.004 160.4) */
+	--brand-gray-9: #7b7e7c; /* oklch(0.590 0.004 160.4) */
+	--brand-gray-10: #8a8d8b; /* oklch(0.640 0.004 160.4) */
+	--brand-gray-11: #b5b8b6; /* oklch(0.780 0.004 160.4) */
+	--brand-gray-12: #ebeeec; /* oklch(0.945 0.004 160.4) */
+	/* Base · status (dark) */
+	--brand-status-success-text: #90d89f; /* oklch(0.820 0.108 150.0) */
+	--brand-status-success-solid: #69ba7c; /* oklch(0.720 0.120 150.0) */
+	--brand-status-success-subtle: #122416; /* oklch(0.240 0.036 150.0) */
+	--brand-status-warning-text: #f5b66c; /* oklch(0.820 0.117 70.0) */
+	--brand-status-warning-solid: #d8953d; /* oklch(0.720 0.130 70.0) */
+	--brand-status-warning-subtle: #2b1c09; /* oklch(0.240 0.039 70.0) */
+	--brand-status-danger-text: #ffaba1; /* oklch(0.820 0.101 27.0) */
+	--brand-status-danger-solid: #fd7468; /* oklch(0.720 0.170 27.0) */
+	--brand-status-danger-subtle: #341512; /* oklch(0.240 0.051 27.0) */
+	--brand-status-info-text: #86cdff; /* oklch(0.820 0.100 240.0) */
+	--brand-status-info-solid: #55aee8; /* oklch(0.720 0.120 240.0) */
+	--brand-status-info-subtle: #0e212f; /* oklch(0.240 0.036 240.0) */
+
+	/* Alias (dark) — 컴포넌트는 이것만 사용 */
+	--brand-bg: var(--brand-gray-1);
+	--brand-surface: var(--brand-gray-2);
+	--brand-surface-2: var(--brand-gray-3);
+	--brand-text: var(--brand-gray-12);
+	--brand-text-muted: var(--brand-gray-11);
+	--brand-border: var(--brand-gray-6);
+	--brand-border-strong: var(--brand-gray-8);
+	--brand-solid: var(--brand-green-9);
+	--brand-solid-hover: var(--brand-green-10);
+	--brand-solid-pressed: var(--brand-green-pressed);
+	--brand-on-solid: var(--brand-gray-1);
+	--brand-subtle: var(--brand-green-3);
+	--brand-link: var(--brand-green-11);
+	--brand-link-hover: var(--brand-green-12);
+	--brand-focus-ring: var(--brand-green-9);
+	--brand-underline-active: var(--brand-green-9);
+	--brand-tag-bg: var(--brand-green-3);
+	--brand-tag-text: var(--brand-green-11);
+	--brand-selection-bg: var(--brand-green-6);
+	--brand-success-text: var(--brand-status-success-text);
+	--brand-success-solid: var(--brand-status-success-solid);
+	--brand-success-subtle: var(--brand-status-success-subtle);
+	--brand-warning-text: var(--brand-status-warning-text);
+	--brand-warning-solid: var(--brand-status-warning-solid);
+	--brand-warning-subtle: var(--brand-status-warning-subtle);
+	--brand-danger-text: var(--brand-status-danger-text);
+	--brand-danger-solid: var(--brand-status-danger-solid);
+	--brand-danger-subtle: var(--brand-status-danger-subtle);
+	--brand-info-text: var(--brand-status-info-text);
+	--brand-info-solid: var(--brand-status-info-solid);
+	--brand-info-subtle: var(--brand-status-info-subtle);
+	--brand-on-danger: var(--brand-gray-1);
+}
+
+/* 선택 영역: 글 본문(.mdx-viewer) 안은 지금처럼 브라우저 기본 유지 */
+:not(.mdx-viewer, .mdx-viewer *)::selection { background: var(--brand-selection-bg); }
