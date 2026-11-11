@@ -42,6 +42,12 @@
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
+	--color-brand-link: var(--brand-link);
+	--color-brand-link-hover: var(--brand-link-hover);
+	--color-brand-underline-active: var(--brand-underline-active);
+	--color-brand-tag-bg: var(--brand-tag-bg);
+	--color-brand-tag-text: var(--brand-tag-text);
+	--color-brand-border-strong: var(--brand-border-strong);
 }
 
 :root {
@@ -194,5 +200,5 @@
 
 /* 다크 모드 코드 블록 테두리 (본문 안) */
 .dark .mdx-viewer pre {
-	border: 1px solid #5b636e;
+	border: 1px solid var(--brand-code-border);
 }

@@ -83,6 +83,7 @@
 	--brand-info-solid: var(--brand-status-info-solid);
 	--brand-info-subtle: var(--brand-status-info-subtle);
 	--brand-on-danger: #ffffff;
+	--brand-code-border: #5b636e;
 }
 
 .dark {
@@ -160,6 +161,7 @@
 	--brand-info-solid: var(--brand-status-info-solid);
 	--brand-info-subtle: var(--brand-status-info-subtle);
 	--brand-on-danger: var(--brand-gray-1);
+	--brand-code-border: #5b636e;
 }
 
 /* 선택 영역: 글 본문(.mdx-viewer) 안은 지금처럼 브라우저 기본 유지 */

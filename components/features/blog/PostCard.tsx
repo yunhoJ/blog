@@ -35,18 +35,9 @@ export default function PostCard({
 	return (
 		<Card
 			className={cn(
-				'group bg-card/50 border-border/40 gap-0 overflow-hidden border backdrop-blur-sm transition-all duration-200 hover:scale-[1.03] hover:shadow-lg',
+				'group bg-card/50 border-border/40 hover:border-brand-border-strong gap-0 overflow-hidden border backdrop-blur-sm transition-all duration-200 hover:scale-[1.03] hover:shadow-lg',
 				postMeta.postMainImageUrl ? 'py-0 pb-6' : 'py-6'
 			)}
-			style={{
-				'--hover-border': 'var(--brand-border-strong)',
-			} as React.CSSProperties}
-			onMouseEnter={(e) => {
-				e.currentTarget.style.borderColor = 'var(--brand-border-strong)';
-			}}
-			onMouseLeave={(e) => {
-				e.currentTarget.style.borderColor = '';
-			}}
 		>
 			{postMeta.postMainImageUrl && (
 				<div className="relative aspect-[2/1] overflow-hidden">
@@ -70,12 +61,7 @@ export default function PostCard({
 					<Badge
 						key={category}
 						variant="secondary"
-						className="text-sm transition-colors"
-						style={{
-							backgroundColor: 'var(--brand-tag-bg)',
-							color: 'var(--brand-tag-text)',
-							border: 'none',
-						}}
+						className="bg-brand-tag-bg text-brand-tag-text border-none text-sm transition-colors"
 					>
 						<Folder />
 						<ChevronRight className="text-muted-foreground h-4 w-4" />
@@ -85,12 +71,7 @@ export default function PostCard({
 						{postMeta.blogPostTag.map((tag) => (
 							<Badge
 								key={tag.tagName}
-								className="text-xs transition-colors"
-								style={{
-									backgroundColor: 'var(--brand-tag-bg)',
-									color: 'var(--brand-tag-text)',
-									border: 'none',
-								}}
+								className="bg-brand-tag-bg text-brand-tag-text border-none text-xs transition-colors"
 							>
 								<Hash />
 								{tag.tagName}
@@ -99,21 +80,7 @@ export default function PostCard({
 					</div>
 				</div>
 				<div className="mt-6 flex items-center justify-between gap-4">
-					<h2
-						className="truncate text-xl font-bold tracking-tight transition-colors"
-						style={{
-							color: 'inherit',
-						}}
-						onMouseEnter={(e) => {
-							const card = e.currentTarget.closest('.group');
-							if (card?.matches(':hover')) {
-								e.currentTarget.style.color = 'var(--brand-link)';
-							}
-						}}
-						onMouseLeave={(e) => {
-							e.currentTarget.style.color = 'inherit';
-						}}
-					>
+					<h2 className="group-hover:text-brand-link truncate text-xl font-bold tracking-tight transition-colors">
 						{params.postTitle}
 					</h2>
 					{isAuthenticated && (

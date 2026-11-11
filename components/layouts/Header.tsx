@@ -1,19 +1,10 @@
-'use client';
-
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '../theme/ThemeToggle';
 import WriteButton from './WriteButton';
 import HamburgerMenu from './HamburgerMenu';
+import NavLink from './NavLink';
 
-export default function Header() {
-	const pathname = usePathname();
-
-	const navLinks = [
-		{ href: '/', label: '홈' },
-		{ href: '/about', label: '소개' },
-	];
-
+export default async function Header() {
 	return (
 		<header className="bg-background sticky top-0 z-50 border-b">
 			<div className="container flex h-[var(--header-height)] items-center justify-between px-4">
@@ -27,32 +18,11 @@ export default function Header() {
 
 					{/* 데스크톱 네비게이션 */}
 					<nav className="hidden gap-4 md:flex">
-						{navLinks.map(({ href, label }) => {
-							const isActive = pathname === href;
-							return (
-								<Link
-									key={href}
-									href={href}
-									className="font-medium transition-colors"
-									style={{
-										color: isActive ? 'var(--brand-link)' : undefined,
-										boxShadow: isActive ? 'inset 0 -2px 0 var(--brand-underline-active)' : undefined,
-									}}
-									onMouseEnter={(e) => {
-										if (!isActive) {
-											e.currentTarget.style.color = 'var(--brand-link-hover)';
-										}
-									}}
-									onMouseLeave={(e) => {
-										if (!isActive) {
-											e.currentTarget.style.color = '';
-										}
-									}}
-								>
-									{label}
-								</Link>
-							);
-						})}
+						<NavLink href="/">홈</NavLink>
+						{/* <Link href="/blog" className="hover:text-primary font-medium">
+							블로그
+						</Link> */}
+						<NavLink href="/about">소개</NavLink>
 					</nav>
 
 					{/* 우측 버튼들 */}

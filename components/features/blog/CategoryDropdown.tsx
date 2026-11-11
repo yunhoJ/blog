@@ -51,34 +51,18 @@ export default function CategoryDropdown({
 						e.preventDefault();
 						e.stopPropagation();
 					}}
-					className="group"
 				>
-					<MoreVertical
-						className="text-muted-foreground h-5 w-8 transition-all duration-200 group-hover:scale-110 lg:h-4 lg:w-4"
-						style={{
-							color: 'var(--brand-text-muted)',
-						}}
-						onMouseEnter={(e) => {
-							e.currentTarget.style.color = 'var(--brand-link)';
-							e.currentTarget.style.backgroundColor = 'var(--brand-subtle)';
-						}}
-						onMouseLeave={(e) => {
-							e.currentTarget.style.color = 'var(--brand-text-muted)';
-							e.currentTarget.style.backgroundColor = '';
-						}}
-					/>
+					<MoreVertical className="text-muted-foreground hover:text-brand-link hover:bg-accent h-5 w-8 transition-all duration-200 hover:scale-110 lg:h-4 lg:w-4" />
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end" className="w-20 min-w-20">
 					<DropdownMenuItem
+						className="text-brand-link"
 						onClick={() => {
 							setEditingCategoryName(categoryName);
 							setEditingCategoryValue(categoryName);
 						}}
-						style={{
-							color: 'var(--brand-link)',
-						}}
 					>
-						<Pencil className="h-4 w-4" style={{ color: 'var(--brand-link)' }} />
+						<Pencil className="text-brand-link h-4 w-4" />
 						수정
 					</DropdownMenuItem>
 					<DropdownMenuItem
