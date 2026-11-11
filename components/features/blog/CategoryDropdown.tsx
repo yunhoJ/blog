@@ -52,17 +52,17 @@ export default function CategoryDropdown({
 						e.stopPropagation();
 					}}
 				>
-					<MoreVertical className="text-muted-foreground hover:text-primary hover:bg-primary/10 h-5 w-8 transition-all duration-200 hover:scale-110 lg:h-4 lg:w-4" />
+					<MoreVertical className="text-muted-foreground hover:text-brand-link hover:bg-accent h-5 w-8 transition-all duration-200 hover:scale-110 lg:h-4 lg:w-4" />
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end" className="w-20 min-w-20">
 					<DropdownMenuItem
-						className="text-primary"
+						className="text-brand-link"
 						onClick={() => {
 							setEditingCategoryName(categoryName);
 							setEditingCategoryValue(categoryName);
 						}}
 					>
-						<Pencil className="text-primary h-4 w-4" />
+						<Pencil className="text-brand-link h-4 w-4" />
 						수정
 					</DropdownMenuItem>
 					<DropdownMenuItem

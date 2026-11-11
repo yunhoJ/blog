@@ -9,6 +9,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { buttonVariants } from '@/components/ui/button';
 import { toastError, toastSuccess } from '@/lib/toasttError';
 
 interface PostInfo {
@@ -55,7 +56,7 @@ export default function PostDeleteHistoryModal({
 				<AlertDialogFooter>
 					<AlertDialogCancel>취소</AlertDialogCancel>
 					<AlertDialogAction
-						className="bg-destructive hover:bg-destructive/80"
+						className={buttonVariants({ variant: 'destructive' })}
 						onClick={handleDelete}
 					>
 						삭제

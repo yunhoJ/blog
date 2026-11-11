@@ -9,6 +9,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { buttonVariants } from '@/components/ui/button';
 import { handleAxiosError } from '@/lib/toasttError';
 import { AlertTriangle, ArrowRightLeft, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -81,17 +82,14 @@ export default function HistoryDraftModal({
 				<AlertDialogFooter>
 					<AlertDialogCancel>취소</AlertDialogCancel>
 					<AlertDialogAction
-						className="bg-destructive hover:bg-destructive/80"
+						className={buttonVariants({ variant: 'destructive' })}
 						onClick={handleOverwrite}
 					>
 						<div className="flex items-center gap-2">
 							<span>덮어쓰기</span>
 						</div>
 					</AlertDialogAction>
-					<AlertDialogAction
-						className="bg-primary text-primary-foreground hover:bg-primary/90"
-						onClick={handleKeepAndSwitch}
-					>
+					<AlertDialogAction onClick={handleKeepAndSwitch}>
 						<div className="flex items-center gap-2">
 							<span>모두 유지</span>
 						</div>

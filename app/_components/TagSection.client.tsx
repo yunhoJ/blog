@@ -305,7 +305,8 @@ export default function CategorySection({
 								</div>
 							) : (
 								<Button
-									className="border-muted-foreground/30 bg-muted/30 text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary mt-4 flex w-full items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-medium transition-all"
+									variant="outline"
+									className="mt-4 flex w-full items-center justify-center gap-2"
 									onClick={() => {
 										// 카테고리 추가 로직
 										setIsAddCategory(true);
@@ -518,7 +519,8 @@ export default function CategorySection({
 									</div>
 								) : (
 									<Button
-										className="border-muted-foreground/30 bg-muted/30 text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary mt-4 flex w-full items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-medium transition-all"
+										variant="outline"
+										className="mt-4 flex w-full items-center justify-center gap-2"
 										onClick={() => {
 											// 카테고리 추가 로직
 											setIsAddCategory(true);

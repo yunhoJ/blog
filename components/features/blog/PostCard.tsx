@@ -59,7 +59,7 @@ export default function PostCard({
 	return (
 		<Card
 			className={cn(
-				'group bg-card/50 border-border/40 hover:border-primary/20 gap-0 overflow-hidden border backdrop-blur-sm transition-all duration-200 hover:scale-[1.03] hover:shadow-lg',
+				'group bg-card/50 border-border/40 hover:border-brand-border-strong gap-0 overflow-hidden border backdrop-blur-sm transition-all duration-200 hover:scale-[1.03] hover:shadow-lg',
 				postMeta.postMainImageUrl ? 'py-0 pb-6' : 'py-6'
 			)}
 		>
@@ -104,7 +104,7 @@ export default function PostCard({
 					</div>
 				</div>
 				<div className="mt-6 flex items-center justify-between gap-4">
-					<h2 className="group-hover:text-primary truncate text-xl font-bold tracking-tight transition-colors">
+					<h2 className="group-hover:text-brand-link truncate text-xl font-bold tracking-tight transition-colors">
 						{params.postTitle}
 					</h2>
 					{isAuthenticated && (

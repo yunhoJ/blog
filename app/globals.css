@@ -1,3 +1,4 @@
+@import './brand-tokens.css';
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -41,41 +42,61 @@
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
+	--color-brand-link: var(--brand-link);
+	--color-brand-link-hover: var(--brand-link-hover);
+	--color-brand-underline-active: var(--brand-underline-active);
+	--color-brand-border-strong: var(--brand-border-strong);
+	--color-brand-subtle: var(--brand-subtle);
+	--color-brand-subtle-hover: var(--brand-subtle-hover);
+	--color-brand-subtle-pressed: var(--brand-subtle-pressed);
+	--color-brand-on-subtle: var(--brand-on-subtle);
+	--color-brand-on-subtle-hover: var(--brand-on-subtle-hover);
+	--color-brand-surface-2: var(--brand-surface-2);
+	--color-brand-surface-3: var(--brand-surface-3);
+	--color-brand-surface-4: var(--brand-surface-4);
+	--color-brand-text: var(--brand-text);
+	--color-brand-text-muted: var(--brand-text-muted);
+	--color-brand-disabled-text: var(--brand-disabled-text);
+	--color-brand-btn-border: var(--brand-btn-border);
+	--color-brand-border: var(--brand-border);
+	--color-brand-focus-ring: var(--brand-focus-ring);
+	--color-brand-danger-solid: var(--brand-danger-solid);
+	--color-brand-on-danger: var(--brand-on-danger);
 }
 
 :root {
 	--radius: 0.625rem;
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.145 0 0);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
+	--background: var(--brand-bg);
+	--foreground: var(--brand-text);
+	--card: var(--brand-bg);
+	--card-foreground: var(--brand-text);
+	--popover: var(--brand-bg);
+	--popover-foreground: var(--brand-text);
 	--primary: hsl(153 47% 49%);
 	--primary-foreground: oklch(0.985 0 0);
-	--secondary: hsl(153 47% 65%);
-	--secondary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.97 0 0);
-	--accent-foreground: oklch(0.205 0 0);
-	--destructive: oklch(0.577 0.245 27.325);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
+	--secondary: var(--brand-surface-2);
+	--secondary-foreground: var(--brand-text);
+	--muted: var(--brand-surface);
+	--muted-foreground: var(--brand-text-muted);
+	--accent: var(--brand-subtle);
+	--accent-foreground: var(--brand-green-12);
+	--destructive: var(--brand-danger-solid);
+	--border: var(--brand-border);
+	--input: var(--brand-border-strong);
+	--ring: var(--brand-focus-ring);
 	--chart-1: oklch(0.646 0.222 41.116);
 	--chart-2: oklch(0.6 0.118 184.704);
 	--chart-3: oklch(0.398 0.07 227.392);
 	--chart-4: oklch(0.828 0.189 84.429);
 	--chart-5: oklch(0.769 0.188 70.08);
-	--sidebar: oklch(0.985 0 0);
-	--sidebar-foreground: oklch(0.145 0 0);
-	--sidebar-primary: oklch(0.205 0 0);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.97 0 0);
-	--sidebar-accent-foreground: oklch(0.205 0 0);
-	--sidebar-border: oklch(0.922 0 0);
-	--sidebar-ring: oklch(0.708 0 0);
+	--sidebar: var(--brand-surface);
+	--sidebar-foreground: var(--brand-text);
+	--sidebar-primary: var(--brand-solid);
+	--sidebar-primary-foreground: var(--brand-on-solid);
+	--sidebar-accent: var(--brand-subtle);
+	--sidebar-accent-foreground: var(--brand-green-12);
+	--sidebar-border: var(--brand-border);
+	--sidebar-ring: var(--brand-focus-ring);
 	--header-height: 3.5rem;
 	--sticky-offset: 1.5rem;
 	--footer-height: 7rem;
@@ -84,37 +105,37 @@
 }
 
 .dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--card: oklch(0.205 0 0);
-	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.205 0 0);
-	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
-	--accent-foreground: oklch(0.985 0 0);
-	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.556 0 0);
+	--background: var(--brand-bg);
+	--foreground: var(--brand-text);
+	--card: var(--brand-surface);
+	--card-foreground: var(--brand-text);
+	--popover: var(--brand-surface);
+	--popover-foreground: var(--brand-text);
+	--primary: var(--brand-solid);
+	--primary-foreground: var(--brand-on-solid);
+	--secondary: var(--brand-surface-2);
+	--secondary-foreground: var(--brand-text);
+	--muted: var(--brand-surface-2);
+	--muted-foreground: var(--brand-text-muted);
+	--accent: var(--brand-subtle);
+	--accent-foreground: var(--brand-green-12);
+	--destructive: var(--brand-danger-solid);
+	--border: var(--brand-border);
+	--input: var(--brand-border-strong);
+	--ring: var(--brand-focus-ring);
 	--chart-1: oklch(0.488 0.243 264.376);
 	--chart-2: oklch(0.696 0.17 162.48);
 	--chart-3: oklch(0.769 0.188 70.08);
 	--chart-4: oklch(0.627 0.265 303.9);
 	--chart-5: oklch(0.645 0.246 16.439);
-	--sidebar: oklch(0.205 0 0);
-	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.488 0.243 264.376);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.269 0 0);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
-	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.556 0 0);
+	--sidebar: var(--brand-surface);
+	--sidebar-foreground: var(--brand-text);
+	--sidebar-primary: var(--brand-solid);
+	--sidebar-primary-foreground: var(--brand-on-solid);
+	--sidebar-accent: var(--brand-subtle);
+	--sidebar-accent-foreground: var(--brand-green-12);
+	--sidebar-border: var(--brand-border);
+	--sidebar-ring: var(--brand-focus-ring);
 }
 
 @layer base {
@@ -167,4 +188,31 @@
 
 .prose pre code::-webkit-scrollbar-thumb:hover {
 	background: var(--color-neutral-400) !important;
+}
+
+/* ── 본문 고정 ─────────────────────────────────────────────
+   tailwind.config.mjs 의 typography 가 본문 안에서 var(--color-muted), var(--color-border),
+   var(--color-primary), var(--color-foreground), var(--color-muted-foreground) 를 씀
+   (다크 인용 배경, 코드 복사 버튼, yaml 아이콘 배경 등). @theme 변수는 :root 에서 이미 계산돼
+   상속되므로 shadcn 원변수와 --color-* 둘 다 현재 값으로 다시 묶는다. */
+.mdx-viewer {
+	--muted: oklch(0.97 0 0);            --color-muted: oklch(0.97 0 0);
+	--muted-foreground: oklch(0.556 0 0); --color-muted-foreground: oklch(0.556 0 0);
+	--border: oklch(0.922 0 0);           --color-border: oklch(0.922 0 0);
+	--foreground: oklch(0.145 0 0);       --color-foreground: oklch(0.145 0 0);
+	--primary: hsl(153 47% 49%);          --color-primary: hsl(153 47% 49%);
+	--ring: oklch(0.708 0 0);             --color-ring: oklch(0.708 0 0);
+}
+.dark .mdx-viewer {
+	--muted: oklch(0.269 0 0);            --color-muted: oklch(0.269 0 0);
+	--muted-foreground: oklch(0.708 0 0); --color-muted-foreground: oklch(0.708 0 0);
+	--border: oklch(1 0 0 / 10%);         --color-border: oklch(1 0 0 / 10%);
+	--foreground: oklch(0.985 0 0);       --color-foreground: oklch(0.985 0 0);
+	--primary: oklch(0.922 0 0);          --color-primary: oklch(0.922 0 0);
+	--ring: oklch(0.556 0 0);             --color-ring: oklch(0.556 0 0);
+}
+
+/* 다크 모드 코드 블록 테두리 (본문 안) */
+.dark .mdx-viewer pre {
+	border: 1px solid var(--brand-code-border);
 }

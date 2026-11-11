@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ThemeToggle } from '../theme/ThemeToggle';
 import WriteButton from './WriteButton';
 import HamburgerMenu from './HamburgerMenu';
+import NavLink from './NavLink';
 
 export default async function Header() {
 	return (
@@ -17,15 +18,11 @@ export default async function Header() {
 
 					{/* 데스크톱 네비게이션 */}
 					<nav className="hidden gap-4 md:flex">
-						<Link href="/" className="hover:text-primary font-medium">
-							홈
-						</Link>
+						<NavLink href="/">홈</NavLink>
 						{/* <Link href="/blog" className="hover:text-primary font-medium">
 							블로그
 						</Link> */}
-						<Link href="/about" className="hover:text-primary font-medium">
-							소개
-						</Link>
+						<NavLink href="/about">소개</NavLink>
 					</nav>
 
 					{/* 우측 버튼들 */}

@@ -10,6 +10,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { buttonVariants } from '@/components/ui/button';
 import { handleAxiosError, toastError, toastSuccess } from '@/lib/toasttError';
 import { useRouter } from 'next/navigation';
 
@@ -47,7 +48,7 @@ export default function CategoryDeleteModal({
 				<AlertDialogFooter>
 					<AlertDialogCancel>취소</AlertDialogCancel>
 					<AlertDialogAction
-						className="bg-destructive hover:bg-destructive/80"
+						className={buttonVariants({ variant: 'destructive' })}
 						onClick={handleDelete}
 					>
 						삭제

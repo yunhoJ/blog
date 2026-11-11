@@ -8,6 +8,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { buttonVariants } from '@/components/ui/button';
 import { DraftItem } from '@/types/blog';
 import { postApi } from '@/app/api/services/api';
 import { handleAxiosError, toastSuccess } from '@/lib/toasttError';
@@ -50,7 +51,7 @@ export default function DraftDeleteModal({
 				<AlertDialogFooter>
 					<AlertDialogCancel>취소</AlertDialogCancel>
 					<AlertDialogAction
-						className="bg-destructive hover:bg-destructive/90 px-6 py-2"
+						className={buttonVariants({ variant: 'destructive' })}
 						onClick={handleDelete}
 					>
 						삭제
