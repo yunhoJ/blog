@@ -3,10 +3,7 @@ import { useAuthStore } from '@/lib/store/useAuthStore';
 import { toastError } from '@/lib/toasttError';
 // import router from 'next/router';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-
 export const axiosInstance = axios.create({
-	baseURL,
 	headers: {
 		'Content-Type': 'application/json',
 	},
