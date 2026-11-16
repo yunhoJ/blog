@@ -82,7 +82,12 @@ export async function PUT(request: Request) {
 	const userId = result.user?.userId as string;
 	const { originalCategoryName, changedCategoryName } = await request.json();
 
-	if (!originalCategoryName || !changedCategoryName || !userId) {
+	if (
+		!originalCategoryName ||
+		typeof changedCategoryName !== 'string' ||
+		!changedCategoryName.trim() ||
+		!userId
+	) {
 		return NextResponse.json(
 			{
 				success: false,
