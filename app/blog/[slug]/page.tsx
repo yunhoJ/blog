@@ -174,7 +174,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 								</Badge>
 							))}
 						</div> */}
-						<h1 className="text-3xl md:text-[34px] md:leading-[1.2] font-bold break-words">{post.postTitle}</h1>
+						<h1 className="text-3xl md:text-post-title font-bold break-words">{post.postTitle}</h1>
 						<div className="flex flex-row gap-3">
 							<div className="text-muted-foreground flex w-full items-center justify-start gap-5 text-sm">
 								{/* 왼쪽 그룹: 발행일, 수정일 */}

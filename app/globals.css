@@ -8,6 +8,8 @@
 @import './prose-type.css';
 @theme inline {
 	--breakpoint-mobile: 380px;
+	--text-post-title: 34px;
+	--text-post-title--line-height: 1.2;
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
