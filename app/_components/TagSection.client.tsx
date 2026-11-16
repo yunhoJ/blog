@@ -104,6 +104,10 @@ export default function CategorySection({
 
 	// 카테고리 추가 함수
 	const handleAddCategory = async () => {
+		if (newCategoryName.trim() === '') {
+			toastError(new Error('카테고리 이름을 입력해 주세요.'));
+			return;
+		}
 		try {
 			// displayList와 newCategoryName 중복 체크
 			const isDuplicate = displayList.some(
