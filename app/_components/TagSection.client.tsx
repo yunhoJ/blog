@@ -438,7 +438,7 @@ export default function CategorySection({
 															className="hover:bg-primary/10 h-7 w-7 rounded-md transition-colors"
 															onClick={(e) => {
 																preventLinkClick(e);
-																setEditingCategoryName(null);
+																handleCategoryChange(editingCategoryName, editingCategoryValue);
 															}}
 														>
 															<CheckIcon className="text-primary h-3.5 w-3.5" />
