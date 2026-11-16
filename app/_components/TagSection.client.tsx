@@ -89,7 +89,10 @@ export default function CategorySection({
 		changedCategoryName: string
 	) => {
 		if (originalCategoryName === changedCategoryName.trim()) return;
-		if (changedCategoryName.trim() === '') toastError(new Error('카테고리 이름을 입력해 주세요.'));
+		if (changedCategoryName.trim() === '') {
+			toastError(new Error('카테고리 이름을 입력해 주세요.'));
+			return;
+		}
 
 		try {
 			await postApi.updateCategory(originalCategoryName, changedCategoryName);
