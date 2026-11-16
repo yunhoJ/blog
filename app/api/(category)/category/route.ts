@@ -25,8 +25,16 @@ export async function POST(request: Request) {
 		);
 	}
 	const userId = result.user?.userId as string;
+	const trimmedName = typeof categoryName === 'string' ? categoryName.trim() : '';
 
-	const category = await createCategory(userId, categoryName);
+	if (!trimmedName || !userId) {
+		return NextResponse.json(
+			{ success: false, message: 'categoryName 또는 userId가 없습니다.' },
+			{ status: 400 }
+		);
+	}
+
+	const category = await createCategory(userId, trimmedName);
 
 	return NextResponse.json({ data: category });
 }
@@ -81,13 +89,9 @@ export async function PUT(request: Request) {
 	}
 	const userId = result.user?.userId as string;
 	const { originalCategoryName, changedCategoryName } = await request.json();
+	const trimmedName = typeof changedCategoryName === 'string' ? changedCategoryName.trim() : '';
 
-	if (
-		!originalCategoryName ||
-		typeof changedCategoryName !== 'string' ||
-		!changedCategoryName.trim() ||
-		!userId
-	) {
+	if (!originalCategoryName || !trimmedName || !userId) {
 		return NextResponse.json(
 			{
 				success: false,
@@ -97,7 +101,7 @@ export async function PUT(request: Request) {
 		);
 	}
 	try {
-		await updateCategory(userId, originalCategoryName, changedCategoryName);
+		await updateCategory(userId, originalCategoryName, trimmedName);
 		return NextResponse.json({ success: true, message: '카테고리 변경 성공' });
 	} catch (error) {
 		console.log('error updateCategory: ', error);
