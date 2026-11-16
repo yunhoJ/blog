@@ -53,10 +53,14 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
 
 	const handleCreate = async () => {
 		if (input && !filtered.includes(input)) {
-			const category = await postApi.createCategory(input);
-			setSelected(category.data.categoryName);
-			setAllCategories([...allCategories, category.data.categoryName]);
-			onSelect(category.data.categoryName);
+			try {
+				const category = await postApi.createCategory(input);
+				setSelected(category.data.categoryName);
+				setAllCategories([...allCategories, category.data.categoryName]);
+				onSelect(category.data.categoryName);
+			} catch {
+				toastError(new Error('카테고리 추가 중 오류가 발생했습니다.'));
+			}
 		}
 	};
 

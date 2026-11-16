@@ -88,12 +88,16 @@ export default function CategorySection({
 		originalCategoryName: string,
 		changedCategoryName: string
 	) => {
-		if (originalCategoryName === changedCategoryName.trim()) return;
-		if (changedCategoryName.trim() === '') toastError(new Error('카테고리 이름을 입력해 주세요.'));
+		const trimmedName = changedCategoryName.trim();
+		if (originalCategoryName === trimmedName) return;
+		if (trimmedName === '') {
+			toastError(new Error('카테고리 이름을 입력해 주세요.'));
+			return;
+		}
 
 		try {
-			await postApi.updateCategory(originalCategoryName, changedCategoryName);
-			router.push('/?category=' + changedCategoryName);
+			await postApi.updateCategory(originalCategoryName, trimmedName);
+			router.push('/?category=' + trimmedName);
 		} catch (error) {
 			toastError(new Error('카테고리 변경 중 오류가 발생했습니다.'));
 		}
@@ -101,6 +105,10 @@ export default function CategorySection({
 
 	// 카테고리 추가 함수
 	const handleAddCategory = async () => {
+		if (newCategoryName.trim() === '') {
+			toastError(new Error('카테고리 이름을 입력해 주세요.'));
+			return;
+		}
 		try {
 			// displayList와 newCategoryName 중복 체크
 			const isDuplicate = displayList.some(
@@ -438,7 +446,7 @@ export default function CategorySection({
 															className="hover:bg-primary/10 h-7 w-7 rounded-md transition-colors"
 															onClick={(e) => {
 																preventLinkClick(e);
-																setEditingCategoryName(null);
+																handleCategoryChange(editingCategoryName, editingCategoryValue);
 															}}
 														>
 															<CheckIcon className="text-primary h-3.5 w-3.5" />
