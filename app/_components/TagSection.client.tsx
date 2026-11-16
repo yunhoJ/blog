@@ -88,15 +88,16 @@ export default function CategorySection({
 		originalCategoryName: string,
 		changedCategoryName: string
 	) => {
-		if (originalCategoryName === changedCategoryName.trim()) return;
-		if (changedCategoryName.trim() === '') {
+		const trimmedName = changedCategoryName.trim();
+		if (originalCategoryName === trimmedName) return;
+		if (trimmedName === '') {
 			toastError(new Error('카테고리 이름을 입력해 주세요.'));
 			return;
 		}
 
 		try {
-			await postApi.updateCategory(originalCategoryName, changedCategoryName);
-			router.push('/?category=' + changedCategoryName);
+			await postApi.updateCategory(originalCategoryName, trimmedName);
+			router.push('/?category=' + trimmedName);
 		} catch (error) {
 			toastError(new Error('카테고리 변경 중 오류가 발생했습니다.'));
 		}
