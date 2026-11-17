@@ -13,6 +13,8 @@ import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import { Root } from 'hast';
 import { extractMdxJsxFromP } from '@/lib/replaceContent';
 import remarkBreaks from 'remark-breaks';
+import rehypeBrGap from '@/lib/rehype-br-gap';
+import MdxTable from '@/components/features/blog/MdxTable';
 export default function MdxClient({ source }: { source: string }) {
 	const rehypeAllowBrJsx = () => {
 		return (tree: Root) => {
@@ -40,6 +42,7 @@ export default function MdxClient({ source }: { source: string }) {
 						rehypeSlug,
 						rehypeAllowBrJsx, // JSX <br /> 변환 먼저 실행
 						[rehypeSanitize, schema],
+						rehypeBrGap,
 						rehypePrettyCode,
 					],
 				},
@@ -54,7 +57,7 @@ export default function MdxClient({ source }: { source: string }) {
 	if (!mdx) return <div>Loading...</div>;
 	return (
 		<>
-			<MDXRemote {...mdx} />
+			<MDXRemote {...mdx} components={{ table: MdxTable }} />
 			<style
 				dangerouslySetInnerHTML={{
 					__html: `
@@ -67,21 +70,6 @@ export default function MdxClient({ source }: { source: string }) {
 					.mdx-viewer code {
 						white-space: pre !important;
 						word-wrap: normal !important;
-					}
-
-					.mdx-viewer ol {
-						list-style-type: decimal !important;
-						padding-left: 1.5rem !important;
-					}
-
-					.mdx-viewer ul {
-						list-style-type: disc !important;
-						padding-left: 1.5rem !important;
-					}
-
-					.mdx-viewer li {
-						display: list-item !important;
-						margin: 0.25rem 0 !important;
 					}
 
 				`,

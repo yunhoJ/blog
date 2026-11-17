@@ -44,58 +44,29 @@ const tailwindConfig = {
 						// '--tw-prose-invert-td-borders': 'var(--color-pink-700)',
 
 						h1: {
-							fontSize: '1.9rem',
-							fontWeight: '800',
 							color: '#4589b1',
 							borderBottom: '2px solid',
 							borderColor: 'currentColor',
-							lineHeight: '1.5',
-							margin: '1rem 0',
 						},
 
 						h2: {
-							fontSize: '1.7rem',
-							fontWeight: '700',
 							color: '#a51eb9',
-							margin: '0.5rem 0',
-							lineHeight: '1.5',
 						},
 
 						h3: {
-							fontSize: '1.5rem',
-							fontWeight: '700',
 							color: '#1b66d1',
-							margin: '0.5rem 0',
-							lineHeight: '1.5',
 						},
 
 						h4: {
-							fontSize: '1.35rem',
-							fontWeight: '500',
 							color: '#d6a94c',
-							margin: '0.5rem 0',
-							lineHeight: '1.5',
 						},
 
 						h5: {
-							fontSize: '1.2rem',
-							fontWeight: '500',
 							color: '#d32f2f',
-							margin: '0.5rem 0',
-							lineHeight: '1.5',
 						},
 
 						h6: {
-							fontSize: '1.1rem',
-							fontWeight: '400',
 							color: '#666666',
-							margin: '0.5rem 0',
-							lineHeight: '1.5',
-						},
-						p: {
-							lineHeight: '1.5',
-							margin: '0.3rem 0',
-							wordWrap: 'break-word',
 						},
 
 						// [!important] 등을 아이콘으로 교체하는 CSS 방법
@@ -107,7 +78,6 @@ const tailwindConfig = {
 						blockquote: {
 							borderRadius: theme('borderRadius.xl'),
 							backgroundColor: 'var(--color-purple-50)',
-							padding: '1rem 2rem',
 							borderLeft: '4px solid',
 							borderColor: 'var(--color-purple-800)',
 						},
@@ -123,8 +93,6 @@ const tailwindConfig = {
 						},
 						code: {
 							backgroundColor: 'var(--color-purple-50)',
-							padding: '0.2rem 0.5rem',
-
 							borderRadius: theme('borderRadius.md'),
 							border: '1px solid var(--color-purple-100)',
 						},
@@ -133,7 +101,6 @@ const tailwindConfig = {
 							color: 'inherit',
 						},
 						pre: {
-							padding: '2rem 0 0 0',
 							position: 'relative',
 						},
 						// 코드 블록 내부의 code는 chip 스타일 제거 (코드 블록 전용 스타일 적용)
@@ -141,7 +108,6 @@ const tailwindConfig = {
 							overflowX: 'auto', // code 요소가 스크롤
 							display: 'block',
 							width: '100%',
-							padding: '0 1rem 1rem 1rem',
 							backgroundColor: 'transparent',
 							color: 'inherit',
 							border: 'none',
