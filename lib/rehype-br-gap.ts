@@ -25,16 +25,26 @@ function walk(parent: Root | Element) {
 		) {
 			const prev = parent.children.slice(0, i).filter((c) => !isBlank(c)).at(-1);
 			const next = parent.children.slice(i + 1).find((c) => !isBlank(c));
-			if (prev && next && !isImage(prev) && !(next.type === 'element' && next.tagName === 'br')) {
-				parent.children.splice(i + 1, 0, {
-					type: 'element',
-					tagName: 'span',
-					properties: { className: ['br-gap'], ariaHidden: 'true' },
-					children: [],
-				});
-				i += 2;
-				continue;
+			if (!prev || !next) {
+				i += 1;
+				continue; // 문단 맨 앞·맨 끝
 			}
+			if (isImage(prev)) {
+				i += 1;
+				continue; // 이미지 바로 뒤
+			}
+			if (next.type === 'element' && next.tagName === 'br') {
+				i += 1;
+				continue; // 연속 <br>은 마지막 것만
+			}
+			parent.children.splice(i + 1, 0, {
+				type: 'element',
+				tagName: 'span',
+				properties: { className: ['br-gap'], ariaHidden: 'true' },
+				children: [],
+			});
+			i += 2;
+			continue;
 		}
 		if (node.type === 'element') walk(node);
 		i += 1;
